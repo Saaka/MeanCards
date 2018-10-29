@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28218.60
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards", "MeanCards\MeanCards.csproj", "{41C0366C-798E-494A-A103-D2AD95A8CEA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.WebAPI", "MeanCards.WebAPI\MeanCards.WebAPI.csproj", "{5DB7506A-35C0-46C7-BE8B-435BBF142035}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +17,12 @@ Global
 		{41C0366C-798E-494A-A103-D2AD95A8CEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41C0366C-798E-494A-A103-D2AD95A8CEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41C0366C-798E-494A-A103-D2AD95A8CEA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB7506A-35C0-46C7-BE8B-435BBF142035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB7506A-35C0-46C7-BE8B-435BBF142035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB7506A-35C0-46C7-BE8B-435BBF142035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB7506A-35C0-46C7-BE8B-435BBF142035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9C041686-A5A0-4B31-983C-1D616D1AAC8D}
 	EndGlobalSection
 EndGlobal
