@@ -9,6 +9,7 @@ namespace MeanCards.Model.DataModels
         public string Text { get; set; }
         public bool IsAdultContent { get; set; }
         public byte NumberOfAnswers { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
 
         public Language Language { get; set; }
