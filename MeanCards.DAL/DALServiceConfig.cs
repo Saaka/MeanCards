@@ -13,7 +13,7 @@ namespace MeanCards.DAL
             services.AddDbContext<AppDbContext>((opt) =>
             opt.UseSqlServer(
                 GetConnectionString(configuration),
-                cb => cb.MigrationsHistoryTable("Migrations_MeanCards")),
+                cb => cb.MigrationsHistoryTable(AppDbContext.DefaultMigrationsTable)),
             ServiceLifetime.Scoped);
 
             return services;

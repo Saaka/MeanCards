@@ -5,7 +5,8 @@ namespace MeanCards.DAL.Storage
 {
     public class AppDbContext : DbContext
     {
-        protected const string DefaultSchema = "meancards";
+        public const string DefaultSchema = "meancards";
+        public const string DefaultMigrationsTable = "Migrations_MeanCards";
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -34,18 +35,29 @@ namespace MeanCards.DAL.Storage
 
         private void InitTables(ModelBuilder builder)
         {
+            builder.Entity<User>(b =>
+            {
+                b.HasKey(x => x.UserId);
+                b.HasMany(x => x.Games)
+                    .WithOne(x => x.Owner)
+                    .HasForeignKey(x => x.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
             builder.Entity<Game>(b =>
             {
                 b.HasKey(x => x.GameId);
                 b.HasMany(x => x.GameRounds)
                     .WithOne(x => x.Game)
                     .HasForeignKey(x => x.GameId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.Language)
                     .WithMany(x => x.Games)
                     .HasForeignKey(x => x.LanguageId)
                     .OnDelete(DeleteBehavior.Restrict);
-                b.HasOne(x => x.Owner);
+                b.HasOne(x => x.Owner)
+                    .WithMany(x => x.Games)
+                    .HasForeignKey(x => x.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             builder.Entity<GameRound>(b =>
             {
@@ -53,7 +65,7 @@ namespace MeanCards.DAL.Storage
                 b.HasMany(x => x.PlayerAnswers)
                     .WithOne(x => x.GameRound)
                     .HasForeignKey(x => x.GameRoundId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.RoundOwner)
                     .WithMany(x => x.OwnedGameRounds)
                     .HasForeignKey(x => x.RoundOwnerId)
@@ -73,15 +85,15 @@ namespace MeanCards.DAL.Storage
                 b.HasMany(x => x.OwnedGameRounds)
                     .WithOne(x => x.RoundOwner)
                     .HasForeignKey(x => x.RoundOwnerId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasMany(x => x.WonRounds)
                     .WithOne(x => x.RoundWinner)
                     .HasForeignKey(x => x.RoundWinnerId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.Game)
                     .WithMany(x => x.Players)
                     .HasForeignKey(x => x.GameId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             builder.Entity<PlayerAnswer>(b =>
             {
@@ -89,11 +101,11 @@ namespace MeanCards.DAL.Storage
                 b.HasOne(x => x.Player)
                     .WithMany(x => x.PlayerAnswers)
                     .HasForeignKey(x => x.PlayerId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.GameRound)
                     .WithMany(x => x.PlayerAnswers)
                     .HasForeignKey(x => x.GameRoundId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.SecondaryAnswerCard)
                     .WithMany(x => x.SecondaryPlayerAnswers)
                     .HasForeignKey(x => x.SecondaryAnswerCardId)
@@ -113,7 +125,7 @@ namespace MeanCards.DAL.Storage
                 b.HasOne(x => x.Language)
                     .WithMany(x => x.QuestionCards)
                     .HasForeignKey(x => x.LanguageId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             builder.Entity<Language>(b =>
             {
