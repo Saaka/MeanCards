@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MeanCards.Model.DataModels
 {
     public class QuestionCard
     {
+        public QuestionCard()
+        {
+            GameRounds = new List<GameRound>();
+        }
         public int QuestionCardId { get; set; }
         public int LanguageId { get; set; }
         public string Text { get; set; }
@@ -13,5 +18,6 @@ namespace MeanCards.Model.DataModels
         public DateTime CreateDate { get; set; }
 
         public Language Language { get; set; }
+        public List<GameRound> GameRounds { get; set; }
     }
 }

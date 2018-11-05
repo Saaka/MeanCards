@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MeanCards.Model.DataModels
 {
@@ -12,5 +13,7 @@ namespace MeanCards.Model.DataModels
         public DateTime CreateDate { get; set; }
 
         public Language Language { get; set; }
+        public List<PlayerAnswer>  PlayerAnswers { get; set; }
+        public List<PlayerAnswer>  SecondaryPlayerAnswers { get; set; }
     }
 }

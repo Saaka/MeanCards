@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MeanCards.Model.DataModels
 {
     public class Game
     {
+        public Game()
+        {
+            GameRounds = new List<GameRound>();
+            Players = new List<Player>();
+        }
+
         public int GameId { get; set; }
         public byte GameStatus { get; set; }
         public int LanguageId { get; set; }
@@ -15,5 +22,7 @@ namespace MeanCards.Model.DataModels
 
         public Language Language { get; set; }
         public User Owner { get; set; }
+        public List<GameRound> GameRounds { get; set; }
+        public List<Player> Players { get; set; }
     }
 }

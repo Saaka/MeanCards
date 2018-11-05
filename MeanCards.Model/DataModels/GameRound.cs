@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MeanCards.Model.DataModels
 {
@@ -16,5 +17,7 @@ namespace MeanCards.Model.DataModels
         public QuestionCard QuestionCard { get; set; }
         public Player RoundOwner { get; set; }
         public Player RoundWinner { get; set; }
+
+        public List<PlayerAnswer> PlayerAnswers { get; set; }
     }
 }
