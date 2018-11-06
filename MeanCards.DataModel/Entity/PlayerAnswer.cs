@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Model.DataModels
+﻿namespace MeanCards.DataModel.Entity
 {
     public class PlayerAnswer
     {

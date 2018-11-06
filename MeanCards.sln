@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Model", "MeanCard
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FFFAB585-BD3A-4E84-9D58-3710024B73ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.DAL", "MeanCards.DAL\MeanCards.DAL.csproj", "{0F13AF04-2DBF-45FE-BA84-59F614090F5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.DAL", "MeanCards.DAL\MeanCards.DAL.csproj", "{0F13AF04-2DBF-45FE-BA84-59F614090F5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Configuration", "MeanCards.Configuration\MeanCards.Configuration.csproj", "{DB4DAA47-047D-4F7B-8397-3FA919E07F57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Configuration", "MeanCards.Configuration\MeanCards.Configuration.csproj", "{DB4DAA47-047D-4F7B-8397-3FA919E07F57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Tests.Integration", "MeanCards.Tests.Integration\MeanCards.Tests.Integration.csproj", "{3E614006-36F0-4EF3-9664-30A7FA39EF7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Integration", "MeanCards.Tests.Integration\MeanCards.Tests.Integration.csproj", "{3E614006-36F0-4EF3-9664-30A7FA39EF7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.DataModel", "MeanCards.DataModel\MeanCards.DataModel.csproj", "{15222FDD-0C4A-4561-977A-A0D032BE0862}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{3E614006-36F0-4EF3-9664-30A7FA39EF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E614006-36F0-4EF3-9664-30A7FA39EF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E614006-36F0-4EF3-9664-30A7FA39EF7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

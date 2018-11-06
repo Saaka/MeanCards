@@ -1,4 +1,4 @@
-﻿using MeanCards.Model.DataModels;
+﻿using MeanCards.DataModel.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeanCards.DAL.Storage

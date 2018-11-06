@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MeanCards.Model.DataModels
+namespace MeanCards.DataModel.Entity
 {
     public class AnswerCard
     {

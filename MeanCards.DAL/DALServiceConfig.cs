@@ -1,4 +1,5 @@
 ﻿using MeanCards.Configuration;
+using MeanCards.DAL.Repository;
 using MeanCards.DAL.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,14 @@ namespace MeanCards.DAL
                 GetConnectionString(configuration),
                 cb => cb.MigrationsHistoryTable(AppDbContext.DefaultMigrationsTable)),
             ServiceLifetime.Scoped);
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterDAL(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .AddScoped<LanguagesRepository>();
 
             return services;
         }
