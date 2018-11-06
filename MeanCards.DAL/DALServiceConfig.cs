@@ -20,7 +20,7 @@ namespace MeanCards.DAL
             return services;
         }
 
-        public static IServiceCollection RegisterDAL(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterDAL(this IServiceCollection services)
         {
             services
                 .AddScoped<LanguagesRepository>();
