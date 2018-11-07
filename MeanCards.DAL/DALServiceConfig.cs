@@ -1,5 +1,6 @@
 ﻿using MeanCards.Configuration;
 using MeanCards.DAL.Initializer;
+using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Repository;
 using MeanCards.DAL.Storage;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,9 @@ namespace MeanCards.DAL
         {
             //Repositories
             services
-                .AddScoped<LanguagesRepository>();
+                .AddScoped<ILanguagesRepository, LanguagesRepository>();
+            services
+                .AddScoped<IQuestionCardsRepository, QuestionCardsRepository>();
 
             //Initializers
             services

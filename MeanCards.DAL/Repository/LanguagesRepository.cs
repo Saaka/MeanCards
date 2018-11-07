@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MeanCards.DAL.Interfaces.Repository;
 
 namespace MeanCards.DAL.Repository
 {
-    public class LanguagesRepository
+    public class LanguagesRepository : ILanguagesRepository
     {
         private readonly AppDbContext context;
 
@@ -17,7 +18,7 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
-        public async Task<bool> CreateLanguage(CreateLanguageModel model)
+        public async Task<int> CreateLanguage(CreateLanguageModel model)
         {
             var newLanguage = new Language
             {
@@ -27,7 +28,9 @@ namespace MeanCards.DAL.Repository
             };
 
             context.Languages.Add(newLanguage);
-            return await context.SaveChangesAsync() > 0;
+            await context.SaveChangesAsync();
+
+            return newLanguage.LanguageId;
         }
 
         public async Task<List<Language>> GetAllActiveLanguages()

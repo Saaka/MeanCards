@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Configuration", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Integration", "MeanCards.Tests.Integration\MeanCards.Tests.Integration.csproj", "{3E614006-36F0-4EF3-9664-30A7FA39EF7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.DataModel", "MeanCards.DataModel\MeanCards.DataModel.csproj", "{15222FDD-0C4A-4561-977A-A0D032BE0862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.DataModel", "MeanCards.DataModel\MeanCards.DataModel.csproj", "{15222FDD-0C4A-4561-977A-A0D032BE0862}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{5993EBD3-A706-48B2-BAA5-CD354A0E2108}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		.travis.yml = .travis.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.DAL.Interfaces", "MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj", "{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15222FDD-0C4A-4561-977A-A0D032BE0862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

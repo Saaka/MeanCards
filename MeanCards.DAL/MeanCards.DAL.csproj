@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeanCards.Configuration\MeanCards.Configuration.csproj" />
+    <ProjectReference Include="..\MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj" />
     <ProjectReference Include="..\MeanCards.DataModel\MeanCards.DataModel.csproj" />
     <ProjectReference Include="..\MeanCards.Model\MeanCards.Model.csproj" />
   </ItemGroup>
