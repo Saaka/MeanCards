@@ -6,10 +6,10 @@ using Xunit;
 
 namespace MeanCards.Tests.Integration.Repository
 {
-    public class LanguagesRepositoryTests
+    public class LanguagesRepositoryShould
     {
         [Fact]
-        public async Task CreateLanguages_StoresData()
+        public async Task StoreDataInDatabase()
         {
             var options = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
 
