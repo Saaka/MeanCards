@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.DAL.Interfaces", "MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj", "{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Common", "MeanCards.Common\MeanCards.Common.csproj", "{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E21CCD4-4CD9-440E-AF57-31C671E6FBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
