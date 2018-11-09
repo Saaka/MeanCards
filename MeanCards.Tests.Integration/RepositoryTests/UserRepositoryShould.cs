@@ -6,25 +6,26 @@ using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class LanguagesRepositoryShould
+    public class UserRepositoryShould
     {
         [Fact]
-        public async Task StoreDataInDatabase()
+        public async Task CreateUserForValidData()
         {
             var options = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
+            var createModel = new Model.ViewModel.CreateUserModel { DisplayName = "TestName" };
 
             using (var context = new AppDbContext(options))
             {
-                var repository = new LanguagesRepository(context);
-                await repository.CreateLanguage(new Model.ViewModel.CreateLanguageModel { Code = "PL", Name = "Polski " });
+                var repository = new UserRepository(context);
+                await repository.CreateUser(createModel);
             }
-            
+
             using (var context = new AppDbContext(options))
             {
-                var repository = new LanguagesRepository(context);
-                var languages = await repository.GetAllActiveLanguages();
+                var repository = new UserRepository(context);
+                var users = await repository.GetAllActiveUsers();
 
-                Assert.Single(languages);
+                Assert.Single(users);
             }
         }
     }

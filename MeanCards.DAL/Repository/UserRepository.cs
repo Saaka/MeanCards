@@ -2,7 +2,10 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.ViewModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeanCards.DAL.Repository
 {
@@ -27,6 +30,15 @@ namespace MeanCards.DAL.Repository
             await context.SaveChangesAsync();
 
             return newUser.UserId;
+        }
+
+        public async Task<List<User>> GetAllActiveUsers()
+        {
+            var query = from user in context.Users
+                        where user.IsActive == true
+                        select user;
+
+            return await query.ToListAsync();
         }
     }
 }
