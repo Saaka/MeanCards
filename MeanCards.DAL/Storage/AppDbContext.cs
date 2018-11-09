@@ -19,6 +19,7 @@ namespace MeanCards.DAL.Storage
         public DbSet<AnswerCard> AnswerCards { get; set; }
         public DbSet<QuestionCard> QuestionCards { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

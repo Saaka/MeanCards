@@ -1,0 +1,32 @@
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.DAL.Storage;
+using MeanCards.DataModel.Entity;
+using MeanCards.Model.ViewModel;
+using System.Threading.Tasks;
+
+namespace MeanCards.DAL.Repository
+{
+    public class UserRepository : IUserRepository
+    {
+        private readonly AppDbContext context;
+
+        public UserRepository(AppDbContext context)
+        {
+            this.context = context;
+        }
+
+        public async Task<int> CreateUser(CreateUserModel model)
+        {
+            var newUser = new User
+            {
+                DisplayName = model.DisplayName,
+                IsActive = true
+            };
+
+            context.Users.Add(newUser);
+            await context.SaveChangesAsync();
+
+            return newUser.UserId;
+        }
+    }
+}
