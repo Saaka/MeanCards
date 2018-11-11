@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Model.ViewModel
+﻿namespace MeanCards.Model.Creation
 {
     public class CreateUserModel
     {

@@ -1,5 +1,5 @@
 ﻿using MeanCards.DataModel.Entity;
-using MeanCards.Model.ViewModel;
+using MeanCards.Model.Creation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

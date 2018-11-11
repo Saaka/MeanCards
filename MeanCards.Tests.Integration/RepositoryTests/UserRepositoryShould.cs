@@ -12,7 +12,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task CreateUserForValidData()
         {
             var options = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
-            var createModel = new Model.ViewModel.CreateUserModel { DisplayName = "TestName" };
+            var createModel = new Model.Creation.CreateUserModel { DisplayName = "TestName" };
 
             using (var context = new AppDbContext(options))
             {

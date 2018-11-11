@@ -57,14 +57,14 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             {
                 var cardRepository = new QuestionCardsRepository(context);
 
-                await cardRepository.CreateQuestionCard(new Model.ViewModel.CreateQuestionCardModel
+                await cardRepository.CreateQuestionCard(new Model.Creation.CreateQuestionCardModel
                 {
                     IsAdultContent = true,
                     LanguageId = languageId,
                     NumberOfAnswers = 1,
                     Text = "Test1"
                 });
-                await cardRepository.CreateQuestionCard(new Model.ViewModel.CreateQuestionCardModel
+                await cardRepository.CreateQuestionCard(new Model.Creation.CreateQuestionCardModel
                 {
                     IsAdultContent = false,
                     LanguageId = languageId,
@@ -79,7 +79,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             using (var context = new AppDbContext(contextOptions))
             {
                 var languageRepository = new LanguagesRepository(context);
-                return await languageRepository.CreateLanguage(new Model.ViewModel.CreateLanguageModel { Code = DefaultLanguageCode, Name = "Polski " });
+                return await languageRepository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = DefaultLanguageCode, Name = "Polski " });
             }
         }
     }

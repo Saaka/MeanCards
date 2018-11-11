@@ -1,6 +1,6 @@
 ﻿using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
-using MeanCards.Model.ViewModel;
+using MeanCards.Model.Creation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;

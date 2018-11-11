@@ -16,7 +16,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             using (var context = new AppDbContext(options))
             {
                 var repository = new LanguagesRepository(context);
-                await repository.CreateLanguage(new Model.ViewModel.CreateLanguageModel { Code = "PL", Name = "Polski " });
+                await repository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = "PL", Name = "Polski " });
             }
             
             using (var context = new AppDbContext(options))
