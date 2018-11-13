@@ -1,31 +1,41 @@
-﻿using MeanCards.DAL.Repository;
-using MeanCards.DAL.Storage;
-using MeanCards.Tests.Integration.Helpers;
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Tests.Integration.Config;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class LanguagesRepositoryShould
+    public class LanguagesRepositoryShould : IDisposable
     {
+        private readonly DALServiceCollectionFixture Fixture;
+
+        public LanguagesRepositoryShould()
+        {
+            Fixture = new DALServiceCollectionFixture();
+        }
+
         [Fact]
         public async Task StoreDataInDatabase()
         {
-            var options = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
+            var repository = Fixture.GetService<ILanguagesRepository>();
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new LanguagesRepository(context);
-                await repository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = "PL", Name = "Polski " });
-            }
-            
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new LanguagesRepository(context);
-                var languages = await repository.GetAllActiveLanguages();
+            await repository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = "PL", Name = "Polski" });
+            var languages = await repository.GetAllActiveLanguages();
 
-                Assert.Single(languages);
-            }
+            Assert.Single(languages);
+
+            var language = languages.First();
+            Assert.Equal("PL", language.Code);
+            Assert.Equal("Polski", language.Name);
+            Assert.True(language.IsActive);
+            Assert.NotEqual(0, language.LanguageId);
+        }
+
+        public void Dispose()
+        {
+            Fixture.Dispose();
         }
     }
 }

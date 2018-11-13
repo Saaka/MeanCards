@@ -1,32 +1,41 @@
-﻿using MeanCards.DAL.Repository;
-using MeanCards.DAL.Storage;
-using MeanCards.Tests.Integration.Helpers;
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Tests.Integration.Config;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class UserRepositoryShould
+    public class UserRepositoryShould : IDisposable
     {
+        private readonly DALServiceCollectionFixture Fixture;
+
+        public UserRepositoryShould()
+        {
+            Fixture = new DALServiceCollectionFixture();
+        }
+
         [Fact]
         public async Task CreateUserForValidData()
         {
-            var options = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
+            var userRepository = Fixture.GetService<IUsersRepository>();
             var createModel = new Model.Creation.CreateUserModel { DisplayName = "TestName" };
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new UserRepository(context);
-                await repository.CreateUser(createModel);
-            }
+            await userRepository.CreateUser(createModel);
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new UserRepository(context);
-                var users = await repository.GetAllActiveUsers();
+            var users = await userRepository.GetAllActiveUsers();
 
-                Assert.Single(users);
-            }
+            Assert.Single(users);
+
+            var user = users.First();
+            Assert.Equal("TestName", user.DisplayName);
+            Assert.True(user.IsActive);
+        }
+
+        public void Dispose()
+        {
+            Fixture.Dispose();
         }
     }
 }

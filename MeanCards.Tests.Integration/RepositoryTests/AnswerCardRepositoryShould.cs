@@ -1,86 +1,76 @@
-﻿using MeanCards.DAL.Repository;
-using MeanCards.DAL.Storage;
-using MeanCards.Tests.Integration.Helpers;
-using Microsoft.EntityFrameworkCore;
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Tests.Integration.Config;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class QuestionCardRepositoryShould
+    public class QuestionCardRepositoryShould : IDisposable
     {
-        readonly DbContextOptions<AppDbContext> contextOptions;
+        private readonly DALServiceCollectionFixture Fixture;
         const string DefaultLanguageCode = "PL";
 
         public QuestionCardRepositoryShould()
         {
-            contextOptions = TestInMemoryDbOptionsProvider.CreateOptions<AppDbContext>();
+            Fixture = new DALServiceCollectionFixture();
         }
 
         [Fact]
         public async Task InsertQuestionCards()
         {
             var languageId = await CreateDefaultLanguage();
-
             await PopulateQuestionCards(languageId);
+            var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 
-            using (var context = new AppDbContext(contextOptions))
-            {
-                var cardRepository = new QuestionCardsRepository(context);
+            var cards = await cardRepository.GetAllActiveAnswerCards();
 
-                var cards = await cardRepository.GetAllActiveQuestionCards();
-
-                Assert.Equal(2, cards.Count);
-            }
+            Assert.Equal(2, cards.Count);
         }
 
         [Fact]
         public async Task ReturnCardsWithoutMatureContent()
         {
             var languageId = await CreateDefaultLanguage();
-
             await PopulateQuestionCards(languageId);
+            var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 
-            using (var context = new AppDbContext(contextOptions))
-            {
-                var cardRepository = new QuestionCardsRepository(context);
+            var cards = await cardRepository.GetAnswerCardsWithoutMatureContent();
 
-                var cards = await cardRepository.GetQuestionCardsWithoutMatureContent();
+            Assert.Single(cards);
 
-                Assert.Single(cards);
-            }
+            var card = cards.First();
+            Assert.Equal("Test2", card.Text);
+            Assert.True(card.IsActive);
         }
 
         private async Task PopulateQuestionCards(int languageId)
         {
-            using (var context = new AppDbContext(contextOptions))
+            var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
+            await cardRepository.CreateAnswerCard(new Model.Creation.CreateAnswerCardModel
             {
-                var cardRepository = new QuestionCardsRepository(context);
-
-                await cardRepository.CreateQuestionCard(new Model.Creation.CreateQuestionCardModel
-                {
-                    IsAdultContent = true,
-                    LanguageId = languageId,
-                    NumberOfAnswers = 1,
-                    Text = "Test1"
-                });
-                await cardRepository.CreateQuestionCard(new Model.Creation.CreateQuestionCardModel
-                {
-                    IsAdultContent = false,
-                    LanguageId = languageId,
-                    NumberOfAnswers = 1,
-                    Text = "Test2"
-                });
-            }
+                IsAdultContent = true,
+                LanguageId = languageId,
+                Text = "Test1"
+            });
+            await cardRepository.CreateAnswerCard(new Model.Creation.CreateAnswerCardModel
+            {
+                IsAdultContent = false,
+                LanguageId = languageId,
+                Text = "Test2"
+            });
         }
 
         private async Task<int> CreateDefaultLanguage()
         {
-            using (var context = new AppDbContext(contextOptions))
-            {
-                var languageRepository = new LanguagesRepository(context);
-                return await languageRepository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = DefaultLanguageCode, Name = "Polski " });
-            }
+            var languageRepository = Fixture.GetService<ILanguagesRepository>();
+            return await languageRepository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = DefaultLanguageCode, Name = "Polski " });
+        }
+
+        public void Dispose()
+        {
+            Fixture.Dispose();
         }
     }
 }

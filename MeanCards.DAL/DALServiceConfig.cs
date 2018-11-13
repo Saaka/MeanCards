@@ -30,6 +30,10 @@ namespace MeanCards.DAL
                 .AddScoped<ILanguagesRepository, LanguagesRepository>();
             services
                 .AddScoped<IQuestionCardsRepository, QuestionCardsRepository>();
+            services
+                .AddScoped<IAnswerCardsRepository, AnswerCardsRepository>();
+            services
+                .AddScoped<IUsersRepository, UsersRepository>();
 
             //Initializers
             services

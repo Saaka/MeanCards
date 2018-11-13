@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeanCards.DAL.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UsersRepository : IUsersRepository
     {
         private readonly AppDbContext context;
 
-        public UserRepository(AppDbContext context)
+        public UsersRepository(AppDbContext context)
         {
             this.context = context;
         }

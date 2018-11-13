@@ -18,5 +18,10 @@ namespace MeanCards.Tests.Integration.Config
         public virtual void Dispose()
         {
         }
+
+        public T GetService<T>()
+        {
+            return ServiceProvider.GetService<T>();
+        }
     }
 }
