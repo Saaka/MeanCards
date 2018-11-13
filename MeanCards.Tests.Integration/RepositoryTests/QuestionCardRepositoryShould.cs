@@ -10,7 +10,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class AnswerCardRepositoryShould : IDisposable
     {
         private readonly DALServiceCollectionFixture Fixture;
-        const string DefaultLanguageCode = "PL";
 
         public AnswerCardRepositoryShould()
         {
@@ -20,7 +19,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task InsertAnswerCards()
         {
-            var languageId = await CreateDefaultLanguage();
+            var languageId = await Fixture.CreateDefaultLanguage();
             await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 
@@ -32,7 +31,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task ReturnCardsWithoutMatureContent()
         {
-            var languageId = await CreateDefaultLanguage();
+            var languageId = await Fixture.CreateDefaultLanguage();
             await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 
@@ -62,12 +61,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 NumberOfAnswers = 1,
                 Text = "Test2"
             });
-        }
-
-        private async Task<int> CreateDefaultLanguage()
-        {
-            var languageRepository = Fixture.GetService<ILanguagesRepository>();
-            return await languageRepository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = DefaultLanguageCode, Name = "Polski " });
         }
 
         public void Dispose()
