@@ -33,6 +33,7 @@ namespace MeanCards.DAL
                 .AddScoped<IUsersRepository, UsersRepository>()
                 .AddScoped<IGamesRepository, GamesRepository>()
                 .AddScoped<IGameRoundsRepository, GameRoundsRepository>()
+                .AddScoped<IPlayerAnswersRepository, PlayerAnswersRepository>()
                 .AddScoped<IPlayersRepository, PlayersRepository>();
 
             //Initializers

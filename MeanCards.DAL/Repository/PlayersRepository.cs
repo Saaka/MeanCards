@@ -2,6 +2,7 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Repository
@@ -29,6 +30,12 @@ namespace MeanCards.DAL.Repository
             await context.SaveChangesAsync();
 
             return newPlayer.PlayerId;
+        }
+
+        public async Task<Player> GetPlayerById(int playerId)
+        {
+            return await context.Players
+                .FirstOrDefaultAsync(x => x.PlayerId == playerId);
         }
     }
 }
