@@ -8,6 +8,8 @@ namespace MeanCards.DAL.Interfaces.Repository
     public interface ILanguagesRepository
     {
         Task<int> CreateLanguage(CreateLanguageModel model);
+        Task CreateLanguages(IEnumerable<CreateLanguageModel> models);
         Task<List<Language>> GetAllActiveLanguages();
+        Task<bool> HasLanguages();
     }
 }

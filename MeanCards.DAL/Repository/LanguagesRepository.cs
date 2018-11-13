@@ -33,6 +33,20 @@ namespace MeanCards.DAL.Repository
             return newLanguage.LanguageId;
         }
 
+
+        public async Task CreateLanguages(IEnumerable<CreateLanguageModel> models)
+        {
+            var newLanguages = models.Select(x => new Language
+            {
+                Code = x.Code,
+                Name = x.Name,
+                IsActive = true
+            });
+
+            context.Languages.AddRange(newLanguages);
+            await context.SaveChangesAsync();
+        }
+
         public async Task<List<Language>> GetAllActiveLanguages()
         {
             var query = from language in context.Languages
@@ -40,6 +54,15 @@ namespace MeanCards.DAL.Repository
                         select language;
 
             return await query.ToListAsync();
+        }
+
+        public async Task<bool> HasLanguages()
+        {
+            var query = from language in context.Languages
+                        where language.IsActive == true
+                        select language.LanguageId;
+
+            return await query.AnyAsync();
         }
     }
 }

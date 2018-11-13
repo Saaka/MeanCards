@@ -1,5 +1,6 @@
 ﻿using MeanCards.Configuration;
 using MeanCards.DAL.Initializer;
+using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Repository;
 using MeanCards.DAL.Storage;
@@ -32,7 +33,7 @@ namespace MeanCards.DAL
 
             //Initializers
             services
-                .AddTransient<LanguageInitializer>();
+                .AddTransient<ILanguageInitializer, LanguageInitializer>();
 
             return services;
         }

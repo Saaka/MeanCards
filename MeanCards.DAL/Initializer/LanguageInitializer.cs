@@ -1,33 +1,32 @@
-﻿using MeanCards.DAL.Storage;
-using MeanCards.DataModel.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using MeanCards.DAL.Interfaces.Initializer;
+using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Creation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Initializer
 {
-    public class LanguageInitializer
+    public class LanguageInitializer : ILanguageInitializer
     {
-        private readonly AppDbContext context;
+        private readonly ILanguagesRepository languagesRepository;
 
-        public LanguageInitializer(AppDbContext context)
+        public LanguageInitializer(ILanguagesRepository languagesRepository)
         {
-            this.context = context;
+            this.languagesRepository = languagesRepository;
         }
 
         public async Task Seed()
         {
-            if (!await context.Languages.AnyAsync())
+            if(!await languagesRepository.HasLanguages())
             {
-                context.Languages.AddRange(Languages);
-                await context.SaveChangesAsync();
+                await languagesRepository.CreateLanguages(Languages);
             }
         }
 
-        private List<Language> Languages => new List<Language>
+        private List<CreateLanguageModel> Languages => new List<CreateLanguageModel>
         {
-            new Language { Code = "PL", Name = "Polski", IsActive = true },
-            new Language { Code = "EN", Name = "English", IsActive = true },
+            new CreateLanguageModel { Code = "PL", Name = "Polski" },
+            new CreateLanguageModel { Code = "EN", Name = "English" },
         };
     }
 }
