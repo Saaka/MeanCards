@@ -20,7 +20,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task InsertAnswerCards()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
-            await PopulateAnswerCards(languageId);
+            await PopulateQuestionCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 
             var cards = await cardRepository.GetAllActiveQuestionCards();
@@ -32,7 +32,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task ReturnCardsWithoutMatureContent()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
-            await PopulateAnswerCards(languageId);
+            await PopulateQuestionCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 
             var cards = await cardRepository.GetQuestionCardsWithoutMatureContent();
@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.True(card.IsActive);
         }
 
-        private async Task PopulateAnswerCards(int languageId)
+        private async Task PopulateQuestionCards(int languageId)
         {
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
             await cardRepository.CreateQuestionCard(new Model.Creation.CreateQuestionCardModel

@@ -10,7 +10,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class GamesRepositoryShould : IDisposable
     {
         private readonly DALServiceCollectionFixture Fixture;
-        const string DefaultLanguageCode = "PL";
 
         public GamesRepositoryShould()
         {
@@ -22,6 +21,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         {
             var languageId = await Fixture.CreateDefaultLanguage();
             var userId = await Fixture.CreateDefaultUser();
+
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel
             {

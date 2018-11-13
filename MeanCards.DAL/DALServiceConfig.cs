@@ -27,15 +27,13 @@ namespace MeanCards.DAL
         {
             //Repositories
             services
-                .AddScoped<ILanguagesRepository, LanguagesRepository>();
-            services
-                .AddScoped<IQuestionCardsRepository, QuestionCardsRepository>();
-            services
-                .AddScoped<IAnswerCardsRepository, AnswerCardsRepository>();
-            services
-                .AddScoped<IUsersRepository, UsersRepository>();
-            services
-                .AddScoped<IGamesRepository, GamesRepository>();
+                .AddScoped<ILanguagesRepository, LanguagesRepository>()
+                .AddScoped<IQuestionCardsRepository, QuestionCardsRepository>()
+                .AddScoped<IAnswerCardsRepository, AnswerCardsRepository>()
+                .AddScoped<IUsersRepository, UsersRepository>()
+                .AddScoped<IGamesRepository, GamesRepository>()
+                .AddScoped<IGameRoundsRepository, GameRoundsRepository>()
+                .AddScoped<IPlayersRepository, PlayersRepository>();
 
             //Initializers
             services
