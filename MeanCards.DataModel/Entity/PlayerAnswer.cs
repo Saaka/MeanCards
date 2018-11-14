@@ -1,7 +1,10 @@
-﻿namespace MeanCards.DataModel.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MeanCards.DataModel.Entity
 {
     public class PlayerAnswer
     {
+        [Key]
         public int PlayerAnswerId { get; set; }
         public int GameRoundId { get; set; }
         public int PlayerId { get; set; }

@@ -18,8 +18,8 @@ namespace MeanCards.DAL.Migrations
                 {
                     LanguageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Code = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(maxLength: 8, nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -28,19 +28,18 @@ namespace MeanCards.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 schema: "meancards",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MappedUserId = table.Column<int>(nullable: false),
-                    DisplayName = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(maxLength: 64, nullable: false),
                     IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +50,7 @@ namespace MeanCards.DAL.Migrations
                     AnswerCardId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LanguageId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(maxLength: 256, nullable: true),
                     IsAdultContent = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false)
@@ -76,7 +75,7 @@ namespace MeanCards.DAL.Migrations
                     QuestionCardId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LanguageId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(maxLength: 256, nullable: false),
                     IsAdultContent = table.Column<bool>(nullable: false),
                     NumberOfAnswers = table.Column<byte>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
@@ -101,9 +100,10 @@ namespace MeanCards.DAL.Migrations
                 {
                     GameId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GameCode = table.Column<string>(maxLength: 32, nullable: false),
                     GameStatus = table.Column<byte>(nullable: false),
                     LanguageId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     OwnerId = table.Column<int>(nullable: false),
                     ShowAdultContent = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
@@ -120,10 +120,10 @@ namespace MeanCards.DAL.Migrations
                         principalColumn: "LanguageId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Games_User_OwnerId",
+                        name: "FK_Games_Users_OwnerId",
                         column: x => x.OwnerId,
                         principalSchema: "meancards",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -355,7 +355,7 @@ namespace MeanCards.DAL.Migrations
                 schema: "meancards");
 
             migrationBuilder.DropTable(
-                name: "User",
+                name: "Users",
                 schema: "meancards");
         }
     }

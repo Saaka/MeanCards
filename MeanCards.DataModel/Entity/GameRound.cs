@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MeanCards.DataModel.Entity
 {
     public class GameRound
     {
+        [Key]
         public int GameRoundId { get; set; }
         public int GameId { get; set; }
         public int QuestionCardId { get; set; }

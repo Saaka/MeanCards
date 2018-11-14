@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MeanCards.DataModel.Entity
 {
@@ -10,6 +11,7 @@ namespace MeanCards.DataModel.Entity
             WonRounds = new List<GameRound>();
             PlayerAnswers = new List<PlayerAnswer>();
         }
+        [Key]
         public int PlayerId { get; set; }
         public int GameId { get; set; }
         public int UserId { get; set; }

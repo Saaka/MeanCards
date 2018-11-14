@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MeanCards.DataModel.Entity
 {
     public class AnswerCard
     {
+        [Key]
         public int AnswerCardId { get; set; }
         public int LanguageId { get; set; }
+        [StringLength(256)]
         public string Text { get; set; }
         public bool IsAdultContent { get; set; }
         public bool IsActive { get; set; }

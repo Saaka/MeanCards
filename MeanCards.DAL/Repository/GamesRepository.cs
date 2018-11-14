@@ -24,6 +24,7 @@ namespace MeanCards.DAL.Repository
             var newGame = new Game
             {
                 IsActive = true,
+                GameCode = model.GameCode,
                 LanguageId = model.LanguageId,
                 Name = model.Name,
                 OwnerId = model.OwnerId,

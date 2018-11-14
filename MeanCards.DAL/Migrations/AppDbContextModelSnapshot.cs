@@ -34,7 +34,8 @@ namespace MeanCards.DAL.Migrations
 
                     b.Property<int>("LanguageId");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .HasMaxLength(256);
 
                     b.HasKey("AnswerCardId");
 
@@ -51,13 +52,19 @@ namespace MeanCards.DAL.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("GameCode")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
                     b.Property<byte>("GameStatus");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<int>("LanguageId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<int>("OwnerId");
 
@@ -109,11 +116,13 @@ namespace MeanCards.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                    b.Property<string>("Code")
+                        .HasMaxLength(8);
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(64);
 
                     b.HasKey("LanguageId");
 
@@ -186,7 +195,9 @@ namespace MeanCards.DAL.Migrations
 
                     b.Property<byte>("NumberOfAnswers");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(256);
 
                     b.HasKey("QuestionCardId");
 
@@ -201,13 +212,15 @@ namespace MeanCards.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("DisplayName");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<bool>("IsActive");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MeanCards.DataModel.Entity.AnswerCard", b =>

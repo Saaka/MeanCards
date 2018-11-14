@@ -55,6 +55,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel
             {
+                GameCode = "gamecode1",
                 LanguageId = languageId,
                 OwnerId = userId,
                 Name = "Test game",

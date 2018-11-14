@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MeanCards.DataModel.Entity
 {
@@ -10,8 +11,11 @@ namespace MeanCards.DataModel.Entity
             AnswerCards = new List<AnswerCard>();
             QuestionCards = new List<QuestionCard>();
         }
+        [Key]
         public int LanguageId { get; set; }
+        [StringLength(8)]
         public string Code { get; set; }
+        [StringLength(64)]
         public string Name { get; set; }
         public bool IsActive { get; set; }
 
