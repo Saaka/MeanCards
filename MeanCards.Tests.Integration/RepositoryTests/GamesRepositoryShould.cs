@@ -67,7 +67,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 id = await gamesRepository.CreateGame(createModel);
             });
 
-            var ex = await Assert.ThrowsAnyAsync<Exception>(createTwoGames);
+            var ex = await Assert.ThrowsAnyAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(createTwoGames);
             Assert.NotNull(ex);
         }
 

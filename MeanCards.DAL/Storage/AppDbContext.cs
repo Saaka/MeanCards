@@ -8,6 +8,9 @@ namespace MeanCards.DAL.Storage
         public const string DefaultSchema = "meancards";
         public const string DefaultMigrationsTable = "Migrations_MeanCards";
 
+        public AppDbContext()
+        {
+        }
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
