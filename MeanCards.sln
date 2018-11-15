@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.DAL.Interfaces", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Common", "MeanCards.Common\MeanCards.Common.csproj", "{DB5E2D3A-6324-4C8F-8F25-A533CE0F7DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Tests.Unit", "MeanCards.Tests.Unit\MeanCards.Tests.Unit.csproj", "{5ECF4D7B-2A96-4916-BD85-E55AF9728448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Unit", "MeanCards.Tests.Unit\MeanCards.Tests.Unit.csproj", "{5ECF4D7B-2A96-4916-BD85-E55AF9728448}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

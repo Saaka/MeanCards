@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MeanCards.DAL.Storage
 {
@@ -27,8 +24,7 @@ namespace MeanCards.DAL.Storage
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false)
                 .AddJsonFile("appsettings.Development.json", true);
-
-
+            
             var config = builder.Build();
             return config[ConfigurationProperties.DbSettings.ConnectionString].ToString();
         }

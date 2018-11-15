@@ -8,5 +8,6 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<int> CreateGame(CreateGameModel model);
         Task<Game> GetGameById(int gameId);
+        Task<Game> GetGameByCode(string code);
     }
 }

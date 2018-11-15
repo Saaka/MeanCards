@@ -44,6 +44,33 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal("Test game", game.Name);
         }
 
+        [Fact]
+        public async Task ThrowForDuplicatedCode()
+        {
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var userId = await Fixture.CreateDefaultUser();
+
+            var gamesRepository = Fixture.GetService<IGamesRepository>();
+            var createModel = new CreateGameModel
+            {
+                GameCode = "gamecode1",
+                LanguageId = languageId,
+                OwnerId = userId,
+                Name = "Test game",
+                ShowAdultContent = true
+            };
+
+
+            Func<Task> createTwoGames = () => Task.Run(async () =>
+            {
+                var id = await gamesRepository.CreateGame(createModel);
+                id = await gamesRepository.CreateGame(createModel);
+            });
+
+            var ex = await Assert.ThrowsAnyAsync<Exception>(createTwoGames);
+            Assert.NotNull(ex);
+        }
+
         public void Dispose()
         {
             Fixture.Dispose();

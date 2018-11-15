@@ -47,5 +47,14 @@ namespace MeanCards.DAL.Repository
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<Game> GetGameByCode(string code)
+        {
+            var query = from game in context.Games
+                        where game.GameCode == code
+                        select game;
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }
