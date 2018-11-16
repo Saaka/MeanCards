@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MeanCards.GameManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MeanCards
 {
@@ -6,6 +7,9 @@ namespace MeanCards
     {
         public static IServiceCollection RegisterCommon(this IServiceCollection services)
         {
+            //Handlers
+            services
+                .AddScoped<ICreateGameHandler, CreateGameHandler>();
 
             return services;
         }

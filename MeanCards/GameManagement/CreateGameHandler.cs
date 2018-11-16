@@ -2,21 +2,23 @@
 using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MeanCards.GameManager
+namespace MeanCards.GameManagement
 {
-    public class GameManager
+    public interface ICreateGameHandler
     {
-        private readonly IGamesRepository gamesRepository;
-        private readonly IGameRoundsRepository gameRoundsRepository;
-        private readonly IPlayersRepository playersRepository;
+        Task<CreateGameResult> Handle(CreateGame command);
+    }
+
+    public class CreateGameHandler : ICreateGameHandler
+    {
+        protected readonly IGamesRepository gamesRepository;
+        protected readonly IGameRoundsRepository gameRoundsRepository;
+        protected readonly IPlayersRepository playersRepository;
         private readonly ICodeGenerator codeGenerator;
 
-        public GameManager(IGamesRepository gamesRepository,
+        public CreateGameHandler(IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
             ICodeGenerator codeGenerator)
@@ -27,7 +29,7 @@ namespace MeanCards.GameManager
             this.codeGenerator = codeGenerator;
         }
 
-        public async Task<CreateGameResult> CreateGame(CreateGame command)
+        public async Task<CreateGameResult> Handle(CreateGame command)
         {
             var gameCode = codeGenerator.Generate();
 
