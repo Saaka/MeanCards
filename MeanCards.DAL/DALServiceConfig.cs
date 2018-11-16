@@ -34,7 +34,8 @@ namespace MeanCards.DAL
                 .AddScoped<IGamesRepository, GamesRepository>()
                 .AddScoped<IGameRoundsRepository, GameRoundsRepository>()
                 .AddScoped<IPlayerAnswersRepository, PlayerAnswersRepository>()
-                .AddScoped<IPlayersRepository, PlayersRepository>();
+                .AddScoped<IPlayersRepository, PlayersRepository>()
+                .AddScoped<IPlayerCardsRepository, PlayerCardsRepository>();
 
             //Initializers
             services

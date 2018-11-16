@@ -7,20 +7,20 @@ using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class QuestionCardRepositoryShould : IDisposable
+    public class AnswerCardRepositoryShould : IDisposable
     {
         private readonly DALServiceCollectionFixture Fixture;
 
-        public QuestionCardRepositoryShould()
+        public AnswerCardRepositoryShould()
         {
             Fixture = new DALServiceCollectionFixture();
         }
 
         [Fact]
-        public async Task InsertQuestionCards()
+        public async Task InsertAnswerCardsCards()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
-            await PopulateQuestionCards(languageId);
+            await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 
             var cards = await cardRepository.GetAllActiveAnswerCards();
@@ -32,7 +32,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task ReturnCardsWithoutMatureContent()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
-            await PopulateQuestionCards(languageId);
+            await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 
             var cards = await cardRepository.GetAnswerCardsWithoutMatureContent();
@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.True(card.IsActive);
         }
 
-        private async Task PopulateQuestionCards(int languageId)
+        private async Task PopulateAnswerCards(int languageId)
         {
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
             await cardRepository.CreateAnswerCard(new Model.Creation.CreateAnswerCardModel

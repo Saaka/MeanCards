@@ -6,6 +6,11 @@ namespace MeanCards.DataModel.Entity
 {
     public class GameRound
     {
+        public GameRound()
+        {
+            PlayerAnswers = new List<PlayerAnswer>();
+        }
+
         [Key]
         public int GameRoundId { get; set; }
         public int GameId { get; set; }

@@ -5,6 +5,11 @@ namespace MeanCards.DataModel.Entity
 {
     public class User
     {
+        public User()
+        {
+            Games = new List<Game>();
+        }
+
         [Key]
         public int UserId { get; set; }
         [StringLength(64)]

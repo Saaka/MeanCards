@@ -6,6 +6,13 @@ namespace MeanCards.DataModel.Entity
 {
     public class AnswerCard
     {
+        public AnswerCard()
+        {
+            PlayerAnswers = new List<PlayerAnswer>();
+            PlayerCards = new List<PlayerCard>();
+            SecondaryPlayerAnswers = new List<PlayerAnswer>();
+        }
+
         [Key]
         public int AnswerCardId { get; set; }
         public int LanguageId { get; set; }
@@ -17,6 +24,7 @@ namespace MeanCards.DataModel.Entity
 
         public Language Language { get; set; }
         public List<PlayerAnswer>  PlayerAnswers { get; set; }
+        public List<PlayerCard>  PlayerCards { get; set; }
         public List<PlayerAnswer>  SecondaryPlayerAnswers { get; set; }
     }
 }

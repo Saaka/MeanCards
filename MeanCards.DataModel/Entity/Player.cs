@@ -10,6 +10,7 @@ namespace MeanCards.DataModel.Entity
             OwnedGameRounds = new List<GameRound>();
             WonRounds = new List<GameRound>();
             PlayerAnswers = new List<PlayerAnswer>();
+            PlayerCards = new List<PlayerCard>();
         }
         [Key]
         public int PlayerId { get; set; }
@@ -22,5 +23,6 @@ namespace MeanCards.DataModel.Entity
         public List<GameRound> OwnedGameRounds { get; set; }
         public List<GameRound> WonRounds { get; set; }
         public List<PlayerAnswer> PlayerAnswers { get; set; }
+        public List<PlayerCard> PlayerCards { get; set; }
     }
 }

@@ -7,17 +7,17 @@ using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class AnswerCardRepositoryShould : IDisposable
+    public class QuestionCardRepositoryShould : IDisposable
     {
         private readonly DALServiceCollectionFixture Fixture;
 
-        public AnswerCardRepositoryShould()
+        public QuestionCardRepositoryShould()
         {
             Fixture = new DALServiceCollectionFixture();
         }
 
         [Fact]
-        public async Task InsertAnswerCards()
+        public async Task InsertQuestionCards()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
             await PopulateQuestionCards(languageId);
