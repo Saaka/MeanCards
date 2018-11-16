@@ -8,9 +8,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class AnswerCardRepositoryShould : BaseRepositoryTests
     {
         [Fact]
-        public async Task InsertAnswerCardsCards()
+        public async Task CreateAnswerCards()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
+            var languageId = await CreateDefaultLanguage();
             await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 
@@ -22,7 +22,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task ReturnCardsWithoutMatureContent()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
+            var languageId = await CreateDefaultLanguage();
             await PopulateAnswerCards(languageId);
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
 

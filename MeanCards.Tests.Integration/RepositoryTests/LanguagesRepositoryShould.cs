@@ -8,7 +8,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class LanguagesRepositoryShould : BaseRepositoryTests
     {
         [Fact]
-        public async Task StoreDataInDatabase()
+        public async Task CreateLanguage()
         {
             var repository = Fixture.GetService<ILanguagesRepository>();
 

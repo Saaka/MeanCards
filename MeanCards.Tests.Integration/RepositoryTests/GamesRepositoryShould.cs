@@ -11,8 +11,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task CreateGame()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
-            var userId = await Fixture.CreateDefaultUser();
+            var languageId = await CreateDefaultLanguage();
+            var userId = await CreateDefaultUser();
 
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel
@@ -39,8 +39,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task ThrowForDuplicatedCode()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
-            var userId = await Fixture.CreateDefaultUser();
+            var languageId = await CreateDefaultLanguage();
+            var userId = await CreateDefaultUser();
 
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel

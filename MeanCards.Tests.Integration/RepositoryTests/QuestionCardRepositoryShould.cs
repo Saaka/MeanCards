@@ -1,6 +1,4 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Tests.Integration.Config;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,9 +8,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class QuestionCardRepositoryShould : BaseRepositoryTests
     {
         [Fact]
-        public async Task InsertQuestionCards()
+        public async Task CreateQuestionCards()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
+            var languageId = await CreateDefaultLanguage();
             await PopulateQuestionCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 
@@ -24,7 +22,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task ReturnCardsWithoutMatureContent()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
+            var languageId = await CreateDefaultLanguage();
             await PopulateQuestionCards(languageId);
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
 

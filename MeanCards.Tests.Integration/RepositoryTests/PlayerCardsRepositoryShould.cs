@@ -11,10 +11,10 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task CreatePlayerCards()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
-            var userId = await Fixture.CreateDefaultUser();
-            var gameId = await CreateGame(languageId, userId);
-            var playerId = await CreatePlayer(gameId, userId);
+            var languageId = await CreateDefaultLanguage();
+            var userId = await CreateDefaultUser();
+            var gameId = await CreateDefaultGame(languageId, userId);
+            var playerId = await CreateDefaultPlayer(gameId, userId);
             var answerCardId = await PopulateAnswerCards(languageId);
 
             var cardModels = new List<CreatePlayerCardModel>
@@ -46,35 +46,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             });
 
             return answerCardId;
-        }
-
-        private async Task<int> CreatePlayer(int gameId, int userId)
-        {
-            var playersRepository = Fixture.GetService<IPlayersRepository>();
-            var createPlayer = new CreatePlayerModel
-            {
-                GameId = gameId,
-                UserId = userId
-            };
-
-            var playerId = await playersRepository.CreatePlayer(createPlayer);
-            return playerId;
-        }
-
-        private async Task<int> CreateGame(int languageId, int userId)
-        {
-            var gamesRepository = Fixture.GetService<IGamesRepository>();
-            var createModel = new CreateGameModel
-            {
-                GameCode = "gamecode1",
-                LanguageId = languageId,
-                OwnerId = userId,
-                Name = "Test game",
-                ShowAdultContent = true
-            };
-
-            var gameId = await gamesRepository.CreateGame(createModel);
-            return gameId;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
     public class UserRepositoryShould : BaseRepositoryTests
     {
         [Fact]
-        public async Task CreateUserForValidData()
+        public async Task CreateUser()
         {
             var userRepository = Fixture.GetService<IUsersRepository>();
             var createModel = new Model.Creation.CreateUserModel { DisplayName = "TestName" };

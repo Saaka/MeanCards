@@ -10,9 +10,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task CreatePlayer()
         {
-            var languageId = await Fixture.CreateDefaultLanguage();
-            var userId = await Fixture.CreateDefaultUser();
-            var gameId = await CreateGame(languageId, userId);
+            var languageId = await CreateDefaultLanguage();
+            var userId = await CreateDefaultUser();
+            var gameId = await CreateDefaultGame(languageId, userId);
 
             var playersRepository = Fixture.GetService<IPlayersRepository>();
             var createPlayer = new CreatePlayerModel
@@ -30,22 +30,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(gameId, player.GameId);
             Assert.Equal(0, player.Points);
             Assert.True(player.IsActive);
-        }
-
-        private async Task<int> CreateGame(int languageId, int userId)
-        {
-            var gamesRepository = Fixture.GetService<IGamesRepository>();
-            var createModel = new CreateGameModel
-            {
-                GameCode = "gamecode1",
-                LanguageId = languageId,
-                OwnerId = userId,
-                Name = "Test game",
-                ShowAdultContent = true
-            };
-
-            var gameId = await gamesRepository.CreateGame(createModel);
-            return gameId;
         }
     }
 }
