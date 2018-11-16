@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MeanCards.Commands\MeanCards.Commands.csproj" />
+    <ProjectReference Include="..\MeanCards.Common\MeanCards.Common.csproj" />
+    <ProjectReference Include="..\MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

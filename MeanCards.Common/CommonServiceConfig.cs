@@ -10,7 +10,7 @@ namespace MeanCards.Common
         {
             services
                 .AddTransient<GuidEncoder>()
-                .AddTransient<IRandomCodeGenerator, GuidRandomCodeGenerator>();
+                .AddTransient<ICodeGenerator, GuidRandomCodeGenerator>();
                 
             return services;
         }

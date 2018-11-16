@@ -3,7 +3,7 @@ using System;
 
 namespace MeanCards.Common.RandomCodeProvider
 {
-    public class GuidRandomCodeGenerator : IRandomCodeGenerator
+    public class GuidRandomCodeGenerator : ICodeGenerator
     {
         private readonly GuidEncoder guidEncoder;
 

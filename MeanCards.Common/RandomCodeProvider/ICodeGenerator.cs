@@ -1,6 +1,6 @@
 ﻿namespace MeanCards.Common.RandomCodeProvider
 {
-    public interface IRandomCodeGenerator
+    public interface ICodeGenerator
     {
         string Generate();
     }

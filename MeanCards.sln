@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Common", "MeanCar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Unit", "MeanCards.Tests.Unit\MeanCards.Tests.Unit.csproj", "{5ECF4D7B-2A96-4916-BD85-E55AF9728448}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Commands", "MeanCards.Commands\MeanCards.Commands.csproj", "{8178DE60-4EB6-45FA-B8FF-C30EF073D11B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{5ECF4D7B-2A96-4916-BD85-E55AF9728448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECF4D7B-2A96-4916-BD85-E55AF9728448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECF4D7B-2A96-4916-BD85-E55AF9728448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8178DE60-4EB6-45FA-B8FF-C30EF073D11B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8178DE60-4EB6-45FA-B8FF-C30EF073D11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8178DE60-4EB6-45FA-B8FF-C30EF073D11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8178DE60-4EB6-45FA-B8FF-C30EF073D11B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
