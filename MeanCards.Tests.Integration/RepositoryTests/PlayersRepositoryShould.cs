@@ -1,21 +1,12 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
-using MeanCards.Tests.Integration.Config;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class PlayersRepositoryShould : IDisposable
+    public class PlayersRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public PlayersRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task CreatePlayer()
         {
@@ -55,11 +46,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
 
             var gameId = await gamesRepository.CreateGame(createModel);
             return gameId;
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

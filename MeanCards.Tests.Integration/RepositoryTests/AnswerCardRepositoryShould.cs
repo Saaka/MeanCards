@@ -1,21 +1,12 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Tests.Integration.Config;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class AnswerCardRepositoryShould : IDisposable
+    public class AnswerCardRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public AnswerCardRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task InsertAnswerCardsCards()
         {
@@ -59,11 +50,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 LanguageId = languageId,
                 Text = "Test2"
             });
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

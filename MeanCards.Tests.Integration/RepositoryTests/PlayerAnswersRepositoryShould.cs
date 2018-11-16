@@ -1,22 +1,13 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
-using MeanCards.Tests.Integration.Config;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class PlayerAnswersRepositoryShould : IDisposable
+    public class PlayerAnswersRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public PlayerAnswersRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task CreatePlayerAnswer()
         {
@@ -113,11 +104,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             };
 
             return await repository.CreateGameRound(createRound);
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

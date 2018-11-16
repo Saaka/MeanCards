@@ -7,15 +7,8 @@ using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class QuestionCardRepositoryShould : IDisposable
+    public class QuestionCardRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public QuestionCardRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task InsertQuestionCards()
         {
@@ -61,11 +54,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 NumberOfAnswers = 1,
                 Text = "Test2"
             });
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

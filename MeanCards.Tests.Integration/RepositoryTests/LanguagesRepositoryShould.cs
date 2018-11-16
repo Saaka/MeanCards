@@ -1,21 +1,12 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Tests.Integration.Config;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class LanguagesRepositoryShould : IDisposable
+    public class LanguagesRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public LanguagesRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task StoreDataInDatabase()
         {
@@ -31,11 +22,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal("Polski", language.Name);
             Assert.True(language.IsActive);
             Assert.NotEqual(0, language.LanguageId);
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

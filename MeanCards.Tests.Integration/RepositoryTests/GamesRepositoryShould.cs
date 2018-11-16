@@ -1,21 +1,13 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
-using MeanCards.Tests.Integration.Config;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class GamesRepositoryShould : IDisposable
+    public class GamesRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public GamesRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task CreateGame()
         {
@@ -69,11 +61,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
 
             var ex = await Assert.ThrowsAnyAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(createTwoGames);
             Assert.NotNull(ex);
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }

@@ -1,23 +1,12 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
-using MeanCards.Tests.Integration.Config;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MeanCards.Tests.Integration.RepositoryTests
 {
-    public class GameRoundsRepositoryShould : IDisposable
+    public class GameRoundsRepositoryShould : BaseRepositoryTests
     {
-        private readonly DALServiceCollectionFixture Fixture;
-
-        public GameRoundsRepositoryShould()
-        {
-            Fixture = new DALServiceCollectionFixture();
-        }
-
         [Fact]
         public async Task CreateGameRound()
         {
@@ -83,11 +72,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 Text = "Test",
                 IsAdultContent = false
             });
-        }
-
-        public void Dispose()
-        {
-            Fixture.Dispose();
         }
     }
 }
