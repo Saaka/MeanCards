@@ -11,7 +11,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task CreateUser()
         {
             var userRepository = Fixture.GetService<IUsersRepository>();
-            var createModel = new Model.Creation.CreateUserModel { DisplayName = "TestName" };
+            var createModel = new Model.Creation.Users.CreateUserModel { DisplayName = "TestName" };
 
             await userRepository.CreateUser(createModel);
 

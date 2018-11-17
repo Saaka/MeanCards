@@ -1,11 +1,12 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
-using MeanCards.Model.Creation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MeanCards.Model.Creation.Users;
+using System.Transactions;
 
 namespace MeanCards.DAL.Repository
 {
@@ -23,13 +24,19 @@ namespace MeanCards.DAL.Repository
             var newUser = new User
             {
                 DisplayName = model.DisplayName,
+                Email = model.Email,
+                ImageUrl = model.ImageUrl,
                 IsActive = true
             };
-
             context.Users.Add(newUser);
             await context.SaveChangesAsync();
 
             return newUser.UserId;
+        }
+
+        public Task<int> CreateUser(CreateGoogleUserModel model)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<List<User>> GetAllActiveUsers()

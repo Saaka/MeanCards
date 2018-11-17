@@ -24,6 +24,8 @@ namespace MeanCards.DAL.Storage
         public DbSet<QuestionCard> QuestionCards { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserAuth> UserAuths { get; set; }
+        public DbSet<UserGoogleAuth> UserGoogleAuths { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +49,14 @@ namespace MeanCards.DAL.Storage
                     .WithOne(x => x.Owner)
                     .HasForeignKey(x => x.OwnerId)
                     .OnDelete(DeleteBehavior.Restrict);
+                b.HasMany(x => x.UserAuths)
+                    .WithOne(x => x.User)
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                b.HasMany(x => x.UserGoogleAuths)
+                    .WithOne(x => x.User)
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
             builder.Entity<Game>(b =>
             {

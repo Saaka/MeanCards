@@ -1,5 +1,6 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Creation;
+using MeanCards.Model.Creation.Users;
 using MeanCards.Tests.Integration.Config;
 using System;
 using System.Threading.Tasks;
@@ -21,13 +22,13 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         protected async Task<int> CreateDefaultUser()
         {
             var usersRepository = Fixture.GetService<IUsersRepository>();
-            return await usersRepository.CreateUser(new Model.Creation.CreateUserModel { DisplayName = DefaultUserName });
+            return await usersRepository.CreateUser(new CreateUserModel { DisplayName = DefaultUserName });
         }
 
         protected async Task<int> CreateDefaultLanguage()
         {
             var languageRepository = Fixture.GetService<ILanguagesRepository>();
-            return await languageRepository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = DefaultLanguageCode, Name = DefaultLanguageName });
+            return await languageRepository.CreateLanguage(new CreateLanguageModel { Code = DefaultLanguageCode, Name = DefaultLanguageName });
         }
 
         protected async Task<int> CreateDefaultPlayer(int gameId, int userId)
