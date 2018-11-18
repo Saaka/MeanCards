@@ -5,6 +5,8 @@ namespace MeanCards.Common.ProfileImageUrlProvider
     public class GravatarImageUrlProvider : IProfileImageUrlProvider
     {
         private const string ServiceAddress = "https://www.gravatar.com/avatar/";
+        private const string SizeParam = "?s=96";
+
         private readonly HashGenerator hashGenerator;
 
         public GravatarImageUrlProvider(HashGenerator hashGenerator)
@@ -18,7 +20,7 @@ namespace MeanCards.Common.ProfileImageUrlProvider
             if (string.IsNullOrWhiteSpace(emailHash))
                 return null;
 
-            return $"{ServiceAddress}{emailHash}";
+            return $"{ServiceAddress}{emailHash}{SizeParam}";
         }
     }
 }

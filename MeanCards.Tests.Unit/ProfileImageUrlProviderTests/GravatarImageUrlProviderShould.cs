@@ -16,7 +16,7 @@ namespace MeanCards.Tests.Unit.ProfileImageUrlProviderTests
 
             Assert.NotNull(imageUrl);
             Assert.NotEmpty(imageUrl);
-            Assert.Equal("https://www.gravatar.com/avatar/7bd021685b66a1edc08a268bafd22bb8", imageUrl);
+            Assert.Equal("https://www.gravatar.com/avatar/7bd021685b66a1edc08a268bafd22bb8?s=96", imageUrl);
         }
         
         [Theory]
