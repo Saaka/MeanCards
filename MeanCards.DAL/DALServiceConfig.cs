@@ -39,7 +39,8 @@ namespace MeanCards.DAL
 
             //Initializers
             services
-                .AddTransient<ILanguageInitializer, LanguageInitializer>();
+                .AddTransient<ILanguageInitializer, LanguageInitializer>()
+                .AddTransient<IDbInitializer, DbInitializer>();
 
             return services;
         }
