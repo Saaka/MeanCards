@@ -17,7 +17,7 @@ namespace MeanCards.DAL.Initializer
             this.languageInitializer = languageInitializer;
         }
 
-        public async Task Initialize()
+        public async Task Execute()
         {
             await context.Database.MigrateAsync();
             await context.SaveChangesAsync();

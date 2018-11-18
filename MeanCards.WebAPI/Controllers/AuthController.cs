@@ -15,5 +15,12 @@ namespace MeanCards.WebAPI.Controllers
         {
             return Ok(model);
         }
+
+        [AllowAnonymous]
+        [HttpPost("google")]
+        public IActionResult AuthorizeGoogle([FromBody]AuthorizeGoogleTokenViewModel model)
+        {
+            return Ok(model);
+        }
     }
 }

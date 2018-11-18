@@ -4,6 +4,6 @@ namespace MeanCards.DAL.Interfaces.Initializer
 {
     public interface IDbInitializer
     {
-        Task Initialize();
+        Task Execute();
     }
 }
