@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.Model.Creation.Users;
-using System.Transactions;
+using System;
 
 namespace MeanCards.DAL.Repository
 {
@@ -21,6 +21,40 @@ namespace MeanCards.DAL.Repository
 
         public async Task<int> CreateUser(CreateUserModel model)
         {
+            var newUser = AddUserToContext(model);
+            var auth = new UserAuth
+            {
+                Password = model.Password,
+                DisplayName = model.DisplayName,
+                ImageUrl = model.ImageUrl,
+                CreateDate = DateTime.UtcNow
+            };
+            newUser.UserAuths.Add(auth);
+
+            await context.SaveChangesAsync();
+
+            return newUser.UserId;
+        }
+
+        public async Task<int> CreateUser(CreateGoogleUserModel model)
+        {
+            var newUser = AddUserToContext(model);
+            var auth = new UserGoogleAuth
+            {
+                GoogleId = model.GoogleId,
+                DisplayName = model.DisplayName,
+                ImageUrl = model.ImageUrl,
+                CreateDate = DateTime.UtcNow
+            };
+            newUser.UserGoogleAuths.Add(auth);
+
+            await context.SaveChangesAsync();
+
+            return newUser.UserId;
+        }
+
+        private User AddUserToContext(CreateUserModelBase model)
+        {
             var newUser = new User
             {
                 DisplayName = model.DisplayName,
@@ -29,14 +63,27 @@ namespace MeanCards.DAL.Repository
                 IsActive = true
             };
             context.Users.Add(newUser);
-            await context.SaveChangesAsync();
 
-            return newUser.UserId;
+            return newUser;
         }
 
-        public Task<int> CreateUser(CreateGoogleUserModel model)
+        public async Task<UserGoogleAuth> GetGoogleUser(string googleId)
         {
-            throw new System.NotImplementedException();
+            var query = from user in context.UserGoogleAuths
+                        where user.GoogleId == googleId
+                        select user;
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<UserAuth> GetUserAuth(string email)
+        {
+            var query = from ua in context.UserAuths
+                        join u in context.Users on ua.UserId equals u.UserId
+                        where u.Email == email
+                        select ua;
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<List<User>> GetAllActiveUsers()

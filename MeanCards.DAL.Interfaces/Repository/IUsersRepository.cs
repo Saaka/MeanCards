@@ -9,6 +9,8 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<int> CreateUser(CreateUserModel model);
         Task<int> CreateUser(CreateGoogleUserModel model);
+        Task<UserGoogleAuth> GetGoogleUser(string googleId);
+        Task<UserAuth> GetUserAuth(string email);
         Task<List<User>> GetAllActiveUsers();
     }
 }

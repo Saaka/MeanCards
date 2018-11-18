@@ -22,7 +22,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         protected async Task<int> CreateDefaultUser()
         {
             var usersRepository = Fixture.GetService<IUsersRepository>();
-            return await usersRepository.CreateUser(new CreateUserModel { DisplayName = DefaultUserName });
+            return await usersRepository.CreateUser(new CreateUserModel { DisplayName = DefaultUserName, Password = "TestPassword" });
         }
 
         protected async Task<int> CreateDefaultLanguage()
