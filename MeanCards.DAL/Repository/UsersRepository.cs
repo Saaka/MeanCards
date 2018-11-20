@@ -4,6 +4,8 @@ using MeanCards.DataModel.Entity;
 using System.Threading.Tasks;
 using MeanCards.Model.Creation.Users;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Linq;
 
 namespace MeanCards.DAL.Repository
 {
@@ -29,6 +31,8 @@ namespace MeanCards.DAL.Repository
                 ImageUrl = model.ImageUrl,
             };
             var result = await userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
 
             return user.Id;
         }

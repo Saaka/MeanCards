@@ -54,7 +54,14 @@ namespace MeanCards.DAL
         public static IServiceCollection RegisterIdentityStore(this IServiceCollection services)
         {
             services
-                .AddIdentity<User, IdentityUserRole<int>>()
+                .AddIdentity<User, IdentityUserRole<int>>(opt =>
+                {
+                    opt.User.RequireUniqueEmail = true;
+                    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    opt.Password.RequireDigit = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireNonAlphanumeric = false;
+                })
                 .AddUserStore<UserStore<User, IdentityRole<int>, AppDbContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
                 ;
 
