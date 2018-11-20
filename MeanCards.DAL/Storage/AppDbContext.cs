@@ -1,9 +1,12 @@
 ﻿using MeanCards.DataModel.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeanCards.DAL.Storage
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext
+        : IdentityDbContext<User, IdentityRole<int>, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public const string DefaultSchema = "meancards";
         public const string DefaultMigrationsTable = "Migrations_MeanCards";
@@ -23,9 +26,6 @@ namespace MeanCards.DAL.Storage
         public DbSet<AnswerCard> AnswerCards { get; set; }
         public DbSet<QuestionCard> QuestionCards { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserAuth> UserAuths { get; set; }
-        public DbSet<UserGoogleAuth> UserGoogleAuths { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,25 +42,13 @@ namespace MeanCards.DAL.Storage
 
         private void InitTables(ModelBuilder builder)
         {
-            builder.Entity<User>(b =>
-            {
-                b.HasKey(x => x.UserId);
-                b.HasMany(x => x.Games)
-                    .WithOne(x => x.Owner)
-                    .HasForeignKey(x => x.OwnerId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                b.HasMany(x => x.UserAuths)
-                    .WithOne(x => x.User)
-                    .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                b.HasMany(x => x.UserGoogleAuths)
-                    .WithOne(x => x.User)
-                    .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
             builder.Entity<Game>(b =>
             {
                 b.HasKey(x => x.GameId);
+                b.HasOne(x => x.Owner)
+                    .WithMany(x => x.Games)
+                    .HasForeignKey(x => x.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasMany(x => x.GameRounds)
                     .WithOne(x => x.Game)
                     .HasForeignKey(x => x.GameId)
@@ -68,10 +56,6 @@ namespace MeanCards.DAL.Storage
                 b.HasOne(x => x.Language)
                     .WithMany(x => x.Games)
                     .HasForeignKey(x => x.LanguageId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                b.HasOne(x => x.Owner)
-                    .WithMany(x => x.Games)
-                    .HasForeignKey(x => x.OwnerId)
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasIndex(x => x.GameCode)
                     .IsUnique();

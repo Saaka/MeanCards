@@ -22,6 +22,7 @@ namespace MeanCards.DataModel.Entity
         [StringLength(128)]
         [Required]
         public string Name { get; set; }
+        [Required]
         public int OwnerId { get; set; }
         public bool ShowAdultContent { get; set; }
         public bool IsActive { get; set; }

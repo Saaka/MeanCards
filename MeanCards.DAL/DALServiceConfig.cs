@@ -4,6 +4,9 @@ using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Repository;
 using MeanCards.DAL.Storage;
+using MeanCards.DataModel.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +20,10 @@ namespace MeanCards.DAL
             services.AddDbContext<AppDbContext>((opt) =>
             opt.UseSqlServer(
                 GetConnectionString(configuration),
-                cb => cb.MigrationsHistoryTable(AppDbContext.DefaultMigrationsTable)),
+                cb =>
+                {
+                    cb.MigrationsHistoryTable(AppDbContext.DefaultMigrationsTable);
+                }),
             ServiceLifetime.Scoped);
 
             return services;
@@ -41,6 +47,16 @@ namespace MeanCards.DAL
             services
                 .AddTransient<ILanguageInitializer, LanguageInitializer>()
                 .AddTransient<IDbInitializer, DbInitializer>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterIdentityStore(this IServiceCollection services)
+        {
+            services
+                .AddIdentity<User, IdentityUserRole<int>>()
+                .AddUserStore<UserStore<User, IdentityRole<int>, AppDbContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
+                ;
 
             return services;
         }

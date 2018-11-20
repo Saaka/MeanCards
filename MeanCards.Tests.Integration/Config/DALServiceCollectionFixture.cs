@@ -13,7 +13,9 @@ namespace MeanCards.Tests.Integration.Config
             _connection = CreateConnection();
             return serviceCollection
                 .RegisterSQLiteInmemoryContext(_connection)
-                .RegisterDAL();
+                .RegisterDAL()
+                .RegisterIdentityStore()
+                ;
         }
 
         protected virtual SqliteConnection CreateConnection()

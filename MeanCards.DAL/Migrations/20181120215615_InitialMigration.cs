@@ -12,6 +12,49 @@ namespace MeanCards.DAL.Migrations
                 name: "meancards");
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                schema: "meancards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                schema: "meancards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Languages",
                 schema: "meancards",
                 columns: table => new
@@ -28,18 +71,120 @@ namespace MeanCards.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "AspNetRoleClaims",
                 schema: "meancards",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DisplayName = table.Column<string>(maxLength: 64, nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                schema: "meancards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                schema: "meancards",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                schema: "meancards",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                schema: "meancards",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "meancards",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,32 +205,6 @@ namespace MeanCards.DAL.Migrations
                     table.PrimaryKey("PK_AnswerCards", x => x.AnswerCardId);
                     table.ForeignKey(
                         name: "FK_AnswerCards_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalSchema: "meancards",
-                        principalTable: "Languages",
-                        principalColumn: "LanguageId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "QuestionCards",
-                schema: "meancards",
-                columns: table => new
-                {
-                    QuestionCardId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LanguageId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(maxLength: 256, nullable: false),
-                    IsAdultContent = table.Column<bool>(nullable: false),
-                    NumberOfAnswers = table.Column<byte>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuestionCards", x => x.QuestionCardId);
-                    table.ForeignKey(
-                        name: "FK_QuestionCards_Languages_LanguageId",
                         column: x => x.LanguageId,
                         principalSchema: "meancards",
                         principalTable: "Languages",
@@ -120,11 +239,37 @@ namespace MeanCards.DAL.Migrations
                         principalColumn: "LanguageId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Games_Users_OwnerId",
+                        name: "FK_Games_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
                         principalSchema: "meancards",
-                        principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuestionCards",
+                schema: "meancards",
+                columns: table => new
+                {
+                    QuestionCardId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LanguageId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(maxLength: 256, nullable: false),
+                    IsAdultContent = table.Column<bool>(nullable: false),
+                    NumberOfAnswers = table.Column<byte>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuestionCards", x => x.QuestionCardId);
+                    table.ForeignKey(
+                        name: "FK_QuestionCards_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalSchema: "meancards",
+                        principalTable: "Languages",
+                        principalColumn: "LanguageId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -200,6 +345,36 @@ namespace MeanCards.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlayersCards",
+                schema: "meancards",
+                columns: table => new
+                {
+                    PlayerCardId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PlayerId = table.Column<int>(nullable: false),
+                    AnswerCardId = table.Column<int>(nullable: false),
+                    IsUsed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayersCards", x => x.PlayerCardId);
+                    table.ForeignKey(
+                        name: "FK_PlayersCards_AnswerCards_AnswerCardId",
+                        column: x => x.AnswerCardId,
+                        principalSchema: "meancards",
+                        principalTable: "AnswerCards",
+                        principalColumn: "AnswerCardId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PlayersCards_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalSchema: "meancards",
+                        principalTable: "Players",
+                        principalColumn: "PlayerId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PlayerAnswers",
                 schema: "meancards",
                 columns: table => new
@@ -252,6 +427,52 @@ namespace MeanCards.DAL.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                schema: "meancards",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                schema: "meancards",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                schema: "meancards",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                schema: "meancards",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                schema: "meancards",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                schema: "meancards",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                schema: "meancards",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GameRounds_GameId",
                 schema: "meancards",
                 table: "GameRounds",
@@ -274,6 +495,13 @@ namespace MeanCards.DAL.Migrations
                 schema: "meancards",
                 table: "GameRounds",
                 column: "RoundWinnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_GameCode",
+                schema: "meancards",
+                table: "Games",
+                column: "GameCode",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_LanguageId",
@@ -318,6 +546,18 @@ namespace MeanCards.DAL.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayersCards_AnswerCardId",
+                schema: "meancards",
+                table: "PlayersCards",
+                column: "AnswerCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayersCards_PlayerId",
+                schema: "meancards",
+                table: "PlayersCards",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuestionCards_LanguageId",
                 schema: "meancards",
                 table: "QuestionCards",
@@ -327,15 +567,43 @@ namespace MeanCards.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
                 name: "PlayerAnswers",
                 schema: "meancards");
 
             migrationBuilder.DropTable(
-                name: "AnswerCards",
+                name: "PlayersCards",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles",
                 schema: "meancards");
 
             migrationBuilder.DropTable(
                 name: "GameRounds",
+                schema: "meancards");
+
+            migrationBuilder.DropTable(
+                name: "AnswerCards",
                 schema: "meancards");
 
             migrationBuilder.DropTable(
@@ -355,7 +623,7 @@ namespace MeanCards.DAL.Migrations
                 schema: "meancards");
 
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "AspNetUsers",
                 schema: "meancards");
         }
     }

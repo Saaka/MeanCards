@@ -2,24 +2,24 @@
 
 namespace MeanCards.DAL.Migrations
 {
-    public partial class Create_GameCodeIndex : Migration
+    public partial class AddUserCodeColumn : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
-                name: "IX_Games_GameCode",
+            migrationBuilder.AddColumn<string>(
+                name: "UserCode",
                 schema: "meancards",
-                table: "Games",
-                column: "GameCode",
-                unique: true);
+                table: "AspNetUsers",
+                maxLength: 64,
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Games_GameCode",
+            migrationBuilder.DropColumn(
+                name: "UserCode",
                 schema: "meancards",
-                table: "Games");
+                table: "AspNetUsers");
         }
     }
 }
