@@ -11,5 +11,9 @@
             public const string ClientId = "Google:ClientId";
             public const string ClientKey = "Google:ClientKey";
         }
+        public class Auth
+        {
+            public const string Secret = "Auth:Secret";
+        }
     }
 }

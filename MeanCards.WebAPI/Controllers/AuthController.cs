@@ -11,14 +11,14 @@ namespace MeanCards.WebAPI.Controllers
     {
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Authenticate([FromBody]RegisterUserViewModel model)
+        public IActionResult Authenticate([FromBody]RegisterUserRequest model)
         {
             return Ok(model);
         }
 
         [AllowAnonymous]
         [HttpPost("google")]
-        public IActionResult AuthorizeGoogle([FromBody]AuthorizeGoogleTokenViewModel model)
+        public IActionResult AuthenticateGoogle([FromBody]AuthenticateUserWithGoogleRequest model)
         {
             return Ok(model);
         }

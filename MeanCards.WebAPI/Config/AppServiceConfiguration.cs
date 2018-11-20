@@ -6,7 +6,7 @@ using MeanCards.DAL;
 
 namespace MeanCards.WebAPI.Config
 {
-    public static class AppModuleRegistration
+    public static class AppServiceConfiguration
     {
         public static IServiceCollection RegisterModules(this IServiceCollection services, IConfiguration configuration)
         {

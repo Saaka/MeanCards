@@ -21,8 +21,11 @@ namespace MeanCards.WebAPI
         {
             services
                 .RegisterModules(Configuration)
+                .AddCors()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddJwtTokenBearerAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,8 +37,13 @@ namespace MeanCards.WebAPI
             }
 
             app
-                .UseAuthentication()
+                .UseCors(x => x
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials())
                 .UseMiddleware<ExceptionHandlingMiddleware>()
+                .UseAuthentication()
                 .UseMvc();
         }
     }
