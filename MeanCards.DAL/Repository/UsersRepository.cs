@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MeanCards.Model.Creation.Users;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 
 namespace MeanCards.DAL.Repository
 {
@@ -35,6 +34,20 @@ namespace MeanCards.DAL.Repository
                 throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
 
             return user.Id;
+        }
+
+        public async Task<bool> UserExists(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            return user != null;
+        }
+
+        public async Task<bool> UserNameExists(string name)
+        {
+            var user = await userManager.FindByNameAsync(name);
+
+            return user != null;
         }
     }
 }

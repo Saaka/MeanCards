@@ -16,7 +16,7 @@ namespace MeanCards.GameManagement
         protected readonly IGamesRepository gamesRepository;
         protected readonly IGameRoundsRepository gameRoundsRepository;
         protected readonly IPlayersRepository playersRepository;
-        private readonly ICodeGenerator codeGenerator;
+        protected readonly ICodeGenerator codeGenerator;
 
         public CreateGameHandler(IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,

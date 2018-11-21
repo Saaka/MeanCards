@@ -1,4 +1,4 @@
-﻿namespace MeanCards.ViewModel.Creation.Auth
+﻿namespace MeanCards.ViewModel.Auth
 {
     public class RegisterUserRequest
     {

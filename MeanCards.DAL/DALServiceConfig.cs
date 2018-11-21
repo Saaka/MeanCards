@@ -1,4 +1,5 @@
-﻿using MeanCards.Configuration;
+﻿using MeanCards.Common.Constants;
+using MeanCards.Configuration;
 using MeanCards.DAL.Initializer;
 using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
@@ -61,6 +62,7 @@ namespace MeanCards.DAL
                     opt.Password.RequireDigit = false;
                     opt.Password.RequireUppercase = false;
                     opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequiredLength = AuthConstants.MinPasswordLength;
                 })
                 .AddUserStore<UserStore<User, IdentityRole<int>, AppDbContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
                 ;

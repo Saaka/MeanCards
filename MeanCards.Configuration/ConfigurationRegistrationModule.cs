@@ -6,7 +6,9 @@ namespace MeanCards.Configuration
     {
         public static IServiceCollection RegisterConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<IDbConnectionConfig, ApplicationConfiguration>();
+            services
+                .AddScoped<IDbConnectionConfig, ApplicationConfiguration>()
+                .AddScoped<IAuthConfiguration, ApplicationConfiguration>();
 
             return services;
         }

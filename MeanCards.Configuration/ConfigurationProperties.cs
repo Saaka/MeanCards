@@ -14,6 +14,8 @@
         public class Auth
         {
             public const string Secret = "Auth:Secret";
+            public const string ExpirationInMinutes = "Auth:ExpirationInMinutes";
+            public const string Issuer = "Auth:Issuer";
         }
     }
 }
