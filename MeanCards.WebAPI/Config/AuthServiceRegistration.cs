@@ -1,12 +1,9 @@
 ﻿using MeanCards.Configuration;
-using MeanCards.ViewModel.Auth;
 using MeanCards.WebAPI.Services;
-using MeanCards.WebAPI.Services.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Text;
 
 namespace MeanCards.WebAPI.Config
@@ -43,8 +40,6 @@ namespace MeanCards.WebAPI.Config
 
             services
                 .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
-                .AddTransient<IRequestValidator<RegisterUserRequest>, UserRegistrationValidator>()
-
                 .AddScoped<IAuthenticateService, AuthenticateService>();
 
             return services;

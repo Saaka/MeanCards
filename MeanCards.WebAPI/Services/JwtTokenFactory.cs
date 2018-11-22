@@ -7,6 +7,11 @@ using System.Text;
 
 namespace MeanCards.WebAPI.Services
 {
+    public interface IJwtTokenFactory
+    {
+        string GenerateEncodedToken(string userName);
+    }
+
     public class JwtTokenFactory : IJwtTokenFactory
     {
         private readonly IAuthConfiguration authConfiguration;

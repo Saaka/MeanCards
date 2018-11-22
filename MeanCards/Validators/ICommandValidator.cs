@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace MeanCards.WebAPI.Services.Validators
+namespace MeanCards.Validators
 {
-    public interface IRequestValidator<T>
+    public interface ICommandValidator<T>
     {
         Task<ValidatorResult> Validate(T request);
     }

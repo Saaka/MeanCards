@@ -1,6 +1,5 @@
 ﻿using MeanCards.UserManagement;
 using MeanCards.ViewModel.Auth;
-using MeanCards.WebAPI.Services.Validators;
 using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Services
@@ -9,43 +8,39 @@ namespace MeanCards.WebAPI.Services
     {
         Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request);
     }
+
     public  class AuthenticateService : IAuthenticateService
     {
         private readonly IJwtTokenFactory tokenFactory;
-        private readonly IRequestValidator<RegisterUserRequest> registrationValidator;
         private readonly ICreateUserHandler createUserHandler;
 
         public AuthenticateService(IJwtTokenFactory tokenFactory,
-            IRequestValidator<RegisterUserRequest> registrationValidator,
             ICreateUserHandler createUserHandler)
         {
             this.tokenFactory = tokenFactory;
-            this.registrationValidator = registrationValidator;
             this.createUserHandler = createUserHandler;
         }
 
         public async Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request)
         {
-            var validationResult = await registrationValidator.Validate(request);
-            if (!validationResult.IsSuccessful)
-                return new AuthenticateUserResult(validationResult.Error);
-
-            var user = await createUserHandler.Handle(new Commands.Users.CreateUser
+            var userResult = await createUserHandler.Handle(new Commands.Users.CreateUser
             {
                 Email = request.Email,
                 DisplayName = request.DisplayName,
                 Password = request.Password
             });
+            if (!userResult.IsSuccessful)
+                return new AuthenticateUserResult(userResult.Error);
 
-            var token = tokenFactory.GenerateEncodedToken(user.DisplayName);
+            var token = tokenFactory.GenerateEncodedToken(userResult.DisplayName);
 
             return new AuthenticateUserResult
             {
-                ImageUrl = user.ImageUrl,
-                UserCode = user.UserCode,
+                ImageUrl = userResult.ImageUrl,
+                UserCode = userResult.UserCode,
                 Token = token,
-                UserName = user.DisplayName,
-                Email = user.Email
+                UserName = userResult.DisplayName,
+                Email = userResult.Email
             };
         }
 

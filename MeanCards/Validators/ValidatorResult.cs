@@ -1,4 +1,4 @@
-﻿namespace MeanCards.WebAPI.Services.Validators
+﻿namespace MeanCards.Validators
 {
     public class ValidatorResult
     {

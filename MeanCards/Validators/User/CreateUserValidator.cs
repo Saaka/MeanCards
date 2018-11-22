@@ -1,20 +1,20 @@
-﻿using MeanCards.Common.Constants;
+﻿using MeanCards.Commands.Users;
+using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.ViewModel.Auth;
 using System.Threading.Tasks;
 
-namespace MeanCards.WebAPI.Services.Validators
+namespace MeanCards.Validators.User
 {
-    public class UserRegistrationValidator : IRequestValidator<RegisterUserRequest>
+    public class CreateUserValidator : ICommandValidator<CreateUser>
     {
         private readonly IUsersRepository usersRepository;
 
-        public UserRegistrationValidator(IUsersRepository usersRepository)
+        public CreateUserValidator(IUsersRepository usersRepository)
         {
             this.usersRepository = usersRepository;
         }
 
-        public async Task<ValidatorResult> Validate(RegisterUserRequest request)
+        public async Task<ValidatorResult> Validate(CreateUser request)
         {
             if (string.IsNullOrEmpty(request.DisplayName))
                 return new ValidatorResult(ValidatorErrors.NameRequired);
