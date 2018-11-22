@@ -28,7 +28,7 @@ namespace MeanCards.Validators.User
             if (request.Password.Length < AuthConstants.MinPasswordLength)
                 return new ValidatorResult(ValidatorErrors.PasswordTooShort);
 
-            if (await usersRepository.UserExists(request.Email))
+            if (await usersRepository.UserEmailExists(request.Email))
                 return new ValidatorResult(ValidatorErrors.DuplicatedEmail);
 
             if (await usersRepository.UserNameExists(request.DisplayName))

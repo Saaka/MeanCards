@@ -31,7 +31,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var user = Fixture.CreateDefaultUser(email: email);
             var repository = Fixture.GetService<IUsersRepository>();
 
-            var exists = await repository.UserExists(email);
+            var exists = await repository.UserEmailExists(email);
 
             Assert.True(exists);
         }
@@ -43,7 +43,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var user = Fixture.CreateDefaultUser(email: email);
             var repository = Fixture.GetService<IUsersRepository>();
 
-            var exists = await repository.UserExists("other@mail.com");
+            var exists = await repository.UserEmailExists("other@mail.com");
 
             Assert.False(exists);
         }

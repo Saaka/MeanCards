@@ -36,7 +36,7 @@ namespace MeanCards.DAL.Repository
             return user.Id;
         }
 
-        public async Task<bool> UserExists(string email)
+        public async Task<bool> UserEmailExists(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
 
