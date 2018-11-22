@@ -21,7 +21,7 @@ namespace MeanCards.WebAPI.Services
             this.authConfiguration = authConfiguration;
         }
 
-        public string GenerateEncodedToken(string userName)
+        public string GenerateEncodedToken(string userCode)
         {
             var key = Encoding.ASCII.GetBytes(authConfiguration.GetSecret());
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -29,7 +29,8 @@ namespace MeanCards.WebAPI.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, userName)
+                    new Claim(JwtRegisteredClaimNames.Sub, userCode),
+                    new Claim(JwtRegisteredClaimNames.Website, "www.o2.pl")
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Expires = DateTime.Now.AddMinutes(authConfiguration.GetExpirationTimeInMinutes()),

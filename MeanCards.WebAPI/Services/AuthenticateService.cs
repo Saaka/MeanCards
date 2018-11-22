@@ -32,15 +32,15 @@ namespace MeanCards.WebAPI.Services
             if (!userResult.IsSuccessful)
                 return new AuthenticateUserResult(userResult.Error);
 
-            var token = tokenFactory.GenerateEncodedToken(userResult.DisplayName);
+            var token = tokenFactory.GenerateEncodedToken(userResult.UserCode);
 
             return new AuthenticateUserResult
             {
-                ImageUrl = userResult.ImageUrl,
-                UserCode = userResult.UserCode,
                 Token = token,
+                Email = userResult.Email,
                 UserName = userResult.DisplayName,
-                Email = userResult.Email
+                UserCode = userResult.UserCode,
+                ImageUrl = userResult.ImageUrl,
             };
         }
 

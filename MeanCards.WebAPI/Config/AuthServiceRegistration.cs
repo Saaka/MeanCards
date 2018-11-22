@@ -1,4 +1,5 @@
 ﻿using MeanCards.Configuration;
+using MeanCards.WebAPI.Controllers.Base;
 using MeanCards.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +41,8 @@ namespace MeanCards.WebAPI.Config
 
             services
                 .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
-                .AddScoped<IAuthenticateService, AuthenticateService>();
+                .AddScoped<IAuthenticateService, AuthenticateService>()
+                .AddSingleton<IUserContextDataProvider, UserContextDataProvider>();
 
             return services;
         }
