@@ -10,9 +10,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task CreatePlayer()
         {
-            var languageId = await CreateDefaultLanguage();
-            var userId = await CreateDefaultUser();
-            var gameId = await CreateDefaultGame(languageId, userId);
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await Fixture.CreateDefaultGame(languageId, userId);
 
             var playersRepository = Fixture.GetService<IPlayersRepository>();
             var createPlayer = new CreatePlayerModel

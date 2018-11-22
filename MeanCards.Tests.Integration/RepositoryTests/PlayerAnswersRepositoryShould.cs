@@ -11,10 +11,10 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         [Fact]
         public async Task CreatePlayerAnswer()
         {
-            var languageId = await CreateDefaultLanguage();
-            var userId = await CreateDefaultUser();
-            var gameId = await CreateDefaultGame(languageId, userId);
-            var playerId = await CreateDefaultPlayer(userId, gameId);
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await Fixture.CreateDefaultGame(languageId, userId);
+            var playerId = await Fixture.CreateDefaultPlayer(userId, gameId);
             var questionCardId = await CreateQuestionCard(languageId);
             var gameRoundId = await CreateGameRound(gameId, playerId, questionCardId);
             var answerCardId = await CreateAnswerCard(languageId);

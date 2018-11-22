@@ -58,7 +58,7 @@ namespace MeanCards.DAL
                 .AddIdentity<User, IdentityUserRole<int>>(opt =>
                 {
                     opt.User.RequireUniqueEmail = true;
-                    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    opt.User.AllowedUserNameCharacters = AuthConstants.AllowedUserNameCharacters;
                     opt.Password.RequireDigit = false;
                     opt.Password.RequireUppercase = false;
                     opt.Password.RequireNonAlphanumeric = false;
