@@ -23,21 +23,34 @@ namespace MeanCards.WebAPI.Controllers
         {
             var result = await authenticateService.RegisterUser(model);
 
-            return Ok(result);
+            if (result.IsSuccessful)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<AuthenticateUserResult>> Login([FromBody]AuthenticateUserRequest model)
         {
-            return Ok(model);
+            var result = await authenticateService.AuthenticateUser(model);
+
+            if (result.IsSuccessful)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
 
         [AllowAnonymous]
         [HttpPost("google")]
         public async Task<ActionResult<AuthenticateUserResult>> AuthenticateGoogle([FromBody]AuthenticateUserWithGoogleRequest model)
         {
-            return Ok(model);
+            var result = await authenticateService.AuthenticateGoogleToken(model);
+
+            if (result.IsSuccessful)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace MeanCards.WebAPI.Services
     public interface IAuthenticateService
     {
         Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request);
+        Task<AuthenticateUserResult> AuthenticateUser(AuthenticateUserRequest request);
+        Task<AuthenticateUserResult> AuthenticateGoogleToken(AuthenticateUserWithGoogleRequest request);
     }
 
     public  class AuthenticateService : IAuthenticateService
