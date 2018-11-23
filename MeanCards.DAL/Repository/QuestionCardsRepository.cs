@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DTO.QuestionCards;
 
 namespace MeanCards.DAL.Repository
 {
@@ -36,21 +37,35 @@ namespace MeanCards.DAL.Repository
             return newCard.QuestionCardId;
         }
 
-        public async Task<List<QuestionCard>> GetAllActiveQuestionCards()
+        public async Task<List<QuestionCardModel>> GetAllActiveQuestionCards()
         {
-            var query = from    qc in context.QuestionCards
-                        where   qc.IsActive == true
-                        select  qc;
+            var query = from qc in context.QuestionCards
+                        where qc.IsActive == true
+                        select new QuestionCardModel
+                        {
+                            QuestionCardId = qc.QuestionCardId,
+                            LanguageId = qc.LanguageId,
+                            Text = qc.Text,
+                            NumberOfAnswers = qc.NumberOfAnswers,
+                            IsAdultContent = qc.IsAdultContent
+                        };
 
             return await query.ToListAsync();
         }
 
-        public async Task<List<QuestionCard>> GetQuestionCardsWithoutMatureContent()
+        public async Task<List<QuestionCardModel>> GetQuestionCardsWithoutMatureContent()
         {
-            var query = from    qc in context.QuestionCards
-                        where   qc.IsActive == true 
+            var query = from qc in context.QuestionCards
+                        where qc.IsActive == true
                                 && qc.IsAdultContent == false
-                        select  qc;
+                        select new QuestionCardModel
+                        {
+                            QuestionCardId = qc.QuestionCardId,
+                            LanguageId = qc.LanguageId,
+                            Text = qc.Text,
+                            NumberOfAnswers = qc.NumberOfAnswers,
+                            IsAdultContent = qc.IsAdultContent
+                        };
 
             return await query.ToListAsync();
         }

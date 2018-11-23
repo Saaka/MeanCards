@@ -1,5 +1,5 @@
-﻿using MeanCards.DataModel.Entity;
-using MeanCards.Model.Creation;
+﻿using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Players;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +9,6 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<int> CreatePlayerCard(CreatePlayerCardModel model);
         Task CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models);
-        Task<List<PlayerCard>> GetUnusedPlayerCards(int playerId);
+        Task<List<PlayerCardModel>> GetUnusedPlayerCards(int playerId);
     }
 }

@@ -2,6 +2,7 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Games;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -35,11 +36,18 @@ namespace MeanCards.DAL.Repository
             return newRound.GameRoundId;
         }
 
-        public async Task<GameRound> GetCurrentGameRound(int gameId)
+        public async Task<GameRoundModel> GetCurrentGameRound(int gameId)
         {
             var query = from round in context.GameRounds
                         where round.GameId == gameId && round.IsActive
-                        select round;
+                        select new GameRoundModel
+                        {
+                            GameId = round.GameId,
+                            GameRoundId = round.GameRoundId,
+                            QuestionCardId = round.QuestionCardId,
+                            RoundOwnerId = round.RoundOwnerId,
+                            RoundWinnerId = round.RoundWinnerId
+                        };
 
             return await query.FirstOrDefaultAsync();
         }

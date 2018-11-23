@@ -20,7 +20,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var language = languages.First();
             Assert.Equal("PL", language.Code);
             Assert.Equal("Polski", language.Name);
-            Assert.True(language.IsActive);
             Assert.NotEqual(0, language.LanguageId);
         }
     }

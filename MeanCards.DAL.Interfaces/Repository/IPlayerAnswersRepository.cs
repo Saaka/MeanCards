@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Players;
 
 namespace MeanCards.DAL.Interfaces.Repository
 {
     public interface IPlayerAnswersRepository
     {
         Task<int> CreatePlayerAnswer(CreatePlayerAnswerModel model);
-        Task<List<PlayerAnswer>> GetAllPlayerAnswers(int gameRoundId);
+        Task<List<PlayerAnswerModel>> GetAllPlayerAnswers(int gameRoundId);
         Task MarkAnswerAsSelected(int answerId);
     }
 }

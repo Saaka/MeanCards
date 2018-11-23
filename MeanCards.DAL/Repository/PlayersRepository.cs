@@ -2,8 +2,10 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Players;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MeanCards.DAL.Repository
 {
@@ -32,10 +34,19 @@ namespace MeanCards.DAL.Repository
             return newPlayer.PlayerId;
         }
 
-        public async Task<Player> GetPlayerById(int playerId)
+        public async Task<PlayerModel> GetPlayerById(int playerId)
         {
-            return await context.Players
-                .FirstOrDefaultAsync(x => x.PlayerId == playerId);
+            var query = from player in context.Players
+                        where player.PlayerId == playerId
+                        select new PlayerModel
+                        {
+                            PlayerId = player.PlayerId,
+                            GameId = player.GameId,
+                            Points = player.Points,
+                            UserId = player.UserId
+                        };
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

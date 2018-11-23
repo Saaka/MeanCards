@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DTO.AnswerCards;
 
 namespace MeanCards.DAL.Repository
 {
@@ -35,21 +36,33 @@ namespace MeanCards.DAL.Repository
             return newCard.AnswerCardId;
         }
 
-        public async Task<List<AnswerCard>> GetAllActiveAnswerCards()
+        public async Task<List<AnswerCardModel>> GetAllActiveAnswerCards()
         {
-            var query = from    ac in context.AnswerCards
-                        where   ac.IsActive == true
-                        select  ac;
+            var query = from ac in context.AnswerCards
+                        where ac.IsActive == true
+                        select new AnswerCardModel
+                        {
+                            AnswerCardId = ac.AnswerCardId,
+                            IsAdultContent = ac.IsAdultContent,
+                            LanguageId = ac.LanguageId,
+                            Text  = ac.Text
+                        };
 
             return await query.ToListAsync();
         }
 
-        public async Task<List<AnswerCard>> GetAnswerCardsWithoutMatureContent()
+        public async Task<List<AnswerCardModel>> GetAnswerCardsWithoutMatureContent()
         {
-            var query = from    ac in context.AnswerCards
-                        where   ac.IsActive == true 
+            var query = from ac in context.AnswerCards
+                        where ac.IsActive == true
                                 && ac.IsAdultContent == false
-                        select  ac;
+                        select new AnswerCardModel
+                        {
+                            AnswerCardId = ac.AnswerCardId,
+                            IsAdultContent = ac.IsAdultContent,
+                            LanguageId = ac.LanguageId,
+                            Text = ac.Text
+                        };
 
             return await query.ToListAsync();
         }

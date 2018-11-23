@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MeanCards.DataModel\MeanCards.DataModel.csproj" />
     <ProjectReference Include="..\MeanCards.Model\MeanCards.Model.csproj" />
   </ItemGroup>
 

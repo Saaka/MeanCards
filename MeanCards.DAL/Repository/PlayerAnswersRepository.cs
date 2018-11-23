@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
 using System.Collections.Generic;
+using MeanCards.Model.DTO.Players;
 
 namespace MeanCards.DAL.Repository
 {
@@ -35,11 +36,19 @@ namespace MeanCards.DAL.Repository
             return newAnswer.PlayerAnswerId;
         }
 
-        public async Task<List<PlayerAnswer>> GetAllPlayerAnswers(int gameRoundId)
+        public async Task<List<PlayerAnswerModel>> GetAllPlayerAnswers(int gameRoundId)
         {
             var query = from answer in context.PlayerAnswers
                         where answer.GameRoundId == gameRoundId
-                        select answer;
+                        select new PlayerAnswerModel
+                        {
+                            AnswerCardId = answer.AnswerCardId,
+                            GameRoundId = answer.GameRoundId,
+                            IsSelectedAnswer = answer.IsSelectedAnswer,
+                            PlayerAnswerId = answer.PlayerAnswerId,
+                            PlayerId = answer.PlayerId,
+                            SecondaryAnswerCardId = answer.SecondaryAnswerCardId
+                        };
 
             return await query.ToListAsync();
         }
@@ -49,7 +58,7 @@ namespace MeanCards.DAL.Repository
         {
             var answer = await context.PlayerAnswers
                 .FirstOrDefaultAsync(x => x.PlayerAnswerId == playerAnswerId);
-            if(answer != null)
+            if (answer != null)
             {
                 answer.IsSelectedAnswer = true;
                 await context.SaveChangesAsync();

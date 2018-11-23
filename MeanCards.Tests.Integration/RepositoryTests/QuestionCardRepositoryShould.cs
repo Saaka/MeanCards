@@ -32,7 +32,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
 
             var card = cards.First();
             Assert.Equal("Test2", card.Text);
-            Assert.True(card.IsActive);
         }
 
         private async Task PopulateQuestionCards(int languageId)

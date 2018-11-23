@@ -1,5 +1,5 @@
-﻿using MeanCards.DataModel.Entity;
-using MeanCards.Model.Creation;
+﻿using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<int> CreateLanguage(CreateLanguageModel model);
         Task CreateLanguages(IEnumerable<CreateLanguageModel> models);
-        Task<List<Language>> GetAllActiveLanguages();
+        Task<List<LanguageModel>> GetAllActiveLanguages();
         Task<bool> HasLanguages();
     }
 }

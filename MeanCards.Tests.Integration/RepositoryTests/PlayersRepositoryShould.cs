@@ -29,7 +29,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(userId, player.UserId);
             Assert.Equal(gameId, player.GameId);
             Assert.Equal(0, player.Points);
-            Assert.True(player.IsActive);
         }
     }
 }

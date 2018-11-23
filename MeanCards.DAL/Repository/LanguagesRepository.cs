@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DTO.Languages;
 
 namespace MeanCards.DAL.Repository
 {
@@ -47,11 +48,16 @@ namespace MeanCards.DAL.Repository
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Language>> GetAllActiveLanguages()
+        public async Task<List<LanguageModel>> GetAllActiveLanguages()
         {
             var query = from language in context.Languages
                         where language.IsActive == true
-                        select language;
+                        select new LanguageModel
+                        {
+                            LanguageId = language.LanguageId,
+                            Code = language.Code,
+                            Name = language.Name
+                        };
 
             return await query.ToListAsync();
         }

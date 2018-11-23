@@ -1,5 +1,5 @@
-﻿using MeanCards.DataModel.Entity;
-using MeanCards.Model.Creation;
+﻿using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Games;
 using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Interfaces.Repository
@@ -7,7 +7,7 @@ namespace MeanCards.DAL.Interfaces.Repository
     public interface IGamesRepository
     {
         Task<int> CreateGame(CreateGameModel model);
-        Task<Game> GetGameById(int gameId);
-        Task<Game> GetGameByCode(string code);
+        Task<GameModel> GetGameById(int gameId);
+        Task<GameModel> GetGameByCode(string code);
     }
 }

@@ -3,6 +3,7 @@ using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Games;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -39,20 +40,38 @@ namespace MeanCards.DAL.Repository
             return newGame.GameId;
         }
 
-        public async Task<Game> GetGameById(int gameId)
+        public async Task<GameModel> GetGameById(int gameId)
         {
             var query = from game in context.Games
                         where game.GameId == gameId
-                        select game;
+                        select new GameModel
+                        {
+                            GameId = game.GameId,
+                            GameCode = game.GameCode,
+                            GameStatus = game.GameStatus,
+                            LanguageId = game.LanguageId,
+                            Name = game.Name,
+                            OwnerId = game.OwnerId,
+                            ShowAdultContent = game.ShowAdultContent
+                        };
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Game> GetGameByCode(string code)
+        public async Task<GameModel> GetGameByCode(string code)
         {
             var query = from game in context.Games
                         where game.GameCode == code
-                        select game;
+                        select new GameModel
+                        {
+                            GameId = game.GameId,
+                            GameCode = game.GameCode,
+                            GameStatus = game.GameStatus,
+                            LanguageId = game.LanguageId,
+                            Name = game.Name,
+                            OwnerId = game.OwnerId,
+                            ShowAdultContent = game.ShowAdultContent
+                        };
 
             return await query.FirstOrDefaultAsync();
         }

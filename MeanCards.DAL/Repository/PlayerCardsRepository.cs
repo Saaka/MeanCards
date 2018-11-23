@@ -2,6 +2,7 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DataModel.Entity;
 using MeanCards.Model.Creation;
+using MeanCards.Model.DTO.Players;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,25 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
-        public async Task<List<PlayerCard>> GetUnusedPlayerCards(int playerId)
+        public async Task<List<PlayerCardModel>> GetUnusedPlayerCards(int playerId)
         {
             var query = from pc in context.PlayersCards
                         where pc.IsUsed == false
                               && pc.PlayerId == playerId
-                        select pc;
+                        select new PlayerCardModel
+                        {
+                            PlayerCardId = pc.PlayerCardId,
+                            PlayerId = pc.PlayerId,
+                            AnswerCardId = pc.AnswerCardId,
+                            IsUsed = pc.IsUsed
+                        };
 
             return await query.ToListAsync();
         }
 
         public async Task CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models)
         {
-            foreach(var model in models)
+            foreach (var model in models)
             {
                 var card = CreateEntity(model);
                 context.PlayersCards.Add(card);

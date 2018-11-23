@@ -29,7 +29,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var game = await gamesRepository.GetGameById(gameId);
 
             Assert.NotNull(game);
-            Assert.True(game.IsActive);
             Assert.True(game.ShowAdultContent);
             Assert.Equal(languageId, game.LanguageId);
             Assert.Equal(userId, game.OwnerId);
