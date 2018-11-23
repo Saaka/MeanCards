@@ -30,7 +30,7 @@ namespace MeanCards.Tests.Integration.Config
         {
             var usersRepository = GetService<IUsersRepository>();
 
-            return await usersRepository.CreateUser(new CreateUserModel { DisplayName = userName, Email = email, Password = password, UserCode = userCode });
+            return await usersRepository.CreateUser(new CreateUserModel { DisplayName = userName, Email = email, Password = password, Code = userCode });
         }
 
         public async Task<int> CreateDefaultLanguage(

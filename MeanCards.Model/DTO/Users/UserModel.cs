@@ -1,7 +1,8 @@
-﻿namespace MeanCards.Model.Creation.Users
+﻿namespace MeanCards.Model.DTO.Users
 {
-    public class CreateUserModelBase
+    public class UserModel
     {
+        public int UserId { get; set; }
         public string Code { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }

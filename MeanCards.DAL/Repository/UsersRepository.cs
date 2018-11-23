@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using MeanCards.Model.Creation.Users;
 using Microsoft.AspNetCore.Identity;
 using System;
+using MeanCards.Model.Access.Users;
+using MeanCards.Model.DTO.Users;
 
 namespace MeanCards.DAL.Repository
 {
@@ -26,7 +28,7 @@ namespace MeanCards.DAL.Repository
             {
                 Email = model.Email,
                 UserName = model.DisplayName,
-                UserCode = model.UserCode,
+                UserCode = model.Code,
                 ImageUrl = model.ImageUrl,
             };
             var result = await userManager.CreateAsync(user, model.Password);
@@ -34,6 +36,29 @@ namespace MeanCards.DAL.Repository
                 throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
 
             return user.Id;
+        }
+
+        public async Task<UserModel> GetUserByCredentials(GetUserByCredentialsModel credentials)
+        {
+            var user = await userManager.FindByEmailAsync(credentials.Email);
+            if (user == null)
+                return null;
+
+            if(await userManager.CheckPasswordAsync(user, credentials.Password))
+            {
+                var model = new UserModel
+                {
+                    UserId = user.Id,
+                    Code = user.UserCode,
+                    Email = user.Email,
+                    DisplayName = user.UserName,
+                    ImageUrl = user.ImageUrl
+                };
+
+                return model;
+            }
+
+            return null;
         }
 
         public async Task<bool> UserEmailExists(string email)

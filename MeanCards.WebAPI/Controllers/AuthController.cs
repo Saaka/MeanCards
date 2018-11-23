@@ -26,7 +26,7 @@ namespace MeanCards.WebAPI.Controllers
             if (result.IsSuccessful)
                 return Ok(result);
             else
-                return BadRequest(result);
+                return BadRequest(result.Error);
         }
 
         [AllowAnonymous]
@@ -38,7 +38,7 @@ namespace MeanCards.WebAPI.Controllers
             if (result.IsSuccessful)
                 return Ok(result);
             else
-                return BadRequest(result);
+                return BadRequest(result.Error);
         }
 
         [AllowAnonymous]
@@ -50,7 +50,7 @@ namespace MeanCards.WebAPI.Controllers
             if (result.IsSuccessful)
                 return Ok(result);
             else
-                return BadRequest(result);
+                return BadRequest(result.Error);
         }
     }
 }

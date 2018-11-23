@@ -44,7 +44,7 @@ namespace MeanCards.UserManagement
                 Email = command.Email,
                 DisplayName = command.DisplayName,
                 Password = command.Password,
-                UserCode = userCode,
+                Code = userCode,
                 ImageUrl = imageUrl,
             });
 
@@ -53,7 +53,7 @@ namespace MeanCards.UserManagement
                 UserId = userId,
                 Email = command.Email,
                 DisplayName = command.DisplayName,
-                UserCode = userCode,
+                Code = userCode,
                 ImageUrl = imageUrl
             };
         }

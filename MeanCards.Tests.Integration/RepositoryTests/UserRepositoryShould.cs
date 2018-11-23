@@ -1,4 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Access.Users;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,7 +17,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 Email = "test@test.com",
                 ImageUrl = "imageurl",
                 Password = "password12",
-                UserCode = "12345"
+                Code = "12345"
             };
 
             var userId = await repository.CreateUser(model);
@@ -70,6 +71,42 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var exists = await repository.UserNameExists("OtherName");
 
             Assert.False(exists);
+        }
+
+        [Fact]
+        public async Task ReturnUserForValidCredentials()
+        {
+            var credentials = new GetUserByCredentialsModel
+            {
+                Email = "user@test.com",
+                Password = "Pass123"
+            };
+            var user = Fixture.CreateDefaultUser(
+                email: credentials.Email,
+                password: credentials.Password);
+            var repository = Fixture.GetService<IUsersRepository>();
+            
+            var userModel = await repository.GetUserByCredentials(credentials);
+
+            Assert.NotNull(userModel);
+        }
+
+        [Fact]
+        public async Task NotReturnUserForInalidCredentials()
+        {
+            var credentials = new GetUserByCredentialsModel
+            {
+                Email = "user@test.com",
+                Password = "Pass123"
+            };
+            var user = Fixture.CreateDefaultUser(
+                email: credentials.Email,
+                password: "Invalid123");
+            var repository = Fixture.GetService<IUsersRepository>();
+            
+            var userModel = await repository.GetUserByCredentials(credentials);
+
+            Assert.Null(userModel);
         }
     }
 }
