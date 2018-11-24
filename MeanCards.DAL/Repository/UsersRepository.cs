@@ -1,6 +1,6 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
-using MeanCards.DataModel.Entity;
+using MeanCards.DAL.Entity;
 using System.Threading.Tasks;
 using MeanCards.Model.Creation.Users;
 using Microsoft.AspNetCore.Identity;

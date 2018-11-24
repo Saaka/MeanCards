@@ -1,7 +1,7 @@
 ﻿using MeanCards.Common.Enum;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
-using MeanCards.DataModel.Entity;
+using MeanCards.DAL.Entity;
 using MeanCards.Model.Creation;
 using MeanCards.Model.DTO.Games;
 using Microsoft.EntityFrameworkCore;

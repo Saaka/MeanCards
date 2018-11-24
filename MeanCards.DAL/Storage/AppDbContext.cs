@@ -1,4 +1,4 @@
-﻿using MeanCards.DataModel.Entity;
+﻿using MeanCards.DAL.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

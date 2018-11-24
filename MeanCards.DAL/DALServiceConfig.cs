@@ -5,7 +5,7 @@ using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Repository;
 using MeanCards.DAL.Storage;
-using MeanCards.DataModel.Entity;
+using MeanCards.DAL.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MeanCards.DataModel.Entity
+namespace MeanCards.DAL.Entity
 {
     public class Language
     {

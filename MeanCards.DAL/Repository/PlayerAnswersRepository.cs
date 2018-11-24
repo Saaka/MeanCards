@@ -1,5 +1,5 @@
 ﻿using MeanCards.DAL.Storage;
-using MeanCards.DataModel.Entity;
+using MeanCards.DAL.Entity;
 using MeanCards.Model.Creation;
 using System.Threading.Tasks;
 using System.Linq;
