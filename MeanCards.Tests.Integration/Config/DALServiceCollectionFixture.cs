@@ -1,10 +1,12 @@
 ﻿using MeanCards.DAL;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Creation;
-using MeanCards.Model.Creation.Users;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using MeanCards.Model.DAL.Creation.Users;
+using MeanCards.Model.DAL.Creation.Players;
+using MeanCards.Model.DAL.Creation.Games;
+using MeanCards.Model.DAL.Creation.Languages;
 
 namespace MeanCards.Tests.Integration.Config
 {
@@ -66,7 +68,7 @@ namespace MeanCards.Tests.Integration.Config
             var gamesRepository = GetService<IGamesRepository>();
             var createModel = new CreateGameModel
             {
-                GameCode = gameCode,
+                Code = gameCode,
                 LanguageId = languageId,
                 OwnerId = userId,
                 Name = gameName,

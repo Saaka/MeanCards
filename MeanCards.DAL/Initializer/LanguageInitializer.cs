@@ -1,6 +1,6 @@
 ﻿using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.DAL.Creation;
+using MeanCards.Model.DAL.Creation.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

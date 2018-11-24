@@ -1,5 +1,6 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Access.Users;
+using MeanCards.Model.DAL.Access.Users;
+using MeanCards.Model.DAL.Creation.Users;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         public async Task CreateUser()
         {
             var repository = Fixture.GetService<IUsersRepository>();
-            var model = new Model.Creation.Users.CreateUserModel
+            var model = new CreateUserModel
             {
                 DisplayName = "Name",
                 Email = "test@test.com",

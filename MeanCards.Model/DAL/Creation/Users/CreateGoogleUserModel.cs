@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Model.Creation.Users
+﻿namespace MeanCards.Model.DAL.Creation.Users
 {
     public class CreateGoogleUserModel : CreateUserModelBase
     {

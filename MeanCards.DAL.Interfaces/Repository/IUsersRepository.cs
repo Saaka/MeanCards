@@ -1,5 +1,5 @@
-﻿using MeanCards.Model.Access.Users;
-using MeanCards.Model.Creation.Users;
+﻿using MeanCards.Model.DAL.Access.Users;
+using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DTO.Users;
 using System.Threading.Tasks;
 

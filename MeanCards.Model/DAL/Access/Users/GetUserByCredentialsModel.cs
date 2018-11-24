@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Model.Access.Users
+﻿namespace MeanCards.Model.DAL.Access.Users
 {
     public class GetUserByCredentialsModel
     {

@@ -1,5 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Creation;
+using MeanCards.Model.DAL.Creation.Games;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,7 +17,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel
             {
-                GameCode = "gamecode1",
+                Code = "gamecode1",
                 LanguageId = languageId,
                 OwnerId = userId,
                 Name = "Test game",
@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gamesRepository = Fixture.GetService<IGamesRepository>();
             var createModel = new CreateGameModel
             {
-                GameCode = "gamecode1",
+                Code = "gamecode1",
                 LanguageId = languageId,
                 OwnerId = userId,
                 Name = "Test game",

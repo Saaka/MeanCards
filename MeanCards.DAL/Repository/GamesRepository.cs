@@ -2,12 +2,12 @@
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
 using MeanCards.DAL.Entity;
-using MeanCards.Model.Creation;
 using MeanCards.Model.DTO.Games;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MeanCards.Model.DAL.Creation.Games;
 
 namespace MeanCards.DAL.Repository
 {
@@ -25,12 +25,12 @@ namespace MeanCards.DAL.Repository
             var newGame = new Game
             {
                 IsActive = true,
-                GameCode = model.GameCode,
+                Code = model.Code,
                 LanguageId = model.LanguageId,
                 Name = model.Name,
                 OwnerId = model.OwnerId,
                 ShowAdultContent = model.ShowAdultContent,
-                GameStatus = (byte)GameStatusEnum.Created,
+                Status = (byte)GameStatusEnum.Created,
                 CreateDate = DateTime.UtcNow,
             };
 
@@ -47,8 +47,8 @@ namespace MeanCards.DAL.Repository
                         select new GameModel
                         {
                             GameId = game.GameId,
-                            GameCode = game.GameCode,
-                            GameStatus = game.GameStatus,
+                            Code = game.Code,
+                            Status = game.Status,
                             LanguageId = game.LanguageId,
                             Name = game.Name,
                             OwnerId = game.OwnerId,
@@ -61,12 +61,12 @@ namespace MeanCards.DAL.Repository
         public async Task<GameModel> GetGameByCode(string code)
         {
             var query = from game in context.Games
-                        where game.GameCode == code
+                        where game.Code == code
                         select new GameModel
                         {
                             GameId = game.GameId,
-                            GameCode = game.GameCode,
-                            GameStatus = game.GameStatus,
+                            Code = game.Code,
+                            Status = game.Status,
                             LanguageId = game.LanguageId,
                             Name = game.Name,
                             OwnerId = game.OwnerId,

@@ -1,8 +1,8 @@
-﻿namespace MeanCards.Model.Creation
+﻿namespace MeanCards.Model.DAL.Creation.Games
 {
     public class CreateGameModel
     {
-        public string GameCode { get; set; }
+        public string Code { get; set; }
         public int LanguageId { get; set; }
         public string Name { get; set; }
         public int OwnerId { get; set; }

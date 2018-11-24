@@ -1,4 +1,4 @@
-﻿using MeanCards.Model.Creation;
+﻿using MeanCards.Model.DAL.Creation.QuestionCards;
 using MeanCards.Model.DTO.QuestionCards;
 using System.Collections.Generic;
 using System.Threading.Tasks;

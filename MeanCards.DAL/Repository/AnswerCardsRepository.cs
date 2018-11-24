@@ -1,6 +1,5 @@
 ﻿using MeanCards.DAL.Storage;
 using MeanCards.DAL.Entity;
-using MeanCards.Model.Creation;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.DTO.AnswerCards;
+using MeanCards.Model.DAL.Creation.AnswerCards;
 
 namespace MeanCards.DAL.Repository
 {

@@ -1,7 +1,9 @@
 ﻿using MeanCards.Commands.Games;
 using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Creation;
+using MeanCards.Model.DAL.Creation;
+using MeanCards.Model.DAL.Creation.Games;
+using MeanCards.Model.DAL.Creation.Players;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
@@ -39,7 +41,7 @@ namespace MeanCards.GameManagement
             return new CreateGameResult
             {
                 GameId = gameId,
-                GameCode = gameCode
+                Code = gameCode
             };
         }
 
@@ -47,7 +49,7 @@ namespace MeanCards.GameManagement
         {
             var gameId = await gamesRepository.CreateGame(new CreateGameModel
             {
-                GameCode = gameCode,
+                Code = gameCode,
                 LanguageId = command.LanguageId,
                 Name = command.Name,
                 OwnerId = command.OwnerId,

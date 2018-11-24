@@ -2,6 +2,7 @@
 using MeanCards.Common.ProfileImageUrlProvider;
 using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Validators;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace MeanCards.UserManagement
             var userCode = codeGenerator.Generate();
             var imageUrl = imageUrlProvider.GetImageUrl(command.Email);
 
-            var userId = await usersRepository.CreateUser(new Model.Creation.Users.CreateUserModel
+            var userId = await usersRepository.CreateUser(new CreateUserModel
             {
                 Email = command.Email,
                 DisplayName = command.DisplayName,

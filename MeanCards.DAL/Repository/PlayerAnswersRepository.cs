@@ -1,12 +1,12 @@
 ﻿using MeanCards.DAL.Storage;
 using MeanCards.DAL.Entity;
-using MeanCards.Model.Creation;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
 using System.Collections.Generic;
 using MeanCards.Model.DTO.Players;
+using MeanCards.Model.DAL.Creation.Players;
 
 namespace MeanCards.DAL.Repository
 {

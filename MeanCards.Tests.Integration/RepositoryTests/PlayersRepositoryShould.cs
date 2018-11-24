@@ -1,5 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Creation;
+using MeanCards.Model.DAL.Creation.Players;
 using System.Threading.Tasks;
 using Xunit;
 

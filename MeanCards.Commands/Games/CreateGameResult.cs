@@ -11,6 +11,6 @@
         }
 
         public int GameId { get; set; }
-        public string GameCode { get; set; }
+        public string Code { get; set; }
     }
 }

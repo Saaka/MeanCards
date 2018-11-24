@@ -1,4 +1,4 @@
-﻿using MeanCards.Model.Creation;
+﻿using MeanCards.Model.DAL.Creation.Languages;
 using MeanCards.Model.DTO.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;

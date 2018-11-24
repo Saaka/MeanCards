@@ -1,4 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DAL.Creation.Languages;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -12,7 +13,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         {
             var repository = Fixture.GetService<ILanguagesRepository>();
 
-            await repository.CreateLanguage(new Model.Creation.CreateLanguageModel { Code = "PL", Name = "Polski" });
+            await repository.CreateLanguage(new CreateLanguageModel { Code = "PL", Name = "Polski" });
             var languages = await repository.GetAllActiveLanguages();
 
             Assert.Single(languages);

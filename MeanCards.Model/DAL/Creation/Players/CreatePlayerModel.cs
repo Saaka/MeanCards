@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Model.Creation
+﻿namespace MeanCards.Model.DAL.Creation.Players
 {
     public class CreatePlayerModel
     {

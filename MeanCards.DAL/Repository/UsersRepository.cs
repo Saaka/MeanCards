@@ -2,10 +2,10 @@
 using MeanCards.DAL.Storage;
 using MeanCards.DAL.Entity;
 using System.Threading.Tasks;
-using MeanCards.Model.Creation.Users;
+using MeanCards.Model.DAL.Creation.Users;
 using Microsoft.AspNetCore.Identity;
 using System;
-using MeanCards.Model.Access.Users;
+using MeanCards.Model.DAL.Access.Users;
 using MeanCards.Model.DTO.Users;
 
 namespace MeanCards.DAL.Repository
@@ -28,7 +28,7 @@ namespace MeanCards.DAL.Repository
             {
                 Email = model.Email,
                 UserName = model.DisplayName,
-                UserCode = model.Code,
+                Code = model.Code,
                 ImageUrl = model.ImageUrl,
             };
             var result = await userManager.CreateAsync(user, model.Password);
@@ -49,7 +49,7 @@ namespace MeanCards.DAL.Repository
                 var model = new UserModel
                 {
                     UserId = user.Id,
-                    Code = user.UserCode,
+                    Code = user.Code,
                     Email = user.Email,
                     DisplayName = user.UserName,
                     ImageUrl = user.ImageUrl

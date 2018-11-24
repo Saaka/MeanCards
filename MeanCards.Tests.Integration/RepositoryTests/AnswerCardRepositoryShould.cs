@@ -1,4 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DAL.Creation.AnswerCards;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,13 +38,13 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         private async Task PopulateAnswerCards(int languageId)
         {
             var cardRepository = Fixture.GetService<IAnswerCardsRepository>();
-            await cardRepository.CreateAnswerCard(new Model.Creation.CreateAnswerCardModel
+            await cardRepository.CreateAnswerCard(new CreateAnswerCardModel
             {
                 IsAdultContent = true,
                 LanguageId = languageId,
                 Text = "Test1"
             });
-            await cardRepository.CreateAnswerCard(new Model.Creation.CreateAnswerCardModel
+            await cardRepository.CreateAnswerCard(new CreateAnswerCardModel
             {
                 IsAdultContent = false,
                 LanguageId = languageId,
