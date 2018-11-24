@@ -16,12 +16,12 @@ namespace MeanCards.DAL.Entity
         public int GameId { get; set; }
         [StringLength(32)]
         [Required]
-        public string GameCode { get; set; }
-        public byte GameStatus { get; set; }
-        public int LanguageId { get; set; }
+        public string Code { get; set; }
         [StringLength(128)]
         [Required]
         public string Name { get; set; }
+        public byte Status { get; set; }
+        public int LanguageId { get; set; }
         [Required]
         public int OwnerId { get; set; }
         public bool ShowAdultContent { get; set; }

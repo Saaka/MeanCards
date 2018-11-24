@@ -12,7 +12,7 @@ namespace MeanCards.DAL.Entity
         }
         
         [StringLength(64)]
-        public string UserCode { get; set; }
+        public string Code { get; set; }
         public long? GoogleId { get; set; }
         public string ImageUrl { get; set; }
 

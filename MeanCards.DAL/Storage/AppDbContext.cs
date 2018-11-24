@@ -57,7 +57,7 @@ namespace MeanCards.DAL.Storage
                     .WithMany(x => x.Games)
                     .HasForeignKey(x => x.LanguageId)
                     .OnDelete(DeleteBehavior.Restrict);
-                b.HasIndex(x => x.GameCode)
+                b.HasIndex(x => x.Code)
                     .IsUnique();
             });
             builder.Entity<GameRound>(b =>
