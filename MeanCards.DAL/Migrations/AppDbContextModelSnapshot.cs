@@ -20,7 +20,7 @@ namespace MeanCards.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.AnswerCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.AnswerCard", b =>
                 {
                     b.Property<int>("AnswerCardId")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("AnswerCards");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.Game", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.Game", b =>
                 {
                     b.Property<int>("GameId")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.GameRound", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.GameRound", b =>
                 {
                     b.Property<int>("GameRoundId")
                         .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("GameRounds");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.Language", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.Language", b =>
                 {
                     b.Property<int>("LanguageId")
                         .ValueGeneratedOnAdd()
@@ -132,7 +132,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("Languages");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.Player", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.Player", b =>
                 {
                     b.Property<int>("PlayerId")
                         .ValueGeneratedOnAdd()
@@ -153,7 +153,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.PlayerAnswer", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.PlayerAnswer", b =>
                 {
                     b.Property<int>("PlayerAnswerId")
                         .ValueGeneratedOnAdd()
@@ -182,7 +182,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("PlayerAnswers");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.PlayerCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.PlayerCard", b =>
                 {
                     b.Property<int>("PlayerCardId")
                         .ValueGeneratedOnAdd()
@@ -203,7 +203,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("PlayersCards");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.QuestionCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.QuestionCard", b =>
                 {
                     b.Property<int>("QuestionCardId")
                         .ValueGeneratedOnAdd()
@@ -230,7 +230,7 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("QuestionCards");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.User", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -397,97 +397,97 @@ namespace MeanCards.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.AnswerCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.AnswerCard", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.Language", "Language")
+                    b.HasOne("MeanCards.DAL.Entity.Language", "Language")
                         .WithMany("AnswerCards")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.Game", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.Game", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.Language", "Language")
+                    b.HasOne("MeanCards.DAL.Entity.Language", "Language")
                         .WithMany("Games")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.User", "Owner")
+                    b.HasOne("MeanCards.DAL.Entity.User", "Owner")
                         .WithMany("Games")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.GameRound", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.GameRound", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.Game", "Game")
+                    b.HasOne("MeanCards.DAL.Entity.Game", "Game")
                         .WithMany("GameRounds")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.QuestionCard", "QuestionCard")
+                    b.HasOne("MeanCards.DAL.Entity.QuestionCard", "QuestionCard")
                         .WithMany("GameRounds")
                         .HasForeignKey("QuestionCardId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.Player", "RoundOwner")
+                    b.HasOne("MeanCards.DAL.Entity.Player", "RoundOwner")
                         .WithMany("OwnedGameRounds")
                         .HasForeignKey("RoundOwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.Player", "RoundWinner")
+                    b.HasOne("MeanCards.DAL.Entity.Player", "RoundWinner")
                         .WithMany("WonRounds")
                         .HasForeignKey("RoundWinnerId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.Player", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.Player", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.Game", "Game")
+                    b.HasOne("MeanCards.DAL.Entity.Game", "Game")
                         .WithMany("Players")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.PlayerAnswer", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.PlayerAnswer", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.AnswerCard", "AnswerCard")
+                    b.HasOne("MeanCards.DAL.Entity.AnswerCard", "AnswerCard")
                         .WithMany("PlayerAnswers")
                         .HasForeignKey("AnswerCardId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.GameRound", "GameRound")
+                    b.HasOne("MeanCards.DAL.Entity.GameRound", "GameRound")
                         .WithMany("PlayerAnswers")
                         .HasForeignKey("GameRoundId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.Player", "Player")
+                    b.HasOne("MeanCards.DAL.Entity.Player", "Player")
                         .WithMany("PlayerAnswers")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.AnswerCard", "SecondaryAnswerCard")
+                    b.HasOne("MeanCards.DAL.Entity.AnswerCard", "SecondaryAnswerCard")
                         .WithMany("SecondaryPlayerAnswers")
                         .HasForeignKey("SecondaryAnswerCardId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.PlayerCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.PlayerCard", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.AnswerCard", "AnswerCard")
+                    b.HasOne("MeanCards.DAL.Entity.AnswerCard", "AnswerCard")
                         .WithMany("PlayerCards")
                         .HasForeignKey("AnswerCardId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeanCards.DataModel.Entity.Player", "Player")
+                    b.HasOne("MeanCards.DAL.Entity.Player", "Player")
                         .WithMany("PlayerCards")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MeanCards.DataModel.Entity.QuestionCard", b =>
+            modelBuilder.Entity("MeanCards.DAL.Entity.QuestionCard", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.Language", "Language")
+                    b.HasOne("MeanCards.DAL.Entity.Language", "Language")
                         .WithMany("QuestionCards")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -503,7 +503,7 @@ namespace MeanCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.User")
+                    b.HasOne("MeanCards.DAL.Entity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -511,7 +511,7 @@ namespace MeanCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.User")
+                    b.HasOne("MeanCards.DAL.Entity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -524,7 +524,7 @@ namespace MeanCards.DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MeanCards.DataModel.Entity.User")
+                    b.HasOne("MeanCards.DAL.Entity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -532,7 +532,7 @@ namespace MeanCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("MeanCards.DataModel.Entity.User")
+                    b.HasOne("MeanCards.DAL.Entity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
