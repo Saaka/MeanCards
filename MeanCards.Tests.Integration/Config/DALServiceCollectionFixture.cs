@@ -20,8 +20,7 @@ namespace MeanCards.Tests.Integration.Config
             return serviceCollection
                 .RegisterSQLiteInmemoryContext(_connection)
                 .RegisterDAL()
-                .RegisterIdentityStore()
-                ;
+                .RegisterIdentityStore();
         }
 
         public async Task<int> CreateDefaultUser(
@@ -44,7 +43,7 @@ namespace MeanCards.Tests.Integration.Config
         }
 
         public async Task<int> CreateDefaultPlayer(
-            int gameId, 
+            int gameId,
             int userId)
         {
             var playersRepository = GetService<IPlayersRepository>();

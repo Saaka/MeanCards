@@ -1,6 +1,7 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.DAL.Access.Users;
 using MeanCards.Model.DAL.Creation.Users;
+using MeanCards.Tests.Integration.BaseTests;
 using System.Threading.Tasks;
 using Xunit;
 

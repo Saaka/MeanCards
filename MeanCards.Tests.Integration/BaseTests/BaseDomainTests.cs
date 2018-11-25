@@ -3,13 +3,13 @@ using System;
 
 namespace MeanCards.Tests.Integration.BaseTests
 {
-    public abstract class BaseRepositoryTests : IDisposable
+    public class BaseDomainTests : IDisposable
     {
-        protected readonly DALServiceCollectionFixture Fixture;
+        protected readonly DomainServiceCollectionFixture Fixture;
 
-        public BaseRepositoryTests()
+        public BaseDomainTests()
         {
-            Fixture = new DALServiceCollectionFixture();
+            Fixture = new DomainServiceCollectionFixture();
         }
 
         public void Dispose()

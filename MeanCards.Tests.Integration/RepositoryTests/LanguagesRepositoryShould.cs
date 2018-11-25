@@ -1,5 +1,6 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.DAL.Creation.Languages;
+using MeanCards.Tests.Integration.BaseTests;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
