@@ -1,4 +1,5 @@
-﻿using MeanCards.Tests.Integration.BaseTests;
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Tests.Integration.BaseTests;
 using MeanCards.UserManagement;
 using System.Threading.Tasks;
 using Xunit;
