@@ -3,7 +3,7 @@ using System;
 
 namespace MeanCards.Configuration
 {
-    public class ApplicationConfiguration : IDbConnectionConfig, IAuthConfiguration
+    public class ApplicationConfiguration : IDbConnectionConfig, IAuthConfiguration, IGoogleConfig
     {
         private const int DefaultExpirationTime = 10080;
         private readonly IConfiguration _config;
@@ -13,41 +13,50 @@ namespace MeanCards.Configuration
             _config = config;
         }
 
-        private string DbConnectionString;
+        private string dbConnectionString;
         public string GetConnectionString()
         {
-            if(DbConnectionString == null)
-                DbConnectionString = _config[ConfigurationProperties.DbSettings.ConnectionString];
+            if(dbConnectionString == null)
+                dbConnectionString = _config[ConfigurationProperties.DbSettings.ConnectionString];
 
-            return DbConnectionString;
+            return dbConnectionString;
         }
 
-        private string AuthSecret;
+        private string authSecret;
         public string GetSecret()
         {
-            if (AuthSecret == null)
-                AuthSecret = _config[ConfigurationProperties.Auth.Secret];
+            if (authSecret == null)
+                authSecret = _config[ConfigurationProperties.Auth.Secret];
 
-            return AuthSecret;
+            return authSecret;
         }
 
-        private int ExpirationTime = 0;
+        private int expirationTime = 0;
         public int GetExpirationTimeInMinutes()
         {
-            if (ExpirationTime == 0)
-                ExpirationTime = _config[ConfigurationProperties.Auth.ExpirationInMinutes] != null 
+            if (expirationTime == 0)
+                expirationTime = _config[ConfigurationProperties.Auth.ExpirationInMinutes] != null 
                     ? Convert.ToInt32(_config[ConfigurationProperties.Auth.ExpirationInMinutes]) : DefaultExpirationTime;
 
-            return ExpirationTime;
+            return expirationTime;
         }
 
-        private string Issuer;
+        private string issuer;
         public string GetIssuer()
         {
-            if (Issuer == null)
-                Issuer = _config[ConfigurationProperties.Auth.Issuer];
+            if (issuer == null)
+                issuer = _config[ConfigurationProperties.Auth.Issuer];
 
-            return Issuer;
+            return issuer;
+        }
+
+        private string googleClientId;
+        public string GetClientId()
+        {
+            if (googleClientId == null)
+                googleClientId = _config[ConfigurationProperties.Google.ClientId];
+
+            return googleClientId;
         }
     }
 }

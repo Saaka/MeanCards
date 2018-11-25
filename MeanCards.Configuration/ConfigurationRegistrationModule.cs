@@ -8,7 +8,8 @@ namespace MeanCards.Configuration
         {
             services
                 .AddScoped<IDbConnectionConfig, ApplicationConfiguration>()
-                .AddScoped<IAuthConfiguration, ApplicationConfiguration>();
+                .AddScoped<IAuthConfiguration, ApplicationConfiguration>()
+                .AddScoped<IGoogleConfig, ApplicationConfiguration>();
 
             return services;
         }

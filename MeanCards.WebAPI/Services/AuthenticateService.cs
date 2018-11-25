@@ -1,6 +1,7 @@
 ﻿using MeanCards.Model.Core.Users;
 using MeanCards.UserManagement;
 using MeanCards.ViewModel.Auth;
+using MeanCards.WebAPI.Services.Google;
 using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Services
@@ -17,14 +18,17 @@ namespace MeanCards.WebAPI.Services
         private readonly IJwtTokenFactory tokenFactory;
         private readonly ICreateUserHandler createUserHandler;
         private readonly IGetUserByCredentialsHandler getUserByCredentialsHandler;
+        private readonly IGoogleTokenVerificationService googleTokenVerificationService;
 
         public AuthenticateService(IJwtTokenFactory tokenFactory,
             ICreateUserHandler createUserHandler,
-            IGetUserByCredentialsHandler getUserByCredentialsHandler)
+            IGetUserByCredentialsHandler getUserByCredentialsHandler,
+            IGoogleTokenVerificationService googleTokenVerificationService)
         {
             this.tokenFactory = tokenFactory;
             this.createUserHandler = createUserHandler;
             this.getUserByCredentialsHandler = getUserByCredentialsHandler;
+            this.googleTokenVerificationService = googleTokenVerificationService;
         }
 
         public async Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request)
@@ -74,8 +78,19 @@ namespace MeanCards.WebAPI.Services
 
         public async Task<AuthenticateUserResult> AuthenticateGoogleToken(AuthenticateUserWithGoogleRequest request)
         {
+            var googleResult = await googleTokenVerificationService.Validate(request.GoogleToken);
+            if (!googleResult.IsSuccessful)
+                return new AuthenticateUserResult(googleResult.Error);
 
-            return null;
+            var token = tokenFactory.GenerateEncodedToken("123");
+
+            return new AuthenticateUserResult
+            {
+                Email = googleResult.TokenInfo.Email,
+                Name =googleResult.TokenInfo.DisplayName,
+                ImageUrl = googleResult.TokenInfo.ImageUrl,
+                Token = token
+            };
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using MeanCards.Configuration;
 using MeanCards.WebAPI.Controllers.Base;
 using MeanCards.WebAPI.Services;
+using MeanCards.WebAPI.Services.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace MeanCards.WebAPI.Config
@@ -42,9 +44,17 @@ namespace MeanCards.WebAPI.Config
             services
                 .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
                 .AddScoped<IAuthenticateService, AuthenticateService>()
-                .AddSingleton<IUserContextDataProvider, UserContextDataProvider>();
+                .AddSingleton<IUserContextDataProvider, UserContextDataProvider>()
+
+                .AddScoped<IGoogleTokenVerificationService, GoogleTokenVerificationService>()
+                .AddHttpClient<GoogleClient>(c => c.BaseAddress = GetGoogleAddress(configuration));
 
             return services;
+        }
+
+        private static Uri GetGoogleAddress(IConfiguration config)
+        {
+            return new Uri(config[ConfigurationProperties.Google.ValidationEndpoint]);
         }
     }
 }

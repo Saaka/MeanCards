@@ -10,6 +10,7 @@
         {
             public const string ClientId = "Google:ClientId";
             public const string ClientKey = "Google:ClientKey";
+            public const string ValidationEndpoint = "Google:ValidationEndpoint";
         }
         public class Auth
         {
