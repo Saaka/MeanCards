@@ -1,11 +1,11 @@
-﻿using MeanCards.Commands.Users;
-using MeanCards.Common.Constants;
+﻿using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Core.Users;
 using System.Threading.Tasks;
 
 namespace MeanCards.Validators.User
 {
-    public class CreateUserValidator : ICommandValidator<CreateUser>
+    public class CreateUserValidator : IRequestValidator<CreateUser>
     {
         private readonly IUsersRepository usersRepository;
 

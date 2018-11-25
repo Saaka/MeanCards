@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Commands
+﻿namespace MeanCards.Model.Core
 {
     public abstract class BaseResult
     {

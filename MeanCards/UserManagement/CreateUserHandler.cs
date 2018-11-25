@@ -1,7 +1,7 @@
-﻿using MeanCards.Commands.Users;
-using MeanCards.Common.ProfileImageUrlProvider;
+﻿using MeanCards.Common.ProfileImageUrlProvider;
 using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Core.Users;
 using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Validators;
 using System.Threading.Tasks;
@@ -10,41 +10,41 @@ namespace MeanCards.UserManagement
 {
     public interface ICreateUserHandler
     {
-        Task<CreateUserResult> Handle(CreateUser command);
+        Task<CreateUserResult> Handle(CreateUser request);
     }
 
     public class CreateUserHandler : ICreateUserHandler
     {
         private readonly ICodeGenerator codeGenerator;
-        private readonly ICommandValidator<CreateUser> commandValidator;
+        private readonly IRequestValidator<CreateUser> requestValidator;
         private readonly IUsersRepository usersRepository;
         private readonly IProfileImageUrlProvider imageUrlProvider;
 
         public CreateUserHandler(ICodeGenerator codeGenerator,
-            ICommandValidator<CreateUser> requestValidator,
+            IRequestValidator<CreateUser> requestValidator,
             IUsersRepository usersRepository,
             IProfileImageUrlProvider imageUrlProvider)
         {
             this.codeGenerator = codeGenerator;
-            this.commandValidator = requestValidator;
+            this.requestValidator = requestValidator;
             this.usersRepository = usersRepository;
             this.imageUrlProvider = imageUrlProvider;
         }
 
-        public async Task<CreateUserResult> Handle(CreateUser command)
+        public async Task<CreateUserResult> Handle(CreateUser request)
         {
-            var validationResult = await commandValidator.Validate(command);
+            var validationResult = await requestValidator.Validate(request);
             if (!validationResult.IsSuccessful)
                 return new CreateUserResult(validationResult.Error);
 
             var userCode = codeGenerator.Generate();
-            var imageUrl = imageUrlProvider.GetImageUrl(command.Email);
+            var imageUrl = imageUrlProvider.GetImageUrl(request.Email);
 
             var userId = await usersRepository.CreateUser(new CreateUserModel
             {
-                Email = command.Email,
-                DisplayName = command.DisplayName,
-                Password = command.Password,
+                Email = request.Email,
+                DisplayName = request.DisplayName,
+                Password = request.Password,
                 Code = userCode,
                 ImageUrl = imageUrl,
             });
@@ -52,8 +52,8 @@ namespace MeanCards.UserManagement
             return new CreateUserResult
             {
                 UserId = userId,
-                Email = command.Email,
-                DisplayName = command.DisplayName,
+                Email = request.Email,
+                DisplayName = request.DisplayName,
                 Code = userCode,
                 ImageUrl = imageUrl
             };

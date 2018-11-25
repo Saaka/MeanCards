@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Commands.Games
+﻿namespace MeanCards.Model.Core.Games
 {
     public class CreateGame
     {

@@ -1,7 +1,6 @@
-﻿using MeanCards.Commands.Games;
-using MeanCards.Common.RandomCodeProvider;
+﻿using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.DAL.Creation;
+using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace MeanCards.GameManagement
 {
     public interface ICreateGameHandler
     {
-        Task<CreateGameResult> Handle(CreateGame command);
+        Task<CreateGameResult> Handle(CreateGame request);
     }
 
     public class CreateGameHandler : ICreateGameHandler
@@ -31,12 +30,12 @@ namespace MeanCards.GameManagement
             this.codeGenerator = codeGenerator;
         }
 
-        public async Task<CreateGameResult> Handle(CreateGame command)
+        public async Task<CreateGameResult> Handle(CreateGame request)
         {
             var gameCode = codeGenerator.Generate();
 
-            int gameId = await CreateGameModel(command, gameCode);
-            var playerId = await CreatePlayerModel(gameId, command.OwnerId);
+            int gameId = await CreateGameModel(request, gameCode);
+            var playerId = await CreatePlayerModel(gameId, request.OwnerId);
 
             return new CreateGameResult
             {
@@ -45,15 +44,15 @@ namespace MeanCards.GameManagement
             };
         }
 
-        private async Task<int> CreateGameModel(CreateGame command, string gameCode)
+        private async Task<int> CreateGameModel(CreateGame request, string gameCode)
         {
             var gameId = await gamesRepository.CreateGame(new CreateGameModel
             {
                 Code = gameCode,
-                LanguageId = command.LanguageId,
-                Name = command.Name,
-                OwnerId = command.OwnerId,
-                ShowAdultContent = command.ShowAdultContent
+                LanguageId = request.LanguageId,
+                Name = request.Name,
+                OwnerId = request.OwnerId,
+                ShowAdultContent = request.ShowAdultContent
             });
             return gameId;
         }

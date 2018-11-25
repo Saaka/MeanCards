@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Commands.Users
+﻿namespace MeanCards.Model.Core.Users
 {
     public class CreateUser
     {

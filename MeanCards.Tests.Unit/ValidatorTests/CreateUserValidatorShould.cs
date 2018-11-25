@@ -1,5 +1,5 @@
-﻿using MeanCards.Commands.Users;
-using MeanCards.DAL.Interfaces.Repository;
+﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Core.Users;
 using MeanCards.Validators;
 using MeanCards.Validators.User;
 using Moq;
@@ -16,9 +16,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock();
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand();
+            var request = GetRequest();
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.True(result.IsSuccessful);
         }
@@ -29,9 +29,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock();
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand(password: "12345");
+            var request = GetRequest(password: "12345");
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.PasswordTooShort, result.Error);
@@ -43,9 +43,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock(isDuplicatedEmail: true);
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand();
+            var request = GetRequest();
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.DuplicatedEmail, result.Error);
@@ -57,9 +57,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock(isDuplicatedName: true);
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand();
+            var request = GetRequest();
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.DuplicatedUserName, result.Error);
@@ -71,9 +71,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock();
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand(email: "");
+            var request = GetRequest(email: "");
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.EmailRequired, result.Error);
@@ -85,9 +85,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock();
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand(name: "");
+            var request = GetRequest(name: "");
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.NameRequired, result.Error);
@@ -99,15 +99,15 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var repoMock = CreateRepositoryMock();
             var validator = new CreateUserValidator(repoMock);
 
-            var command = GetCommand(password: "");
+            var request = GetRequest(password: "");
 
-            var result = await validator.Validate(command);
+            var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.PasswordRequired, result.Error);
         }
 
-        private CreateUser GetCommand(
+        private CreateUser GetRequest(
             string name = "Test",
             string email = "Test",
             string password = "Test12")

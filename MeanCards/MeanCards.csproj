@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MeanCards.Commands\MeanCards.Commands.csproj" />
     <ProjectReference Include="..\MeanCards.Common\MeanCards.Common.csproj" />
     <ProjectReference Include="..\MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj" />
   </ItemGroup>

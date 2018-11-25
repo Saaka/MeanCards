@@ -1,5 +1,5 @@
-﻿using MeanCards.Commands.Users;
-using MeanCards.GameManagement;
+﻿using MeanCards.GameManagement;
+using MeanCards.Model.Core.Users;
 using MeanCards.UserManagement;
 using MeanCards.Validators;
 using MeanCards.Validators.User;
@@ -16,7 +16,7 @@ namespace MeanCards
                 .AddScoped<ICreateGameHandler, CreateGameHandler>()
                 .AddScoped<ICreateUserHandler, CreateUserHandler>()
                 
-                .AddTransient<ICommandValidator<CreateUser>, CreateUserValidator>();
+                .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>();
 
             return services;
         }

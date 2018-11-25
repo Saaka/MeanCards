@@ -2,7 +2,7 @@
 
 namespace MeanCards.Validators
 {
-    public interface ICommandValidator<T>
+    public interface IRequestValidator<T>
     {
         Task<ValidatorResult> Validate(T request);
     }

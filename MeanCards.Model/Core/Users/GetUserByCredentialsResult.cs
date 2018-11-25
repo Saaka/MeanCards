@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MeanCards.Commands.Users
+﻿namespace MeanCards.Model.Core.Users
 {
     public class GetUserByCredentialsResult : BaseResult
     {

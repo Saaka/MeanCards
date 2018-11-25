@@ -1,4 +1,5 @@
-﻿using MeanCards.UserManagement;
+﻿using MeanCards.Model.Core.Users;
+using MeanCards.UserManagement;
 using MeanCards.ViewModel.Auth;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace MeanCards.WebAPI.Services
 
         public async Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request)
         {
-            var userResult = await createUserHandler.Handle(new Commands.Users.CreateUser
+            var userResult = await createUserHandler.Handle(new CreateUser
             {
                 Email = request.Email,
                 DisplayName = request.DisplayName,
