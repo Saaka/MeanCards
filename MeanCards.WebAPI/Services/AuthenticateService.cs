@@ -16,41 +16,60 @@ namespace MeanCards.WebAPI.Services
     {
         private readonly IJwtTokenFactory tokenFactory;
         private readonly ICreateUserHandler createUserHandler;
+        private readonly IGetUserByCredentialsHandler getUserByCredentialsHandler;
 
         public AuthenticateService(IJwtTokenFactory tokenFactory,
-            ICreateUserHandler createUserHandler)
+            ICreateUserHandler createUserHandler,
+            IGetUserByCredentialsHandler getUserByCredentialsHandler)
         {
             this.tokenFactory = tokenFactory;
             this.createUserHandler = createUserHandler;
+            this.getUserByCredentialsHandler = getUserByCredentialsHandler;
         }
 
         public async Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request)
         {
-            var userResult = await createUserHandler.Handle(new CreateUser
+            var result = await createUserHandler.Handle(new CreateUser
             {
                 Email = request.Email,
                 DisplayName = request.DisplayName,
                 Password = request.Password
             });
-            if (!userResult.IsSuccessful)
-                return new AuthenticateUserResult(userResult.Error);
+            if (!result.IsSuccessful)
+                return new AuthenticateUserResult(result.Error);
 
-            var token = tokenFactory.GenerateEncodedToken(userResult.Code);
+            var token = tokenFactory.GenerateEncodedToken(result.User.Code);
 
             return new AuthenticateUserResult
             {
                 Token = token,
-                Email = userResult.Email,
-                Name = userResult.DisplayName,
-                Code = userResult.Code,
-                ImageUrl = userResult.ImageUrl,
+                Email = result.User.Email,
+                Name = result.User.DisplayName,
+                Code = result.User.Code,
+                ImageUrl = result.User.ImageUrl,
             };
         }
 
         public async Task<AuthenticateUserResult> AuthenticateUser(AuthenticateUserRequest request)
         {
+            var result = await getUserByCredentialsHandler.Handle(new GetUserByCredentials
+            {
+                Email = request.Email,
+                Password = request.Password
+            });
+            if (!result.IsSuccessful)
+                return new AuthenticateUserResult(result.Error);
 
-            return null;
+            var token = tokenFactory.GenerateEncodedToken(result.User.Code);
+
+            return new AuthenticateUserResult
+            {
+                Token = token,
+                Email = result.User.Email,
+                Name = result.User.DisplayName,
+                Code = result.User.Code,
+                ImageUrl = result.User.ImageUrl,
+            };
         }
 
         public async Task<AuthenticateUserResult> AuthenticateGoogleToken(AuthenticateUserWithGoogleRequest request)

@@ -1,4 +1,6 @@
-﻿namespace MeanCards.Model.Core.Users
+﻿using MeanCards.Model.DTO.Users;
+
+namespace MeanCards.Model.Core.Users
 {
     public class GetUserByCredentialsResult : BaseResult
     {
@@ -9,5 +11,7 @@
         public GetUserByCredentialsResult(string error) : base(error)
         {
         }
+
+        public UserModel User { get; set; }
     }
 }

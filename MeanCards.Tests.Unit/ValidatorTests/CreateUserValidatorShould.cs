@@ -1,4 +1,5 @@
-﻿using MeanCards.DAL.Interfaces.Repository;
+﻿using MeanCards.Common.Constants;
+using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Users;
 using MeanCards.Validators;
 using MeanCards.Validators.User;

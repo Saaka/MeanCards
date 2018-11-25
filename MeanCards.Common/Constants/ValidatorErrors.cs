@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Validators
+﻿namespace MeanCards.Common.Constants
 {
     public static class ValidatorErrors
     {

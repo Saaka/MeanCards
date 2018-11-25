@@ -3,6 +3,7 @@ using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Users;
 using MeanCards.Model.DAL.Creation.Users;
+using MeanCards.Model.DTO.Users;
 using MeanCards.Validators;
 using System.Threading.Tasks;
 
@@ -51,11 +52,14 @@ namespace MeanCards.UserManagement
 
             return new CreateUserResult
             {
-                UserId = userId,
-                Email = request.Email,
-                DisplayName = request.DisplayName,
-                Code = userCode,
-                ImageUrl = imageUrl
+                User = new UserModel
+                {
+                    UserId = userId,
+                    Email = request.Email,
+                    DisplayName = request.DisplayName,
+                    Code = userCode,
+                    ImageUrl = imageUrl
+                }
             };
         }
     }

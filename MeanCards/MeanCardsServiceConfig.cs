@@ -15,6 +15,8 @@ namespace MeanCards
             services
                 .AddScoped<ICreateGameHandler, CreateGameHandler>()
                 .AddScoped<ICreateUserHandler, CreateUserHandler>()
+
+                .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
                 
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>();
 
