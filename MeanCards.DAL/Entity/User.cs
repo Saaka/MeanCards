@@ -13,7 +13,9 @@ namespace MeanCards.DAL.Entity
         
         [StringLength(64)]
         public string Code { get; set; }
-        public long? GoogleId { get; set; }
+        [StringLength(64)]
+        public string GoogleId { get; set; }
+        [StringLength(1024)]
         public string ImageUrl { get; set; }
 
         public virtual List<Game> Games { get; set; }

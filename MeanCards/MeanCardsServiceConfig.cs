@@ -11,14 +11,19 @@ namespace MeanCards
     {
         public static IServiceCollection RegisterDomainServices(this IServiceCollection services)
         {
-            //Handlers
             services
+                
+                //Handlers
                 .AddScoped<ICreateGameHandler, CreateGameHandler>()
                 .AddScoped<ICreateUserHandler, CreateUserHandler>()
+                .AddScoped<IAuthenticateGoogleUserHandler, AuthenticateGoogleUserHandler>()
 
+                //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
-                
-                .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>();
+
+                //validators
+                .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
+                .AddTransient<IRequestValidator<AuthenticateGoogleUser>, CreateGoogleUserValidator>();
 
             return services;
         }

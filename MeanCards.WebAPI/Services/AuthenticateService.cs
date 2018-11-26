@@ -2,6 +2,7 @@
 using MeanCards.UserManagement;
 using MeanCards.ViewModel.Auth;
 using MeanCards.WebAPI.Services.Google;
+using System;
 using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Services
@@ -18,16 +19,19 @@ namespace MeanCards.WebAPI.Services
         private readonly IJwtTokenFactory tokenFactory;
         private readonly ICreateUserHandler createUserHandler;
         private readonly IGetUserByCredentialsHandler getUserByCredentialsHandler;
+        private readonly IAuthenticateGoogleUserHandler authenticateGoogleUserHandler;
         private readonly IGoogleTokenVerificationService googleTokenVerificationService;
 
         public AuthenticateService(IJwtTokenFactory tokenFactory,
             ICreateUserHandler createUserHandler,
             IGetUserByCredentialsHandler getUserByCredentialsHandler,
+            IAuthenticateGoogleUserHandler authenticateGoogleUserHandler,
             IGoogleTokenVerificationService googleTokenVerificationService)
         {
             this.tokenFactory = tokenFactory;
             this.createUserHandler = createUserHandler;
             this.getUserByCredentialsHandler = getUserByCredentialsHandler;
+            this.authenticateGoogleUserHandler = authenticateGoogleUserHandler;
             this.googleTokenVerificationService = googleTokenVerificationService;
         }
 
@@ -82,13 +86,24 @@ namespace MeanCards.WebAPI.Services
             if (!googleResult.IsSuccessful)
                 return new AuthenticateUserResult(googleResult.Error);
 
-            var token = tokenFactory.GenerateEncodedToken("123");
+            var result = await authenticateGoogleUserHandler.Handle(new AuthenticateGoogleUser
+            {
+                GoogleId = googleResult.TokenInfo.GoogleUserId,
+                DisplayName = googleResult.TokenInfo.DisplayName,
+                Email = googleResult.TokenInfo.Email,
+                ImageUrl = googleResult.TokenInfo.ImageUrl
+            });
+            if (!result.IsSuccessful)
+                return new AuthenticateUserResult(result.Error);
+
+            var token = tokenFactory.GenerateEncodedToken(result.User.Code);
 
             return new AuthenticateUserResult
             {
-                Email = googleResult.TokenInfo.Email,
-                Name =googleResult.TokenInfo.DisplayName,
-                ImageUrl = googleResult.TokenInfo.ImageUrl,
+                Code = result.User.Code,
+                Email = result.User.Email,
+                ImageUrl = result.User.ImageUrl,
+                Name = result.User.DisplayName,
                 Token = token
             };
         }

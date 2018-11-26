@@ -22,9 +22,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 Code = "12345"
             };
 
-            var userId = await repository.CreateUser(model);
+            var user = await repository.CreateUser(model);
 
-            Assert.NotEqual(0, userId);
+            Assert.NotNull(user);
         }
 
         [Fact]

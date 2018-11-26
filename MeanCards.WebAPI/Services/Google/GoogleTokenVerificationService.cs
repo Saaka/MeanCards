@@ -24,7 +24,8 @@ namespace MeanCards.WebAPI.Services.Google
         public async Task<ValidateGoogleTokenResult> Validate(string googleToken)
         {
             var tokenInfo = await googleClient.GetTokenInfo(googleToken);
-            if (tokenInfo == null || tokenInfo.ClientId != googleConfig.GetClientId())
+            if (tokenInfo == null || 
+                tokenInfo.ClientId != googleConfig.GetClientId())
                 return new ValidateGoogleTokenResult { IsSuccessful = false, Error =  "InvalidToken"};
 
             return new ValidateGoogleTokenResult

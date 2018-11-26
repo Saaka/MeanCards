@@ -41,7 +41,7 @@ namespace MeanCards.UserManagement
             var userCode = codeGenerator.Generate();
             var imageUrl = imageUrlProvider.GetImageUrl(request.Email);
 
-            var userId = await usersRepository.CreateUser(new CreateUserModel
+            var user = await usersRepository.CreateUser(new CreateUserModel
             {
                 Email = request.Email,
                 DisplayName = request.DisplayName,
@@ -54,11 +54,11 @@ namespace MeanCards.UserManagement
             {
                 User = new UserModel
                 {
-                    UserId = userId,
-                    Email = request.Email,
-                    DisplayName = request.DisplayName,
-                    Code = userCode,
-                    ImageUrl = imageUrl
+                    UserId = user.UserId,
+                    Email = user.Email,
+                    DisplayName = user.DisplayName,
+                    Code = user.Code,
+                    ImageUrl = user.ImageUrl
                 }
             };
         }

@@ -8,6 +8,7 @@
         public const string EmailRequired = nameof(EmailRequired);
         public const string PasswordRequired = nameof(PasswordRequired);
         public const string PasswordTooShort = nameof(PasswordTooShort);
+        public const string GoogleIdRequired = nameof(GoogleIdRequired);
     }
 }
 

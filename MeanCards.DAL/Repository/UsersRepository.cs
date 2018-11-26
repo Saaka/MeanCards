@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using MeanCards.Model.DAL.Access.Users;
 using MeanCards.Model.DTO.Users;
+using Microsoft.EntityFrameworkCore;
+using MeanCards.Model.DAL.Modification.Users;
 
 namespace MeanCards.DAL.Repository
 {
@@ -22,7 +24,7 @@ namespace MeanCards.DAL.Repository
             this.userManager = userManager;
         }
 
-        public async Task<int> CreateUser(CreateUserModel model)
+        public async Task<UserModel> CreateUser(CreateUserModel model)
         {
             var user = new User
             {
@@ -35,7 +37,52 @@ namespace MeanCards.DAL.Repository
             if (!result.Succeeded)
                 throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
 
-            return user.Id;
+            return CreateUserDto(user);
+        }
+
+        public async Task<UserModel> CreateGoogleUser(CreateGoogleUserModel model)
+        {
+            var user = new User
+            {
+                Email = model.Email,
+                UserName = model.DisplayName,
+                Code = model.Code,
+                ImageUrl = model.ImageUrl,
+                GoogleId = model.GoogleId
+            };
+            var result = await userManager.CreateAsync(user);
+            if (!result.Succeeded)
+                throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
+
+            return CreateUserDto(user);
+        }
+
+        public async Task<UserModel> UpdateGoogleUser(UpdateGoogleUserModel model)
+        {
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return null;
+
+            user.ImageUrl = model.ImageUrl;
+            var result = await userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return CreateUserDto(user);
+            else
+                return null;
+        }
+
+        public async Task<UserModel> MergeUserWithGoogle(MergeUserWithGoogleModel model)
+        {
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return null;
+
+            user.GoogleId = model.GoogleId;
+            var result = await userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return CreateUserDto(user);
+            else
+                return null;
         }
 
         public async Task<UserModel> GetUserByCredentials(GetUserByCredentialsModel credentials)
@@ -44,21 +91,22 @@ namespace MeanCards.DAL.Repository
             if (user == null)
                 return null;
 
-            if(await userManager.CheckPasswordAsync(user, credentials.Password))
+            if (await userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                var model = new UserModel
-                {
-                    UserId = user.Id,
-                    Code = user.Code,
-                    Email = user.Email,
-                    DisplayName = user.UserName,
-                    ImageUrl = user.ImageUrl
-                };
-
-                return model;
+                return CreateUserDto(user);
             }
 
             return null;
+        }
+
+        public async Task<bool> GoogleUserExists(string email, string googleId)
+        {
+            var normalizedEmail = GetNormalizedEmail(email);
+
+            var userExists = await context.Users
+                .AnyAsync(x => x.NormalizedEmail == email && x.GoogleId == googleId);
+
+            return userExists;
         }
 
         public async Task<bool> UserEmailExists(string email)
@@ -73,6 +121,23 @@ namespace MeanCards.DAL.Repository
             var user = await userManager.FindByNameAsync(name);
 
             return user != null;
+        }
+
+        private string GetNormalizedEmail(string email)
+        {
+            return email.ToUpper();
+        }
+
+        private UserModel CreateUserDto(User user)
+        {
+            return new UserModel
+            {
+                UserId = user.Id,
+                Code = user.Code,
+                Email = user.Email,
+                DisplayName = user.UserName,
+                ImageUrl = user.ImageUrl
+            };
         }
     }
 }
