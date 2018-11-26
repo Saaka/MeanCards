@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MeanCards.Validators.User
 {
-    public class CreateGoogleUserValidator : IRequestValidator<AuthenticateGoogleUser>
+    public class AuthenticateGoogleUserValidator : IRequestValidator<AuthenticateGoogleUser>
     {
         public async Task<ValidatorResult> Validate(AuthenticateGoogleUser request)
         {

@@ -1,4 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.Core.Users;
 using MeanCards.Tests.Integration.BaseTests;
 using MeanCards.UserManagement;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
         {
             var handler = Fixture.GetService<ICreateUserHandler>();
 
-            var request = new Model.Core.Users.CreateUser
+            var request = new CreateUser
             {
                 Email = "test@test.com",
                 Password = "pass12",
@@ -38,7 +39,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
         {
             var handler = Fixture.GetService<ICreateUserHandler>();
 
-            var request = new Model.Core.Users.CreateUser
+            var request = new CreateUser
             {
                 DisplayName = "Jimmy"
             };

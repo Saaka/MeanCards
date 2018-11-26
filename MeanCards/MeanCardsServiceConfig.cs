@@ -23,7 +23,7 @@ namespace MeanCards
 
                 //validators
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
-                .AddTransient<IRequestValidator<AuthenticateGoogleUser>, CreateGoogleUserValidator>();
+                .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>();
 
             return services;
         }

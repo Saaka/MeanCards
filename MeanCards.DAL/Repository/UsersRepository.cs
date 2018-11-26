@@ -104,7 +104,7 @@ namespace MeanCards.DAL.Repository
             var normalizedEmail = GetNormalizedEmail(email);
 
             var userExists = await context.Users
-                .AnyAsync(x => x.NormalizedEmail == email && x.GoogleId == googleId);
+                .AnyAsync(x => x.NormalizedEmail == normalizedEmail && x.GoogleId == googleId);
 
             return userExists;
         }
