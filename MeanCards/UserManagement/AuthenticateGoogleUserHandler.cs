@@ -5,7 +5,6 @@ using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DAL.Modification.Users;
 using MeanCards.Model.DTO.Users;
 using MeanCards.Validators;
-using System;
 using System.Threading.Tasks;
 
 namespace MeanCards.UserManagement
@@ -56,19 +55,22 @@ namespace MeanCards.UserManagement
 
         private async Task<CreateUserResult> AddGoogleLoginToExistingUser(AuthenticateGoogleUser request)
         {
-            var user = await usersRepository.MergeUserWithGoogle(new MergeUserWithGoogleModel
+            var result = await usersRepository.MergeUserWithGoogle(new MergeUserWithGoogleModel
             {
                 Email = request.Email,
                 GoogleId = request.GoogleId
             });
 
-            return CreateResult(user);
+            if(!result.IsSuccessful)
+                return new CreateUserResult(result.Error);
+
+            return CreateResult(result.Model);
         }
 
         private async Task<CreateUserResult> CreateNewGoogleUser(AuthenticateGoogleUser request)
         {
             var userCode = codeGenerator.Generate();
-            var user = await usersRepository.CreateGoogleUser(new CreateGoogleUserModel
+            var result = await usersRepository.CreateGoogleUser(new CreateGoogleUserModel
             {
                 Code = userCode,
                 Email = request.Email,
@@ -77,18 +79,24 @@ namespace MeanCards.UserManagement
                 ImageUrl = request.ImageUrl
             });
 
-            return CreateResult(user);
+            if (!result.IsSuccessful)
+                return new CreateUserResult(result.Error);
+
+            return CreateResult(result.Model);
         }
 
         private async Task<CreateUserResult> UpdateExistingGoogleUser(AuthenticateGoogleUser request)
         {
-            var user = await usersRepository.UpdateGoogleUser(new UpdateGoogleUserModel
+            var result = await usersRepository.UpdateGoogleUser(new UpdateGoogleUserModel
             {
                 Email = request.Email,
                 ImageUrl = request.ImageUrl
             });
 
-            return CreateResult(user);
+            if (!result.IsSuccessful)
+                return new CreateUserResult(result.Error);
+
+            return CreateResult(result.Model);
         }
 
         private CreateUserResult CreateResult(UserModel user)

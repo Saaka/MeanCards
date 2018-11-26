@@ -9,6 +9,8 @@ using MeanCards.Model.DAL.Access.Users;
 using MeanCards.Model.DTO.Users;
 using Microsoft.EntityFrameworkCore;
 using MeanCards.Model.DAL.Modification.Users;
+using MeanCards.Model.DAL;
+using MeanCards.Common.Constants;
 
 namespace MeanCards.DAL.Repository
 {
@@ -24,7 +26,7 @@ namespace MeanCards.DAL.Repository
             this.userManager = userManager;
         }
 
-        public async Task<UserModel> CreateUser(CreateUserModel model)
+        public async Task<RepositoryResult<UserModel>> CreateUser(CreateUserModel model)
         {
             var user = new User
             {
@@ -35,12 +37,12 @@ namespace MeanCards.DAL.Repository
             };
             var result = await userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
+                return new RepositoryResult<UserModel>(result.Errors.ToString());
 
-            return CreateUserDto(user);
+            return CreateUserResult(user);
         }
 
-        public async Task<UserModel> CreateGoogleUser(CreateGoogleUserModel model)
+        public async Task<RepositoryResult<UserModel>> CreateGoogleUser(CreateGoogleUserModel model)
         {
             var user = new User
             {
@@ -52,51 +54,49 @@ namespace MeanCards.DAL.Repository
             };
             var result = await userManager.CreateAsync(user);
             if (!result.Succeeded)
-                throw new ArgumentException(result.ToString()); // TEMP FOR DEBUG
+                return new RepositoryResult<UserModel>(result.Errors.ToString());
 
-            return CreateUserDto(user);
+            return CreateUserResult(user);
         }
 
-        public async Task<UserModel> UpdateGoogleUser(UpdateGoogleUserModel model)
+        public async Task<RepositoryResult<UserModel>> UpdateGoogleUser(UpdateGoogleUserModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return null;
+                return new RepositoryResult<UserModel>(AccessErrors.UserNotFound);
 
             user.ImageUrl = model.ImageUrl;
             var result = await userManager.UpdateAsync(user);
             if (result.Succeeded)
-                return CreateUserDto(user);
+                return CreateUserResult(user);
             else
-                return null;
+                return new RepositoryResult<UserModel>(result.Errors.ToString());
         }
 
-        public async Task<UserModel> MergeUserWithGoogle(MergeUserWithGoogleModel model)
+        public async Task<RepositoryResult<UserModel>> MergeUserWithGoogle(MergeUserWithGoogleModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return null;
+                return new RepositoryResult<UserModel>(AccessErrors.UserNotFound);
 
             user.GoogleId = model.GoogleId;
             var result = await userManager.UpdateAsync(user);
             if (result.Succeeded)
-                return CreateUserDto(user);
+                return CreateUserResult(user);
             else
-                return null;
+                return new RepositoryResult<UserModel>(result.Errors.ToString());
         }
 
-        public async Task<UserModel> GetUserByCredentials(GetUserByCredentialsModel credentials)
+        public async Task<RepositoryResult<UserModel>> GetUserByCredentials(GetUserByCredentialsModel credentials)
         {
             var user = await userManager.FindByEmailAsync(credentials.Email);
             if (user == null)
-                return null;
+                return new RepositoryResult<UserModel>(AccessErrors.UserNotFound);
 
             if (await userManager.CheckPasswordAsync(user, credentials.Password))
-            {
-                return CreateUserDto(user);
-            }
-
-            return null;
+                return CreateUserResult(user);
+            else
+                return new RepositoryResult<UserModel>(AccessErrors.InvalidUserCredentials);
         }
 
         public async Task<bool> GoogleUserExists(string email, string googleId)
@@ -128,15 +128,18 @@ namespace MeanCards.DAL.Repository
             return email.ToUpper();
         }
 
-        private UserModel CreateUserDto(User user)
+        private RepositoryResult<UserModel> CreateUserResult(User user)
         {
-            return new UserModel
+            return new RepositoryResult<UserModel>
             {
-                UserId = user.Id,
-                Code = user.Code,
-                Email = user.Email,
-                DisplayName = user.UserName,
-                ImageUrl = user.ImageUrl
+                Model = new UserModel
+                {
+                    UserId = user.Id,
+                    Code = user.Code,
+                    Email = user.Email,
+                    DisplayName = user.UserName,
+                    ImageUrl = user.ImageUrl
+                }
             };
         }
     }

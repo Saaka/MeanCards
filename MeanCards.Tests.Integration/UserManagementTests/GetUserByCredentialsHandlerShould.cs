@@ -29,8 +29,9 @@ namespace MeanCards.Tests.Integration.UserManagementTests
             Assert.NotNull(result.User);
             Assert.Equal("test@test.com", result.User.Email);
         }
+
         [Fact]
-        public async Task NotGetUserForInvalidRequest()
+        public async Task NotGetUserForNotExistingUser()
         {
             await CreateUser("test@test.com", "pass12");
 
@@ -39,6 +40,26 @@ namespace MeanCards.Tests.Integration.UserManagementTests
             var request = new GetUserByCredentials
             {
                 Email = "test1@test.com",
+                Password = "pass123"
+            };
+
+            var result = await handler.Handle(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(AccessErrors.UserNotFound, result.Error);
+            Assert.Null(result.User);
+        }
+
+        [Fact]
+        public async Task NotGetUserForInvalidCredentials()
+        {
+            await CreateUser("test@test.com", "pass12");
+
+            var handler = Fixture.GetService<IGetUserByCredentialsHandler>();
+
+            var request = new GetUserByCredentials
+            {
+                Email = "test@test.com",
                 Password = "pass123"
             };
 

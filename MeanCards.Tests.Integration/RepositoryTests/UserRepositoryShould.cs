@@ -88,9 +88,11 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 password: credentials.Password);
             var repository = Fixture.GetService<IUsersRepository>();
             
-            var userModel = await repository.GetUserByCredentials(credentials);
+            var result = await repository.GetUserByCredentials(credentials);
 
-            Assert.NotNull(userModel);
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccessful);
+            Assert.NotNull(result.Model);
         }
 
         [Fact]
@@ -106,9 +108,11 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 password: "Invalid123");
             var repository = Fixture.GetService<IUsersRepository>();
             
-            var userModel = await repository.GetUserByCredentials(credentials);
+            var result = await repository.GetUserByCredentials(credentials);
 
-            Assert.Null(userModel);
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccessful);
+            Assert.Null(result.Model);
         }
     }
 }

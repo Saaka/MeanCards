@@ -22,24 +22,24 @@ namespace MeanCards.UserManagement
 
         public async Task<GetUserByCredentialsResult> Handle(GetUserByCredentials data)
         {
-            var user = await repository.GetUserByCredentials(new Model.DAL.Access.Users.GetUserByCredentialsModel
+            var result = await repository.GetUserByCredentials(new Model.DAL.Access.Users.GetUserByCredentialsModel
             {
                 Email = data.Email,
                 Password = data.Password
             });
 
-            if (user == null)
-                return new GetUserByCredentialsResult(AccessErrors.InvalidUserCredentials);
+            if (!result.IsSuccessful)
+                return new GetUserByCredentialsResult(result.Error);
 
             return new GetUserByCredentialsResult
             { 
                 User = new UserModel
                 {
-                    Code = user.Code,
-                    DisplayName = user.DisplayName,
-                    Email = user.Email,
-                    ImageUrl = user.ImageUrl,
-                    UserId = user.UserId
+                    Code = result.Model.Code,
+                    DisplayName = result.Model.DisplayName,
+                    Email = result.Model.Email,
+                    ImageUrl = result.Model.ImageUrl,
+                    UserId = result.Model.UserId
                 }
             };
         }
