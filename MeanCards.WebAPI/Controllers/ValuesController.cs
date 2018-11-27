@@ -2,6 +2,7 @@
 using MeanCards.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MeanCards.WebAPI.Controllers
 {
@@ -9,8 +10,13 @@ namespace MeanCards.WebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerAuthBase
     {
-        public ValuesController(IUserContextDataProvider userContextDataProvider) : base(userContextDataProvider)
+        private readonly ILogger logger;
+
+        public ValuesController(IUserContextDataProvider userContextDataProvider,
+            ILogger<ValuesController> logger)
+            : base(userContextDataProvider)
         {
+            this.logger = logger;
         }
 
         // GET api/values
@@ -25,6 +31,8 @@ namespace MeanCards.WebAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            logger.LogInformation($"Get value for id: {id}");
+
             return id.ToString();
         }
 
