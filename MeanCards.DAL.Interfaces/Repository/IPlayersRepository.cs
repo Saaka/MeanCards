@@ -6,7 +6,7 @@ namespace MeanCards.DAL.Interfaces.Repository
 {
     public interface IPlayersRepository
     {
-        Task<int> CreatePlayer(CreatePlayerModel model);
+        Task<PlayerModel> CreatePlayer(CreatePlayerModel model);
         Task<PlayerModel> GetPlayerById(int playerId);
     }
 }

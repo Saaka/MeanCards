@@ -23,7 +23,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             {
                 GameId = gameId,
                 RoundOwnerId = playerId,
-                QuestionCardId = questionCardId
+                QuestionCardId = questionCardId,
+                RoundNumber = 1
             };
 
             var gameRoundId = await repository.CreateGameRound(createRound);
@@ -34,6 +35,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
             Assert.Equal(1, gameRound.Number);
+            Assert.Equal(4, TestHelper.GetNumberOfProperties<CreateGameRoundModel>());
         }
 
         private async Task<int> CreateQuestionCard(int languageId)

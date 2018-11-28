@@ -19,12 +19,12 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
-        public async Task<int> CreateGameRound(CreateGameRoundModel model)
+        public async Task<GameRoundModel> CreateGameRound(CreateGameRoundModel model)
         {
             var newRound = new GameRound
             {
                 GameId = model.GameId,
-                Number = 1,
+                Number = model.RoundNumber,
                 QuestionCardId = model.QuestionCardId,
                 OwnerId = model.RoundOwnerId,
                 CreateDate = DateTime.UtcNow,
@@ -34,7 +34,20 @@ namespace MeanCards.DAL.Repository
             context.GameRounds.Add(newRound);
             await context.SaveChangesAsync();
 
-            return newRound.GameRoundId;
+            return MapToModel(newRound);
+        }
+
+        private GameRoundModel MapToModel(GameRound round)
+        {
+            return new GameRoundModel
+            {
+                GameId = round.GameId,
+                GameRoundId = round.GameRoundId,
+                Number = round.Number,
+                OwnerId = round.OwnerId,
+                QuestionCardId = round.QuestionCardId,
+                WinnerId = round.WinnerId
+            };
         }
 
         public async Task<GameRoundModel> GetCurrentGameRound(int gameId)

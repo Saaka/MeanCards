@@ -18,7 +18,7 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
-        public async Task<int> CreatePlayer(CreatePlayerModel model)
+        public async Task<PlayerModel> CreatePlayer(CreatePlayerModel model)
         {
             var newPlayer = new Player
             {
@@ -32,7 +32,19 @@ namespace MeanCards.DAL.Repository
             context.Players.Add(newPlayer);
             await context.SaveChangesAsync();
 
-            return newPlayer.PlayerId;
+            return MapToModel(newPlayer);
+        }
+
+        private PlayerModel MapToModel(Player player)
+        {
+            return new PlayerModel
+            {
+                PlayerId = player.PlayerId,
+                GameId = player.GameId,
+                Number = player.Number,
+                Points = player.Points,
+                UserId = player.UserId
+            };
         }
 
         public async Task<PlayerModel> GetPlayerById(int playerId)

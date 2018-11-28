@@ -25,9 +25,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 ShowAdultContent = true
             };
 
-            var gameId = await gamesRepository.CreateGame(createModel);
-
-            var game = await gamesRepository.GetGameById(gameId);
+            var game = await gamesRepository.CreateGame(createModel);
 
             Assert.NotNull(game);
             Assert.True(game.ShowAdultContent);

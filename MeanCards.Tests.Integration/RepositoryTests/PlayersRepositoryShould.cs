@@ -23,9 +23,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 Number = 1
             };
 
-            var playerId = await playersRepository.CreatePlayer(createPlayer);
-
-            var player = await playersRepository.GetPlayerById(playerId);
+            var player = await playersRepository.CreatePlayer(createPlayer);
 
             Assert.NotNull(player);
             Assert.Equal(userId, player.UserId);

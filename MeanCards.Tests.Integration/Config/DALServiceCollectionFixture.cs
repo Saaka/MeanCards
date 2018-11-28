@@ -54,8 +54,8 @@ namespace MeanCards.Tests.Integration.Config
                 UserId = userId
             };
 
-            var playerId = await playersRepository.CreatePlayer(createPlayer);
-            return playerId;
+            var player = await playersRepository.CreatePlayer(createPlayer);
+            return player.PlayerId;
         }
 
         public async Task<int> CreateDefaultGame(
@@ -75,8 +75,8 @@ namespace MeanCards.Tests.Integration.Config
                 ShowAdultContent = showAdultContent
             };
 
-            var gameId = await gamesRepository.CreateGame(createModel);
-            return gameId;
+            var game = await gamesRepository.CreateGame(createModel);
+            return game.GameId;
         }
 
         protected virtual SqliteConnection CreateConnection()

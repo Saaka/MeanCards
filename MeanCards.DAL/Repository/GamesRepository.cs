@@ -20,7 +20,7 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
-        public async Task<int> CreateGame(CreateGameModel model)
+        public async Task<GameModel> CreateGame(CreateGameModel model)
         {
             var newGame = new Game
             {
@@ -37,7 +37,21 @@ namespace MeanCards.DAL.Repository
             context.Games.Add(newGame);
             await context.SaveChangesAsync();
 
-            return newGame.GameId;
+            return MapToModel(newGame);
+        }
+
+        private GameModel MapToModel(Game game)
+        {
+            return new GameModel
+            {
+                Code = game.Code,
+                GameId = game.GameId,
+                LanguageId = game.LanguageId,
+                Name = game.Name,
+                OwnerId = game.OwnerId,
+                ShowAdultContent = game.ShowAdultContent,
+                Status = game.Status
+            };
         }
 
         public async Task<GameModel> GetGameById(int gameId)

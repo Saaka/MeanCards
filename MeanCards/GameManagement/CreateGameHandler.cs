@@ -3,6 +3,9 @@ using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
+using MeanCards.Model.DTO.Games;
+using MeanCards.Model.DTO.Players;
+using System;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
@@ -17,16 +20,19 @@ namespace MeanCards.GameManagement
         protected readonly IGamesRepository gamesRepository;
         protected readonly IGameRoundsRepository gameRoundsRepository;
         protected readonly IPlayersRepository playersRepository;
+        protected readonly IQuestionCardsRepository questionCardsRepository;
         protected readonly ICodeGenerator codeGenerator;
 
         public CreateGameHandler(IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
+            IQuestionCardsRepository questionCardsRepository,
             ICodeGenerator codeGenerator)
         {
             this.gamesRepository = gamesRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.playersRepository = playersRepository;
+            this.questionCardsRepository = questionCardsRepository;
             this.codeGenerator = codeGenerator;
         }
 
@@ -34,19 +40,33 @@ namespace MeanCards.GameManagement
         {
             var gameCode = codeGenerator.Generate();
 
-            var gameId = await CreateGameModel(request, gameCode);
-            var playerId = await CreatePlayerModel(gameId, request.OwnerId);
+            var game = await CreateGameModel(request, gameCode);
+            var player = await CreatePlayerModel(game.GameId, request.OwnerId);
+            var gameRound = await CreateFirstRound(game, player);
 
             return new CreateGameResult
             {
-                GameId = gameId,
+                GameId = game.GameId,
                 Code = gameCode
             };
         }
 
-        private async Task<int> CreateGameModel(CreateGame request, string gameCode)
+        private async Task<GameRoundModel> CreateFirstRound(GameModel game, PlayerModel player)
         {
-            var gameId = await gamesRepository.CreateGame(new CreateGameModel
+            var gameRound = await gameRoundsRepository.CreateGameRound(new CreateGameRoundModel
+            {
+                GameId = game.GameId,
+                RoundOwnerId = player.PlayerId,
+                QuestionCardId = 1,
+                RoundNumber = 1
+            });
+
+            return gameRound;
+        }
+
+        private async Task<GameModel> CreateGameModel(CreateGame request, string gameCode)
+        {
+            var game = await gamesRepository.CreateGame(new CreateGameModel
             {
                 Code = gameCode,
                 LanguageId = request.LanguageId,
@@ -54,19 +74,19 @@ namespace MeanCards.GameManagement
                 OwnerId = request.OwnerId,
                 ShowAdultContent = request.ShowAdultContent
             });
-            return gameId;
+            return game;
         }
 
-        private async Task<int> CreatePlayerModel(int gameId, int userId)
+        private async Task<PlayerModel> CreatePlayerModel(int gameId, int userId)
         {
-            var playerId = await playersRepository.CreatePlayer(new CreatePlayerModel
+            var player = await playersRepository.CreatePlayer(new CreatePlayerModel
             {
                 GameId = gameId,
                 UserId = userId,
                 Number = 1
             });
 
-            return playerId;
+            return player;
         }
     }
 }

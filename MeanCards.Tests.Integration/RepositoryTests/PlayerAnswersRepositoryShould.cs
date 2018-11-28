@@ -3,6 +3,7 @@ using MeanCards.Model.DAL.Creation.AnswerCards;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DAL.Creation.QuestionCards;
+using MeanCards.Model.DTO.Games;
 using MeanCards.Tests.Integration.BaseTests;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,26 +21,26 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gameId = await Fixture.CreateDefaultGame(languageId, userId);
             var playerId = await Fixture.CreateDefaultPlayer(userId, gameId);
             var questionCardId = await CreateQuestionCard(languageId);
-            var gameRoundId = await CreateGameRound(gameId, playerId, questionCardId);
+            var gameRound = await CreateGameRound(gameId, playerId, questionCardId);
             var answerCardId = await CreateAnswerCard(languageId);
 
             var repository = Fixture.GetService<IPlayerAnswersRepository>();
             var createAnswer = new CreatePlayerAnswerModel
             {
                 AnswerCardId = answerCardId, 
-                GameRoundId = gameRoundId,
+                GameRoundId = gameRound.GameRoundId,
                 PlayerId = playerId
             };
 
             var playerAnswerId = await repository.CreatePlayerAnswer(createAnswer);
 
-            var answers = await repository.GetAllPlayerAnswers(gameRoundId);
+            var answers = await repository.GetAllPlayerAnswers(gameRound.GameRoundId);
 
             Assert.Single(answers);
 
             var answer = answers.First();
             Assert.Equal(answerCardId, answer.AnswerCardId);
-            Assert.Equal(gameRoundId, answer.GameRoundId);
+            Assert.Equal(gameRound.GameRoundId, answer.GameRoundId);
             Assert.False(answer.IsSelectedAnswer);
             Assert.Equal(playerId, answer.PlayerId);
             Assert.Null(answer.SecondaryAnswerCardId);
@@ -71,14 +72,15 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             });
         }
 
-        private async Task<int> CreateGameRound(int gameId, int playerId, int questionCardId)
+        private async Task<GameRoundModel> CreateGameRound(int gameId, int playerId, int questionCardId, int roundNumber = 1)
         {
             var repository = Fixture.GetService<IGameRoundsRepository>();
             var createRound = new CreateGameRoundModel
             {
                 GameId = gameId,
                 RoundOwnerId = playerId,
-                QuestionCardId = questionCardId
+                QuestionCardId = questionCardId,
+                RoundNumber = roundNumber
             };
 
             return await repository.CreateGameRound(createRound);
