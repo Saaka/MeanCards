@@ -37,6 +37,63 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal("Test2", card.Text);
         }
 
+        [Fact]
+        public async Task ReturnSingleRandomQuestionCard()
+        {
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
+            var gameId = await CreateGame(languageId);
+
+            var questionCardId = await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
+            {
+                IsAdultContent = true,
+                LanguageId = languageId,
+                NumberOfAnswers = 1,
+                Text = "Test1"
+            });
+
+            var questionCard = await cardRepository.GetRandomQuestionCardForGame(gameId);
+
+            Assert.NotNull(questionCard);
+            Assert.Equal(questionCardId, questionCard.QuestionCardId);
+        }
+
+        [Fact]
+        public async Task ReturnSingleRandomQuestionCardWithoutMatureContent()
+        {
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
+            var gameId = await CreateGame(languageId, false);
+
+            await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
+            {
+                IsAdultContent = true,
+                LanguageId = languageId,
+                NumberOfAnswers = 1,
+                Text = "Test1"
+            });
+            var questionCardId = await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
+            {
+                IsAdultContent = false,
+                LanguageId = languageId,
+                NumberOfAnswers = 1,
+                Text = "Test1"
+            });
+
+            var questionCard = await cardRepository.GetRandomQuestionCardForGame(gameId);
+
+            Assert.NotNull(questionCard);
+            Assert.Equal(questionCardId, questionCard.QuestionCardId);
+        }
+
+        private async Task<int> CreateGame(int languageId, bool showAdultContent = true)
+        {
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await Fixture.CreateDefaultGame(languageId, userId, showAdultContent: showAdultContent);
+
+            return gameId;
+        }
+
         private async Task PopulateQuestionCards(int languageId)
         {
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();

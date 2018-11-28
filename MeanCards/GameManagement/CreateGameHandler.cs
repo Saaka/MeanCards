@@ -53,11 +53,13 @@ namespace MeanCards.GameManagement
 
         private async Task<GameRoundModel> CreateFirstRound(GameModel game, PlayerModel player)
         {
+            var questionCard = await questionCardsRepository.GetRandomQuestionCardForGame(game.GameId);
+
             var gameRound = await gameRoundsRepository.CreateGameRound(new CreateGameRoundModel
             {
                 GameId = game.GameId,
                 RoundOwnerId = player.PlayerId,
-                QuestionCardId = 1,
+                QuestionCardId = questionCard.QuestionCardId,
                 RoundNumber = 1
             });
 

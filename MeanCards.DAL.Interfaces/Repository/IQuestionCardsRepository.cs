@@ -10,5 +10,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<int> CreateQuestionCard(CreateQuestionCardModel model);
         Task<List<QuestionCardModel>> GetAllActiveQuestionCards();
         Task<List<QuestionCardModel>> GetQuestionCardsWithoutMatureContent();
+        Task<QuestionCardModel> GetRandomQuestionCardForGame(int gameId);
     }
 }
