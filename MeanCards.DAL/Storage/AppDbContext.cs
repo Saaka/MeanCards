@@ -69,11 +69,11 @@ namespace MeanCards.DAL.Storage
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.RoundOwner)
                     .WithMany(x => x.OwnedGameRounds)
-                    .HasForeignKey(x => x.RoundOwnerId)
+                    .HasForeignKey(x => x.OwnerId)
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.RoundWinner)
                     .WithMany(x => x.WonRounds)
-                    .HasForeignKey(x => x.RoundWinnerId)
+                    .HasForeignKey(x => x.WinnerId)
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.QuestionCard)
                     .WithMany(x => x.GameRounds)
@@ -85,11 +85,11 @@ namespace MeanCards.DAL.Storage
                 b.HasKey(x => x.PlayerId);
                 b.HasMany(x => x.OwnedGameRounds)
                     .WithOne(x => x.RoundOwner)
-                    .HasForeignKey(x => x.RoundOwnerId)
+                    .HasForeignKey(x => x.OwnerId)
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasMany(x => x.WonRounds)
                     .WithOne(x => x.RoundWinner)
-                    .HasForeignKey(x => x.RoundWinnerId)
+                    .HasForeignKey(x => x.WinnerId)
                     .OnDelete(DeleteBehavior.Restrict);
                 b.HasOne(x => x.Game)
                     .WithMany(x => x.Players)

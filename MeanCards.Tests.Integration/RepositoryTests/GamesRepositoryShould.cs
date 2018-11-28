@@ -34,6 +34,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(languageId, game.LanguageId);
             Assert.Equal(userId, game.OwnerId);
             Assert.Equal("Test game", game.Name);
+            Assert.Equal(5, TestHelper.GetNumberOfProperties<CreateGameModel>());
         }
 
         [Fact]

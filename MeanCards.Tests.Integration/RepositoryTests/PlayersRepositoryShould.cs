@@ -19,7 +19,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var createPlayer = new CreatePlayerModel
             {
                 GameId = gameId,
-                UserId = userId
+                UserId = userId,
+                Number = 1
             };
 
             var playerId = await playersRepository.CreatePlayer(createPlayer);
@@ -29,7 +30,9 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.NotNull(player);
             Assert.Equal(userId, player.UserId);
             Assert.Equal(gameId, player.GameId);
+            Assert.Equal(1, player.Number);
             Assert.Equal(0, player.Points);
+            Assert.Equal(3, TestHelper.GetNumberOfProperties<CreatePlayerModel>());
         }
     }
 }

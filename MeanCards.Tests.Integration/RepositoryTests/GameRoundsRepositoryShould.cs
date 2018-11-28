@@ -30,10 +30,10 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gameRound = await repository.GetCurrentGameRound(gameId);
 
             Assert.NotNull(gameRound);
-            Assert.Equal(playerId, gameRound.RoundOwnerId);
+            Assert.Equal(playerId, gameRound.OwnerId);
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
-            Assert.Equal(1, gameRound.RoundNumber);
+            Assert.Equal(1, gameRound.Number);
         }
 
         private async Task<int> CreateQuestionCard(int languageId)

@@ -4,5 +4,6 @@
     {
         public int GameId { get; set; }
         public int UserId { get; set; }
+        public int Number { get; set; }
     }
 }

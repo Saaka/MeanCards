@@ -34,7 +34,7 @@ namespace MeanCards.GameManagement
         {
             var gameCode = codeGenerator.Generate();
 
-            int gameId = await CreateGameModel(request, gameCode);
+            var gameId = await CreateGameModel(request, gameCode);
             var playerId = await CreatePlayerModel(gameId, request.OwnerId);
 
             return new CreateGameResult
@@ -62,7 +62,8 @@ namespace MeanCards.GameManagement
             var playerId = await playersRepository.CreatePlayer(new CreatePlayerModel
             {
                 GameId = gameId,
-                UserId = userId
+                UserId = userId,
+                Number = 1
             });
 
             return playerId;

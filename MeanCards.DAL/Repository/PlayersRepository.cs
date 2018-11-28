@@ -24,6 +24,7 @@ namespace MeanCards.DAL.Repository
             {
                 GameId = model.GameId,
                 UserId = model.UserId,
+                Number = model.Number,
                 IsActive = true,
                 Points = 0
             };
@@ -43,7 +44,8 @@ namespace MeanCards.DAL.Repository
                             PlayerId = player.PlayerId,
                             GameId = player.GameId,
                             Points = player.Points,
-                            UserId = player.UserId
+                            UserId = player.UserId,
+                            Number = player.Number
                         };
 
             return await query.FirstOrDefaultAsync();

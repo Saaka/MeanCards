@@ -35,6 +35,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var cards = await cardRepository.GetUnusedPlayerCards(playerId);
 
             Assert.Equal(5, cards.Count);
+            Assert.Equal(2, TestHelper.GetNumberOfProperties<CreatePlayerCardModel>());
         }
 
         private async Task<int> PopulateAnswerCards(int languageId)

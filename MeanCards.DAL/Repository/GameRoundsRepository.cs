@@ -24,9 +24,9 @@ namespace MeanCards.DAL.Repository
             var newRound = new GameRound
             {
                 GameId = model.GameId,
-                RoundNumber = 1,
+                Number = 1,
                 QuestionCardId = model.QuestionCardId,
-                RoundOwnerId = model.RoundOwnerId,
+                OwnerId = model.RoundOwnerId,
                 CreateDate = DateTime.UtcNow,
                 IsActive = true
             };
@@ -45,10 +45,10 @@ namespace MeanCards.DAL.Repository
                         {
                             GameId = round.GameId,
                             GameRoundId = round.GameRoundId,
-                            RoundNumber = round.RoundNumber,
+                            Number = round.Number,
                             QuestionCardId = round.QuestionCardId,
-                            RoundOwnerId = round.RoundOwnerId,
-                            RoundWinnerId = round.RoundWinnerId
+                            OwnerId = round.OwnerId,
+                            WinnerId = round.WinnerId
                         };
 
             return await query.FirstOrDefaultAsync();
