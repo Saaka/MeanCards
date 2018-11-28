@@ -33,6 +33,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(playerId, gameRound.RoundOwnerId);
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
+            Assert.Equal(1, gameRound.RoundNumber);
         }
 
         private async Task<int> CreateQuestionCard(int languageId)
