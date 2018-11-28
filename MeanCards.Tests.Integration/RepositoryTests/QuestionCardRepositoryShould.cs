@@ -1,4 +1,5 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.QuestionCards;
 using MeanCards.Tests.Integration.BaseTests;
 using System.Linq;
@@ -42,7 +43,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         {
             var languageId = await Fixture.CreateDefaultLanguage();
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
-            var gameId = await CreateGame(languageId);
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await CreateGame(languageId, userId);
 
             var questionCardId = await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
             {
@@ -59,11 +61,34 @@ namespace MeanCards.Tests.Integration.RepositoryTests
         }
 
         [Fact]
+        public async Task NotReturnRandomQuestionCardWhenAllAreUsed()
+        {
+            var languageId = await Fixture.CreateDefaultLanguage();
+            var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await CreateGame(languageId, userId);
+
+            var questionCardId = await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
+            {
+                IsAdultContent = true,
+                LanguageId = languageId,
+                NumberOfAnswers = 1,
+                Text = "Test1"
+            });
+            await CreateGameRound(gameId, userId, questionCardId);
+
+            var questionCard = await cardRepository.GetRandomQuestionCardForGame(gameId);
+
+            Assert.Null(questionCard);
+        }
+
+        [Fact]
         public async Task ReturnSingleRandomQuestionCardWithoutMatureContent()
         {
             var languageId = await Fixture.CreateDefaultLanguage();
             var cardRepository = Fixture.GetService<IQuestionCardsRepository>();
-            var gameId = await CreateGame(languageId, false);
+            var userId = await Fixture.CreateDefaultUser();
+            var gameId = await CreateGame(languageId, userId, false);
 
             await cardRepository.CreateQuestionCard(new CreateQuestionCardModel
             {
@@ -86,12 +111,25 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(questionCardId, questionCard.QuestionCardId);
         }
 
-        private async Task<int> CreateGame(int languageId, bool showAdultContent = true)
+        private async Task<int> CreateGame(int languageId, int userId, bool showAdultContent = true)
         {
-            var userId = await Fixture.CreateDefaultUser();
             var gameId = await Fixture.CreateDefaultGame(languageId, userId, showAdultContent: showAdultContent);
 
             return gameId;
+        }
+
+        private async Task CreateGameRound(int gameId, int userId, int questionCardId)
+        {
+            var repo = Fixture.GetService<IGameRoundsRepository>();
+
+            var playerId = await Fixture.CreateDefaultPlayer(gameId, userId);
+            await repo.CreateGameRound(new CreateGameRoundModel
+            {
+                GameId = gameId,
+                QuestionCardId = questionCardId,
+                RoundNumber = 1,
+                RoundOwnerId = playerId
+            });
         }
 
         private async Task PopulateQuestionCards(int languageId)
