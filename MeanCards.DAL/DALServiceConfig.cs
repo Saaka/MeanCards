@@ -29,14 +29,14 @@ namespace MeanCards.DAL
                 }),
             ServiceLifetime.Scoped);
 
+            services
+                .AddTransient<IRepositoryTransactionsFactory, DbContextRepositoryTransactionsFactory>();
+
             return services;
         }
 
         public static IServiceCollection RegisterDAL(this IServiceCollection services)
         {
-            services
-                .AddTransient<IRepositoryTransactionsFactory, RepositoryTransactionsFactory>();
-
             //Repositories
             services
                 .AddScoped<ILanguagesRepository, LanguagesRepository>()

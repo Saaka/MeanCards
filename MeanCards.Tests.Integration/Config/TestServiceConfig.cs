@@ -1,4 +1,6 @@
-﻿using MeanCards.DAL.Storage;
+﻿using MeanCards.DAL.Interfaces.Transactions;
+using MeanCards.DAL.Storage;
+using MeanCards.Tests.Integration.BaseTests.Transactions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,7 @@ namespace MeanCards.Tests.Integration.Config
 {
     public static class TestServiceConfig
     {
+        [Obsolete("Use RegisterSQLiteInmemoryContext to use unique constraints etc")]
         public static IServiceCollection RegisterInmemoryContext(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase(Guid.NewGuid().ToString()));
@@ -19,6 +22,10 @@ namespace MeanCards.Tests.Integration.Config
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connection));
             EnsureContextIsCreated(connection);
+
+            //Mock transaction, TransactionScope is currently unavailable for SqliteConnection
+            services
+                .AddTransient<IRepositoryTransactionsFactory, SqliteMockTransactionScopeFactory>();
 
             return services;
         }

@@ -3,11 +3,11 @@ using System.Transactions;
 
 namespace MeanCards.DAL.Transaction
 {
-    public class RepositoryTransaction : IRepositoryTransaction
+    public class DbContextRepositoryTransaction : IRepositoryTransaction
     {
         protected readonly TransactionScope scope;
 
-        public RepositoryTransaction()
+        public DbContextRepositoryTransaction()
         {
             scope = new TransactionScope(
                 TransactionScopeOption.Required,

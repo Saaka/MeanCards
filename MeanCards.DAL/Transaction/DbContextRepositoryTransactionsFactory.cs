@@ -2,11 +2,11 @@
 
 namespace MeanCards.DAL.Transaction
 {
-    public class RepositoryTransactionsFactory : IRepositoryTransactionsFactory
+    public class DbContextRepositoryTransactionsFactory : IRepositoryTransactionsFactory
     {
         public IRepositoryTransaction CreateTransaction()
         {
-            return new RepositoryTransaction();
+            return new DbContextRepositoryTransaction();
         }
     }
 }
