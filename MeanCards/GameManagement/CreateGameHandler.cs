@@ -1,5 +1,6 @@
 ﻿using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
@@ -17,18 +18,21 @@ namespace MeanCards.GameManagement
 
     public class CreateGameHandler : ICreateGameHandler
     {
+        protected readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
         protected readonly IGamesRepository gamesRepository;
         protected readonly IGameRoundsRepository gameRoundsRepository;
         protected readonly IPlayersRepository playersRepository;
         protected readonly IQuestionCardsRepository questionCardsRepository;
         protected readonly ICodeGenerator codeGenerator;
 
-        public CreateGameHandler(IGamesRepository gamesRepository,
+        public CreateGameHandler(IRepositoryTransactionsFactory repositoryTransactionsFactory,
+            IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
             IQuestionCardsRepository questionCardsRepository,
             ICodeGenerator codeGenerator)
         {
+            this.repositoryTransactionsFactory = repositoryTransactionsFactory;
             this.gamesRepository = gamesRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.playersRepository = playersRepository;
@@ -38,17 +42,22 @@ namespace MeanCards.GameManagement
 
         public async Task<CreateGameResult> Handle(CreateGame request)
         {
-            var gameCode = codeGenerator.Generate();
-
-            var game = await CreateGameModel(request, gameCode);
-            var player = await CreatePlayerModel(game.GameId, request.OwnerId);
-            var gameRound = await CreateFirstRound(game, player);
-
-            return new CreateGameResult
+            using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
-                GameId = game.GameId,
-                Code = gameCode
-            };
+                var gameCode = codeGenerator.Generate();
+
+                var game = await CreateGameModel(request, gameCode);
+                var player = await CreatePlayerModel(game.GameId, request.OwnerId);
+                var gameRound = await CreateFirstRound(game, player);
+
+                transaction.CommitTransaction();
+
+                return new CreateGameResult
+                {
+                    GameId = game.GameId,
+                    Code = gameCode
+                };
+            }
         }
 
         private async Task<GameRoundModel> CreateFirstRound(GameModel game, PlayerModel player)

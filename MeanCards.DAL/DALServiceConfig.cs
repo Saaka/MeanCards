@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MeanCards.DAL.Transaction;
+using MeanCards.DAL.Interfaces.Transactions;
 
 namespace MeanCards.DAL
 {
@@ -32,6 +34,9 @@ namespace MeanCards.DAL
 
         public static IServiceCollection RegisterDAL(this IServiceCollection services)
         {
+            services
+                .AddTransient<IRepositoryTransactionsFactory, RepositoryTransactionsFactory>();
+
             //Repositories
             services
                 .AddScoped<ILanguagesRepository, LanguagesRepository>()
