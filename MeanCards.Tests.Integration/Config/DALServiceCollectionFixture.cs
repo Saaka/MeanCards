@@ -7,6 +7,7 @@ using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Languages;
+using MeanCards.Tests.Base.Fixtures;
 
 namespace MeanCards.Tests.Integration.Config
 {

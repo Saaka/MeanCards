@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeanCards.DAL\MeanCards.DAL.csproj" />
+    <ProjectReference Include="..\MeanCards.Tests.Base\MeanCards.Tests.Base.csproj" />
     <ProjectReference Include="..\MeanCards\MeanCards.csproj" />
   </ItemGroup>
 

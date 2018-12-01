@@ -1,5 +1,6 @@
 ﻿using MeanCards.Common;
 using MeanCards.DAL;
+using MeanCards.Tests.Base.Fixtures;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 

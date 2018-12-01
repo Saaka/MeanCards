@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace MeanCards.Tests.Integration.Config
+namespace MeanCards.Tests.Base.Fixtures
 {
     public abstract class ServiceCollectionFixture : IDisposable
     {
@@ -11,6 +11,12 @@ namespace MeanCards.Tests.Integration.Config
             var serviceCollection = new ServiceCollection();
             RegisterServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
+            OnServiceCollectionInitialized();
+        }
+
+        protected virtual void OnServiceCollectionInitialized()
+        {
+
         }
 
         public abstract IServiceCollection RegisterServices(IServiceCollection serviceCollection);
