@@ -11,5 +11,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task CreateAnswerCards(List<CreateAnswerCardModel> models);
         Task<List<AnswerCardModel>> GetAllActiveAnswerCards();
         Task<List<AnswerCardModel>> GetAnswerCardsWithoutMatureContent();
+        Task<List<AnswerCardModel>> GetRandomAnswerCardsForGame(int gameId, int cardCount);
     }
 }
