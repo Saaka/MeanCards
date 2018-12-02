@@ -10,6 +10,7 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<int> CreateLanguage(CreateLanguageModel model);
         Task CreateLanguages(IEnumerable<CreateLanguageModel> models);
         Task<List<LanguageModel>> GetAllActiveLanguages();
+        Task<LanguageModel> GetLanguageByCode(string code);
         Task<bool> HasLanguages();
     }
 }

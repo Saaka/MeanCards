@@ -48,6 +48,20 @@ namespace MeanCards.DAL.Repository
             await context.SaveChangesAsync();
         }
 
+        public async Task<LanguageModel> GetLanguageByCode(string code)
+        {
+            var query = from language in context.Languages
+                        where language.IsActive && language.Code == code
+                        select new LanguageModel
+                        {
+                            LanguageId = language.LanguageId,
+                            Code = language.Code,
+                            Name = language.Name
+                        };
+
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<List<LanguageModel>> GetAllActiveLanguages()
         {
             var query = from language in context.Languages

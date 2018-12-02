@@ -20,9 +20,28 @@ namespace MeanCards.DAL.Repository
             this.context = context;
         }
 
+        public async Task CreateAnswerCards(List<CreateAnswerCardModel> models)
+        {
+            foreach(var model in models)
+            {
+                var entity = MapToEntity(model);
+                context.AnswerCards.Add(entity);
+            }
+            await context.SaveChangesAsync();
+        }
+
         public async Task<int> CreateAnswerCard(CreateAnswerCardModel model)
         {
-            var newCard = new AnswerCard
+            AnswerCard newCard = MapToEntity(model);
+
+            context.AnswerCards.Add(newCard);
+            await context.SaveChangesAsync();
+            return newCard.AnswerCardId;
+        }
+
+        private AnswerCard MapToEntity(CreateAnswerCardModel model)
+        {
+            return new AnswerCard
             {
                 LanguageId = model.LanguageId,
                 Text = model.Text,
@@ -30,10 +49,6 @@ namespace MeanCards.DAL.Repository
                 CreateDate = DateTime.UtcNow,
                 IsActive = true
             };
-
-            context.AnswerCards.Add(newCard);
-            await context.SaveChangesAsync();
-            return newCard.AnswerCardId;
         }
 
         public async Task<List<AnswerCardModel>> GetAllActiveAnswerCards()

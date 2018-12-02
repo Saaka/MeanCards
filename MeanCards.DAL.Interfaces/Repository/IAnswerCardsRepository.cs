@@ -8,6 +8,7 @@ namespace MeanCards.DAL.Interfaces.Repository
     public interface IAnswerCardsRepository
     {
         Task<int> CreateAnswerCard(CreateAnswerCardModel model);
+        Task CreateAnswerCards(List<CreateAnswerCardModel> models);
         Task<List<AnswerCardModel>> GetAllActiveAnswerCards();
         Task<List<AnswerCardModel>> GetAnswerCardsWithoutMatureContent();
     }
