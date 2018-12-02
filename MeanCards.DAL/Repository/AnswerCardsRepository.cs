@@ -66,5 +66,29 @@ namespace MeanCards.DAL.Repository
 
             return await query.ToListAsync();
         }
+
+        public async Task<List<AnswerCardModel>> GetRandomAnswerCardsForGame(int gameId, int cardCount)
+        {
+            var query = from ac in context.AnswerCards
+                        join game in context.Games on ac.LanguageId equals game.LanguageId
+                        where ac.IsActive && game.GameId == gameId
+                            && (!ac.IsAdultContent || ac.IsAdultContent == game.ShowAdultContent)
+                            && !(from pc in context.PlayersCards
+                                 join player in context.Players on pc.PlayerId equals player.PlayerId
+                                 where player.GameId == gameId
+                                 select pc.AnswerCardId).Contains(ac.AnswerCardId)
+                        select new AnswerCardModel
+                        {
+                            AnswerCardId = ac.AnswerCardId,
+                            IsAdultContent = ac.IsAdultContent,
+                            LanguageId = ac.LanguageId,
+                            Text = ac.Text
+                        };
+
+            return await query
+                .OrderBy(o => Guid.NewGuid())
+                .Take(cardCount)
+                .ToListAsync();
+        }
     }
 }

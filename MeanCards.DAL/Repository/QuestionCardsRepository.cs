@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.DTO.QuestionCards;
 using MeanCards.Model.DAL.Creation.QuestionCards;
+using MeanCards.Common.Helpers;
 
 namespace MeanCards.DAL.Repository
 {
@@ -89,7 +90,7 @@ namespace MeanCards.DAL.Repository
                         };
 
             var count = await query.CountAsync();
-            int index = new Random(count).Next(count);
+            int index = RandomFactory.Create().Next(count);
 
             return await query.Skip(index).FirstOrDefaultAsync();
         }
