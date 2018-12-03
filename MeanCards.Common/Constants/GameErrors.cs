@@ -1,0 +1,8 @@
+﻿namespace MeanCards.Common.Constants
+{
+    public static class GameErrors
+    {
+        public const string NoQuestionCardsAvailable = nameof(NoQuestionCardsAvailable);
+        public const string NotEnoughAnswerCards = nameof(NotEnoughAnswerCards);
+    }
+}

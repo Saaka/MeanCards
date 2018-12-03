@@ -56,8 +56,20 @@ namespace MeanCards.GameManagement
 
                 var game = await CreateGameModel(request, gameCode);
                 var player = await CreatePlayerModel(game.GameId, request.OwnerId);
-                var gameRound = await CreateFirstRound(game, player);
-                await CreatePlayerAnswerCards(game, player);
+
+                var questionCard = await questionCardsRepository
+                    .GetRandomQuestionCardForGame(game.GameId);
+                if (questionCard == null)
+                    return new CreateGameResult(GameErrors.NoQuestionCardsAvailable);
+
+                var gameRound = await CreateFirstRound(
+                    game.GameId, 
+                    player.PlayerId, 
+                    questionCard.QuestionCardId);
+
+                var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingCardsCount);
+                if (cardCount != GameConstants.StartingCardsCount)
+                    return new CreateGameResult(GameErrors.NotEnoughAnswerCards);
 
                 transaction.CommitTransaction();
 
@@ -69,9 +81,9 @@ namespace MeanCards.GameManagement
             }
         }
 
-        private async Task CreatePlayerAnswerCards(GameModel game, PlayerModel player)
+        private async Task<int> CreatePlayerAnswerCards(GameModel game, PlayerModel player, int count)
         {
-            var cards = await answerCardsRepository.GetRandomAnswerCardsForGame(game.GameId, GameConstants.StartingCardsCount);
+            var cards = await answerCardsRepository.GetRandomAnswerCardsForGame(game.GameId, count);
 
             var playerCards = cards.Select(c => new CreatePlayerCardModel
             {
@@ -79,18 +91,16 @@ namespace MeanCards.GameManagement
                 AnswerCardId = c.AnswerCardId
             }).ToList();
 
-            await playerCardsRepository.CreatePlayerCards(playerCards);
+            return await playerCardsRepository.CreatePlayerCards(playerCards);
         }
 
-        private async Task<GameRoundModel> CreateFirstRound(GameModel game, PlayerModel player)
+        private async Task<GameRoundModel> CreateFirstRound(int gameId, int playerId, int questionCardId)
         {
-            var questionCard = await questionCardsRepository.GetRandomQuestionCardForGame(game.GameId);
-
             var gameRound = await gameRoundsRepository.CreateGameRound(new CreateGameRoundModel
             {
-                GameId = game.GameId,
-                RoundOwnerId = player.PlayerId,
-                QuestionCardId = questionCard.QuestionCardId,
+                GameId = gameId,
+                RoundOwnerId = playerId,
+                QuestionCardId = questionCardId,
                 RoundNumber = 1
             });
 

@@ -35,14 +35,14 @@ namespace MeanCards.DAL.Repository
             return await query.ToListAsync();
         }
 
-        public async Task CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models)
+        public async Task<int> CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models)
         {
             foreach (var model in models)
             {
                 var card = CreateEntity(model);
                 context.PlayersCards.Add(card);
             }
-            await context.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
 
         public async Task<int> CreatePlayerCard(CreatePlayerCardModel model)
