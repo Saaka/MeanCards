@@ -23,7 +23,26 @@ namespace MeanCards.DAL.Repository
 
         public async Task<int> CreateQuestionCard(CreateQuestionCardModel model)
         {
-            var newCard = new QuestionCard
+            QuestionCard newCard = MapToEntity(model);
+
+            context.QuestionCards.Add(newCard);
+            await context.SaveChangesAsync();
+            return newCard.QuestionCardId;
+        }
+
+        public async Task CreateQuestionCards(List<CreateQuestionCardModel> models)
+        {
+            foreach (var model in models)
+            {
+                var entity = MapToEntity(model);
+                context.QuestionCards.Add(entity);
+            }
+            await context.SaveChangesAsync();
+        }
+
+        private QuestionCard MapToEntity(CreateQuestionCardModel model)
+        {
+            return new QuestionCard
             {
                 LanguageId = model.LanguageId,
                 Text = model.Text,
@@ -32,10 +51,6 @@ namespace MeanCards.DAL.Repository
                 CreateDate = DateTime.UtcNow,
                 IsActive = true
             };
-
-            context.QuestionCards.Add(newCard);
-            await context.SaveChangesAsync();
-            return newCard.QuestionCardId;
         }
 
         public async Task<List<QuestionCardModel>> GetAllActiveQuestionCards()

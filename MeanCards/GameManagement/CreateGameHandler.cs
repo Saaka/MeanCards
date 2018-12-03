@@ -1,4 +1,5 @@
-﻿using MeanCards.Common.RandomCodeProvider;
+﻿using MeanCards.Common.Constants;
+using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.Model.Core.Games;
@@ -7,6 +8,7 @@ using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Model.DTO.Players;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
@@ -22,21 +24,27 @@ namespace MeanCards.GameManagement
         protected readonly IGamesRepository gamesRepository;
         protected readonly IGameRoundsRepository gameRoundsRepository;
         protected readonly IPlayersRepository playersRepository;
+        protected readonly IPlayerCardsRepository playerCardsRepository;
         protected readonly IQuestionCardsRepository questionCardsRepository;
+        protected readonly IAnswerCardsRepository answerCardsRepository;
         protected readonly ICodeGenerator codeGenerator;
 
         public CreateGameHandler(IRepositoryTransactionsFactory repositoryTransactionsFactory,
             IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
+            IPlayerCardsRepository playerCardsRepository,
             IQuestionCardsRepository questionCardsRepository,
+            IAnswerCardsRepository answerCardsRepository,
             ICodeGenerator codeGenerator)
         {
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
             this.gamesRepository = gamesRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.playersRepository = playersRepository;
+            this.playerCardsRepository = playerCardsRepository;
             this.questionCardsRepository = questionCardsRepository;
+            this.answerCardsRepository = answerCardsRepository;
             this.codeGenerator = codeGenerator;
         }
 
@@ -49,6 +57,7 @@ namespace MeanCards.GameManagement
                 var game = await CreateGameModel(request, gameCode);
                 var player = await CreatePlayerModel(game.GameId, request.OwnerId);
                 var gameRound = await CreateFirstRound(game, player);
+                await CreatePlayerAnswerCards(game, player);
 
                 transaction.CommitTransaction();
 
@@ -58,6 +67,19 @@ namespace MeanCards.GameManagement
                     Code = gameCode
                 };
             }
+        }
+
+        private async Task CreatePlayerAnswerCards(GameModel game, PlayerModel player)
+        {
+            var cards = await answerCardsRepository.GetRandomAnswerCardsForGame(game.GameId, GameConstants.StartingCardsCount);
+
+            var playerCards = cards.Select(c => new CreatePlayerCardModel
+            {
+                PlayerId = player.PlayerId,
+                AnswerCardId = c.AnswerCardId
+            }).ToList();
+
+            await playerCardsRepository.CreatePlayerCards(playerCards);
         }
 
         private async Task<GameRoundModel> CreateFirstRound(GameModel game, PlayerModel player)
