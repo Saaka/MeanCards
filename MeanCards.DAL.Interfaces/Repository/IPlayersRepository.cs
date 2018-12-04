@@ -8,5 +8,6 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<PlayerModel> CreatePlayer(CreatePlayerModel model);
         Task<PlayerModel> GetPlayerById(int playerId);
+        Task<int> GetMaxPlayerNumberForGame(int gameId);
     }
 }

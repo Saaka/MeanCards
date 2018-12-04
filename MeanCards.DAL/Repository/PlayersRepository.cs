@@ -62,5 +62,15 @@ namespace MeanCards.DAL.Repository
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<int> GetMaxPlayerNumberForGame(int gameId)
+        {
+            var query = from player in context.Players
+                        where player.GameId == gameId
+                        orderby player.Number descending
+                        select player.Number;
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

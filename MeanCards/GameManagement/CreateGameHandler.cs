@@ -76,6 +76,7 @@ namespace MeanCards.GameManagement
                 return new CreateGameResult
                 {
                     GameId = game.GameId,
+                    PlayerId = player.PlayerId,
                     Code = gameCode
                 };
             }

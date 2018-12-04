@@ -46,13 +46,15 @@ namespace MeanCards.Tests.Integration.Config
 
         public async Task<int> CreateDefaultPlayer(
             int gameId,
-            int userId)
+            int userId,
+            int number = 1)
         {
             var playersRepository = GetService<IPlayersRepository>();
             var createPlayer = new CreatePlayerModel
             {
                 GameId = gameId,
-                UserId = userId
+                UserId = userId,
+                Number = number
             };
 
             var player = await playersRepository.CreatePlayer(createPlayer);
