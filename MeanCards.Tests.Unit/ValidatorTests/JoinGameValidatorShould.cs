@@ -102,10 +102,30 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             Assert.Equal(ValidatorErrors.Users.UserIdNotFound, result.Error);
         }
 
-        private IGamesRepository CreateGameRepositoryMock(bool gameExists = true)
+        [Fact]
+        public async Task ReturnFailureForUserThatAlreadyJoined()
+        {
+            var gameRepo = CreateGameRepositoryMock(userAlreadyJoined: true);
+            var usersRepo = CreateUserRepoMock();
+            var validator = new JoinGameValidator(gameRepo, usersRepo);
+
+            var request = new JoinGame
+            {
+                GameId = 1,
+                UserId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.UserAlreadyJoined, result.Error);
+        }
+
+        private IGamesRepository CreateGameRepositoryMock(bool gameExists = true, bool userAlreadyJoined = false)
         {
             var mock = new Mock<IGamesRepository>();
             mock.Setup(m => m.ActiveGameExists(It.IsAny<int>())).Returns(Task.FromResult<bool>(gameExists));
+            mock.Setup(m => m.IsUserInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult<bool>(userAlreadyJoined));
 
             return mock.Object;
         }

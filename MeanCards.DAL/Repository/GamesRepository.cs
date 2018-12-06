@@ -97,5 +97,13 @@ namespace MeanCards.DAL.Repository
 
             return exists;
         }
+
+        public async Task<bool> IsUserInGame(int gameId, int userId)
+        {
+            var exists = await context.Players
+                .AnyAsync(x => x.GameId == gameId && x.UserId == userId && x.IsActive);
+
+            return exists;
+        }
     }
 }

@@ -29,6 +29,8 @@ namespace MeanCards.Validators.Games
                 return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
             if (!await usersRepository.ActiveUserExists(request.UserId))
                 return new ValidatorResult(ValidatorErrors.Users.UserIdNotFound);
+            if (await gamesRepository.IsUserInGame(request.GameId, request.UserId))
+                return new ValidatorResult(ValidatorErrors.Games.UserAlreadyJoined);
 
             return new ValidatorResult();
         }
