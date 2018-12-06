@@ -123,6 +123,14 @@ namespace MeanCards.DAL.Repository
             return user != null;
         }
 
+        public async Task<bool> ActiveUserExists(int userId)
+        {
+            var userExists = await context.Users
+                .AnyAsync(x => x.Id == userId);
+
+            return userExists;
+        }
+
         private string GetNormalizedEmail(string email)
         {
             return email.ToUpper();

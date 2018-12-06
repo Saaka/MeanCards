@@ -1,6 +1,8 @@
 ﻿using MeanCards.Common.Constants;
+using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators.Games;
+using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,7 +13,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         [Fact]
         public async Task ReturnSuccessForValidData()
         {
-            var validator = new CreateGameValidator();
+            var usersRepo = CreateMock();
+            var validator = new CreateGameValidator(usersRepo);
 
             var request = new CreateGame
             {
@@ -29,7 +32,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         [Fact]
         public async Task ReturnFailureForMissingLanguage()
         {
-            var validator = new CreateGameValidator();
+            var usersRepo = CreateMock();
+            var validator = new CreateGameValidator(usersRepo);
 
             var request = new CreateGame
             {
@@ -47,7 +51,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         [Fact]
         public async Task ReturnFailureForMissingName()
         {
-            var validator = new CreateGameValidator();
+            var usersRepo = CreateMock();
+            var validator = new CreateGameValidator(usersRepo);
 
             var request = new CreateGame
             {
@@ -65,7 +70,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         [Fact]
         public async Task ReturnFailureForMissingOwner()
         {
-            var validator = new CreateGameValidator();
+            var usersRepo = CreateMock();
+            var validator = new CreateGameValidator(usersRepo);
 
             var request = new CreateGame
             {
@@ -78,6 +84,34 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.GameOwnerRequired, result.Error);
+        }
+
+        [Fact]
+        public async Task ReturnFailureForNotExistingUser()
+        {
+            var usersRepo = CreateMock(false);
+            var validator = new CreateGameValidator(usersRepo);
+
+            var request = new CreateGame
+            {
+                LanguageId = 1,
+                Name = "Test",
+                OwnerId = 1,
+                ShowAdultContent = true
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Users.UserIdNotFound, result.Error);
+        }
+
+        private IUsersRepository CreateMock(bool userExists = true)
+        {
+            var mock = new Mock<IUsersRepository>();
+            mock.Setup(m => m.ActiveUserExists(It.IsAny<int>())).Returns(Task.FromResult<bool>(userExists));
+
+            return mock.Object;
         }
     }
 }
