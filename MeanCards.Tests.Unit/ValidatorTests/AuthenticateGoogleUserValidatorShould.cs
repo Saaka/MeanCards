@@ -1,6 +1,6 @@
 ﻿using MeanCards.Common.Constants;
 using MeanCards.Model.Core.Users;
-using MeanCards.Validators.User;
+using MeanCards.Validators.Users;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.GoogleIdRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.GoogleIdRequired, result.Error);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.EmailRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserEmailRequired, result.Error);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.NameRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserNameRequired, result.Error);
         }
     }
 }

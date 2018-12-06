@@ -1,8 +1,10 @@
 ﻿using MeanCards.GameManagement;
+using MeanCards.Model.Core.Games;
 using MeanCards.Model.Core.Users;
 using MeanCards.UserManagement;
 using MeanCards.Validators;
-using MeanCards.Validators.User;
+using MeanCards.Validators.Games;
+using MeanCards.Validators.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MeanCards
@@ -12,7 +14,7 @@ namespace MeanCards
         public static IServiceCollection RegisterDomainServices(this IServiceCollection services)
         {
             services
-                
+
                 //Handlers
                 .AddScoped<ICreateGameHandler, CreateGameHandler>()
                 .AddScoped<ICreateUserHandler, CreateUserHandler>()
@@ -23,7 +25,8 @@ namespace MeanCards
 
                 //validators
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
-                .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>();
+                .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>()
+                .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>();
 
             return services;
         }

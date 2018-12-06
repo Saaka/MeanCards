@@ -7,6 +7,7 @@ using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Model.DTO.Players;
+using MeanCards.Validators;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,16 +21,19 @@ namespace MeanCards.GameManagement
 
     public class CreateGameHandler : ICreateGameHandler
     {
-        protected readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
-        protected readonly IGamesRepository gamesRepository;
-        protected readonly IGameRoundsRepository gameRoundsRepository;
-        protected readonly IPlayersRepository playersRepository;
-        protected readonly IPlayerCardsRepository playerCardsRepository;
-        protected readonly IQuestionCardsRepository questionCardsRepository;
-        protected readonly IAnswerCardsRepository answerCardsRepository;
-        protected readonly ICodeGenerator codeGenerator;
+        private readonly IRequestValidator<CreateGame> requestValidator;
+        private readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
+        private readonly IGamesRepository gamesRepository;
+        private readonly IGameRoundsRepository gameRoundsRepository;
+        private readonly IPlayersRepository playersRepository;
+        private readonly IPlayerCardsRepository playerCardsRepository;
+        private readonly IQuestionCardsRepository questionCardsRepository;
+        private readonly IAnswerCardsRepository answerCardsRepository;
+        private readonly ICodeGenerator codeGenerator;
 
-        public CreateGameHandler(IRepositoryTransactionsFactory repositoryTransactionsFactory,
+        public CreateGameHandler(
+            IRequestValidator<CreateGame> requestValidator,
+            IRepositoryTransactionsFactory repositoryTransactionsFactory,
             IGamesRepository gamesRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
@@ -38,6 +42,7 @@ namespace MeanCards.GameManagement
             IAnswerCardsRepository answerCardsRepository,
             ICodeGenerator codeGenerator)
         {
+            this.requestValidator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
             this.gamesRepository = gamesRepository;
             this.gameRoundsRepository = gameRoundsRepository;
@@ -52,6 +57,10 @@ namespace MeanCards.GameManagement
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
+                var validationResult = await requestValidator.Validate(request);
+                if (!validationResult.IsSuccessful)
+                    return new CreateGameResult(validationResult.Error);
+
                 var gameCode = codeGenerator.Generate();
 
                 var game = await CreateGameModel(request, gameCode);

@@ -1,7 +1,7 @@
 ﻿using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Users;
-using MeanCards.Validators.User;
+using MeanCards.Validators.Users;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
@@ -34,7 +34,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.PasswordTooShort, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserPasswordTooShort, result.Error);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.DuplicatedEmail, result.Error);
+            Assert.Equal(ValidatorErrors.Users.DuplicatedUserEmail, result.Error);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.DuplicatedUserName, result.Error);
+            Assert.Equal(ValidatorErrors.Users.DuplicatedUserName, result.Error);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.EmailRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserEmailRequired, result.Error);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.NameRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserNameRequired, result.Error);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.PasswordRequired, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserPasswordRequired, result.Error);
         }
 
         private CreateUser GetRequest(
