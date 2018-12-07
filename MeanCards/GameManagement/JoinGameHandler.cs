@@ -4,6 +4,7 @@ using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Players;
+using MeanCards.Validators;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,16 +17,20 @@ namespace MeanCards.GameManagement
 
     public class JoinGameHandler : IJoinGameHandler
     {
-        protected readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
-        protected readonly IPlayersRepository playersRepository;
-        protected readonly IPlayerCardsRepository playerCardsRepository;
-        protected readonly IAnswerCardsRepository answerCardsRepository;
+        private readonly IRequestValidator<JoinGame> requestValidator;
+        private readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
+        private readonly IPlayersRepository playersRepository;
+        private readonly IPlayerCardsRepository playerCardsRepository;
+        private readonly IAnswerCardsRepository answerCardsRepository;
 
-        public JoinGameHandler(IRepositoryTransactionsFactory repositoryTransactionsFactory,
+        public JoinGameHandler(
+            IRequestValidator<JoinGame> requestValidator,
+            IRepositoryTransactionsFactory repositoryTransactionsFactory,
             IPlayersRepository playersRepository,
             IPlayerCardsRepository playerCardsRepository,
             IAnswerCardsRepository answerCardsRepository)
         {
+            this.requestValidator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
             this.playersRepository = playersRepository;
             this.playerCardsRepository = playerCardsRepository;
@@ -36,6 +41,10 @@ namespace MeanCards.GameManagement
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
+                var validationResult = await requestValidator.Validate(request);
+                if (!validationResult.IsSuccessful)
+                    return new JoinGameResult(validationResult.Error);
+
                 var maxNumber = await playersRepository.GetMaxPlayerNumberForGame(request.GameId);
                 var player = await CreatePlayer(request.GameId, request.UserId, ++maxNumber);
 

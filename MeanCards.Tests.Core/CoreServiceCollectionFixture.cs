@@ -3,10 +3,13 @@ using MeanCards.DAL;
 using MeanCards.DAL.Interfaces.Initializer;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
+using MeanCards.GameManagement;
+using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.AnswerCards;
 using MeanCards.Model.DAL.Creation.Languages;
 using MeanCards.Model.DAL.Creation.QuestionCards;
 using MeanCards.Model.DAL.Creation.Users;
+using MeanCards.Model.DTO.Games;
 using MeanCards.Tests.Base.Fixtures;
 using MeanCards.Tests.Core.Config;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +38,36 @@ namespace MeanCards.Tests.Core
             var initializer = GetService<IDbInitializer>();
 
             initializer.Execute().Wait();
+        }
+
+        public async Task<GameModel> CreateGame(
+            string gameName = "TestGame", 
+            bool showAdultContent = false,
+            int questionCardsAvailable = 20,
+            int answerCardsAvailable = 100)
+        {
+            var userId = await CreateDefaultUser();
+            var languageId = await CreateDefaultLanguage();
+            await CreateQuestionCards(
+                languageId: languageId, 
+                cardCount: questionCardsAvailable);
+            await CreateAnswerCards(
+                languageId: languageId,
+                cardsCount: answerCardsAvailable);
+
+            var handler = GetService<ICreateGameHandler>();
+
+            var result = await handler.Handle(new CreateGame
+            {
+                LanguageId = languageId,
+                Name = gameName,
+                OwnerId = userId,
+                ShowAdultContent = showAdultContent
+            });
+
+            var gamesRepository = GetService<IGamesRepository>();
+
+            return await gamesRepository.GetGameById(result.GameId);
         }
 
         public async Task<int> CreateDefaultUser(

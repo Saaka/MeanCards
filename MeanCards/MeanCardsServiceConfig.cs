@@ -17,6 +17,7 @@ namespace MeanCards
 
                 //Handlers
                 .AddScoped<ICreateGameHandler, CreateGameHandler>()
+                .AddScoped<IJoinGameHandler, JoinGameHandler>()
                 .AddScoped<ICreateUserHandler, CreateUserHandler>()
                 .AddScoped<IAuthenticateGoogleUserHandler, AuthenticateGoogleUserHandler>()
 
@@ -26,7 +27,8 @@ namespace MeanCards
                 //validators
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
                 .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>()
-                .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>();
+                .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>()
+                .AddTransient<IRequestValidator<JoinGame>, JoinGameValidator>();
 
             return services;
         }
