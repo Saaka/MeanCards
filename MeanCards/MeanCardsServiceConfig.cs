@@ -23,6 +23,7 @@ namespace MeanCards
 
                 //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
+                .AddScoped<IGetUserByCodeHandler, GetUserByCodeHandler>()
 
                 //validators
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()

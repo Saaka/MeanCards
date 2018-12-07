@@ -11,15 +11,21 @@ namespace MeanCards.WebAPI.Config
         public static IServiceCollection RegisterModules(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .RegisterLibs()
                 .RegisterDomainServices()
                 .RegisterCommon()
                 .RegisterConfiguration()
-                .RegisterContext(configuration)
+                .RegisterDbContext(configuration)
                 .RegisterDAL()
-                .RegisterIdentityStore()
-                ;
+                .RegisterIdentityStore();
 
             return services;
+        }
+
+        public static IServiceCollection RegisterLibs(this IServiceCollection services)
+        {
+            return services
+                .AddMemoryCache();
         }
     }
 }

@@ -18,5 +18,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<bool> GoogleUserExists(string email, string googleId);
         Task<bool> ActiveUserExists(int userId);
         Task<RepositoryResult<UserModel>> GetUserByCredentials(GetUserByCredentialsModel model);
+        Task<RepositoryResult<UserModel>> GetUserByCode(string code);
     }
 }

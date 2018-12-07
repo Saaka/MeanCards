@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MeanCards.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,16 @@ namespace MeanCards.WebAPI.Controllers
             logger.LogInformation($"Get value for id: {id}");
 
             return id.ToString();
+        }
+
+        // GET api/values/5
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUser()
+        {
+            var user = await GetUserData();
+
+            return Ok(user);
         }
 
         // POST api/values

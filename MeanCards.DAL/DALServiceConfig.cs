@@ -18,7 +18,7 @@ namespace MeanCards.DAL
 {
     public static class DALServiceConfig
     {
-        public static IServiceCollection RegisterContext(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>((opt) =>
             opt.UseSqlServer(

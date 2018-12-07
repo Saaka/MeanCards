@@ -44,7 +44,8 @@ namespace MeanCards.WebAPI.Config
             services
                 .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
                 .AddScoped<IAuthenticateService, AuthenticateService>()
-                .AddSingleton<IUserContextDataProvider, UserContextDataProvider>()
+                .AddScoped<IUserContextDataProvider, UserContextDataProvider>()
+                .AddScoped<IUserDataService, UserDataService>()
 
                 .AddScoped<IGoogleTokenVerificationService, GoogleTokenVerificationService>()
                 .AddHttpClient<GoogleClient>(c => c.BaseAddress = GetGoogleAddress(configuration));

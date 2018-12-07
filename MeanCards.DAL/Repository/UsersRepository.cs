@@ -99,6 +99,15 @@ namespace MeanCards.DAL.Repository
                 return new RepositoryResult<UserModel>(AccessErrors.InvalidUserCredentials);
         }
 
+        public async Task<RepositoryResult<UserModel>> GetUserByCode(string code)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Code == code);
+            if (user == null)
+                return new RepositoryResult<UserModel>(AccessErrors.UserNotFound);
+
+            return CreateUserResult(user);
+        }
+
         public async Task<bool> GoogleUserExists(string email, string googleId)
         {
             var normalizedEmail = GetNormalizedEmail(email);

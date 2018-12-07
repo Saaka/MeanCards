@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MeanCards.Model.DTO.Users;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Controllers.Base
@@ -15,6 +13,9 @@ namespace MeanCards.WebAPI.Controllers.Base
             UserContextDataProvider = userContextDataProvider;
         }
 
-        protected virtual string UserCode => UserContextDataProvider.GetUserCode(HttpContext);
+        protected async virtual Task<UserModel> GetUserData()
+        {
+            return await UserContextDataProvider.GetUser(HttpContext);
+        }
     }
 }
