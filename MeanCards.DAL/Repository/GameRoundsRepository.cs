@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MeanCards.Model.DAL.Creation.Games;
+using MeanCards.Common.Enums;
 
 namespace MeanCards.DAL.Repository
 {
@@ -28,6 +29,7 @@ namespace MeanCards.DAL.Repository
                 QuestionCardId = model.QuestionCardId,
                 OwnerId = model.RoundOwnerId,
                 CreateDate = DateTime.UtcNow,
+                Status = (byte)GameRoundStatusEnum.Created,
                 IsActive = true
             };
 
@@ -46,7 +48,8 @@ namespace MeanCards.DAL.Repository
                 Number = round.Number,
                 OwnerId = round.OwnerId,
                 QuestionCardId = round.QuestionCardId,
-                WinnerId = round.WinnerId
+                WinnerId = round.WinnerId,
+                Status = (GameRoundStatusEnum)round.Status
             };
         }
 
@@ -61,7 +64,8 @@ namespace MeanCards.DAL.Repository
                             Number = round.Number,
                             QuestionCardId = round.QuestionCardId,
                             OwnerId = round.OwnerId,
-                            WinnerId = round.WinnerId
+                            WinnerId = round.WinnerId,
+                            Status = (GameRoundStatusEnum)round.Status
                         };
 
             return await query.FirstOrDefaultAsync();

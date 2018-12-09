@@ -1,4 +1,4 @@
-﻿using MeanCards.Common.Enum;
+﻿using MeanCards.Common.Enums;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Storage;
 using MeanCards.DAL.Entity;
@@ -50,7 +50,7 @@ namespace MeanCards.DAL.Repository
                 Name = game.Name,
                 OwnerId = game.OwnerId,
                 ShowAdultContent = game.ShowAdultContent,
-                Status = game.Status
+                Status = (GameStatusEnum)game.Status
             };
         }
 
@@ -62,7 +62,7 @@ namespace MeanCards.DAL.Repository
                         {
                             GameId = game.GameId,
                             Code = game.Code,
-                            Status = game.Status,
+                            Status = (GameStatusEnum)game.Status,
                             LanguageId = game.LanguageId,
                             Name = game.Name,
                             OwnerId = game.OwnerId,
@@ -80,7 +80,7 @@ namespace MeanCards.DAL.Repository
                         {
                             GameId = game.GameId,
                             Code = game.Code,
-                            Status = game.Status,
+                            Status = (GameStatusEnum)game.Status,
                             LanguageId = game.LanguageId,
                             Name = game.Name,
                             OwnerId = game.OwnerId,

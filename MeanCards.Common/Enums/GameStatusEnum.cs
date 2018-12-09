@@ -1,4 +1,4 @@
-﻿namespace MeanCards.Common.Enum
+﻿namespace MeanCards.Common.Enums
 {
     public enum GameStatusEnum
     {

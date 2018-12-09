@@ -1,4 +1,5 @@
-﻿using MeanCards.DAL.Interfaces.Repository;
+﻿using MeanCards.Common.Enums;
+using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.QuestionCards;
 using MeanCards.Tests.Integration.BaseTests;
@@ -35,6 +36,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
             Assert.Equal(1, gameRound.Number);
+            Assert.Equal(GameRoundStatusEnum.Created, gameRound.Status);
             Assert.Equal(4, TestHelper.GetNumberOfProperties<CreateGameRoundModel>());
         }
 
