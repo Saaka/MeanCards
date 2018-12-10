@@ -125,7 +125,8 @@ namespace MeanCards.GameManagement
                 LanguageId = request.LanguageId,
                 Name = request.Name,
                 OwnerId = request.OwnerId,
-                ShowAdultContent = request.ShowAdultContent
+                ShowAdultContent = request.ShowAdultContent,
+                PointsLimit = request.PointsLimit > 0 ? request.PointsLimit : GameConstants.DefaultPointsLimit
             });
             return game;
         }

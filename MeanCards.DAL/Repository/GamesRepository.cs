@@ -32,6 +32,7 @@ namespace MeanCards.DAL.Repository
                 ShowAdultContent = model.ShowAdultContent,
                 Status = (byte)GameStatusEnum.Created,
                 CreateDate = DateTime.UtcNow,
+                PointsLimit = model.PointsLimit
             };
 
             context.Games.Add(newGame);
@@ -40,54 +41,26 @@ namespace MeanCards.DAL.Repository
             return MapToModel(newGame);
         }
 
-        private GameModel MapToModel(Game game)
-        {
-            return new GameModel
-            {
-                Code = game.Code,
-                GameId = game.GameId,
-                LanguageId = game.LanguageId,
-                Name = game.Name,
-                OwnerId = game.OwnerId,
-                ShowAdultContent = game.ShowAdultContent,
-                Status = (GameStatusEnum)game.Status
-            };
-        }
-
         public async Task<GameModel> GetGameById(int gameId)
         {
             var query = from game in context.Games
                         where game.GameId == gameId
-                        select new GameModel
-                        {
-                            GameId = game.GameId,
-                            Code = game.Code,
-                            Status = (GameStatusEnum)game.Status,
-                            LanguageId = game.LanguageId,
-                            Name = game.Name,
-                            OwnerId = game.OwnerId,
-                            ShowAdultContent = game.ShowAdultContent
-                        };
+                        select game;
 
-            return await query.FirstOrDefaultAsync();
+            var result = await query.FirstOrDefaultAsync();
+
+            return MapToModel(result);
         }
 
         public async Task<GameModel> GetGameByCode(string code)
         {
             var query = from game in context.Games
                         where game.Code == code
-                        select new GameModel
-                        {
-                            GameId = game.GameId,
-                            Code = game.Code,
-                            Status = (GameStatusEnum)game.Status,
-                            LanguageId = game.LanguageId,
-                            Name = game.Name,
-                            OwnerId = game.OwnerId,
-                            ShowAdultContent = game.ShowAdultContent
-                        };
+                        select game;
 
-            return await query.FirstOrDefaultAsync();
+            var result = await query.FirstOrDefaultAsync();
+
+            return MapToModel(result);
         }
 
         public async Task<bool> ActiveGameExists(int gameId)
@@ -104,6 +77,24 @@ namespace MeanCards.DAL.Repository
                 .AnyAsync(x => x.GameId == gameId && x.UserId == userId && x.IsActive);
 
             return exists;
+        }
+
+        private GameModel MapToModel(Game game)
+        {
+            if (game == null)
+                return null;
+
+            return new GameModel
+            {
+                Code = game.Code,
+                GameId = game.GameId,
+                LanguageId = game.LanguageId,
+                Name = game.Name,
+                OwnerId = game.OwnerId,
+                ShowAdultContent = game.ShowAdultContent,
+                Status = (GameStatusEnum)game.Status,
+                PointsLimit = game.PointsLimit
+            };
         }
     }
 }

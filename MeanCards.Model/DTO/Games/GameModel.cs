@@ -11,5 +11,6 @@ namespace MeanCards.Model.DTO.Games
         public int LanguageId { get; set; }
         public int OwnerId { get; set; }
         public bool ShowAdultContent { get; set; }
+        public int PointsLimit { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 LanguageId = languageId,
                 OwnerId = userId,
                 Name = "Test game",
-                ShowAdultContent = true
+                ShowAdultContent = true,
+                PointsLimit = 6
             };
 
             var game = await gamesRepository.CreateGame(createModel);
@@ -34,7 +35,8 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(userId, game.OwnerId);
             Assert.Equal("Test game", game.Name);
             Assert.Equal(GameStatusEnum.Created, game.Status);
-            Assert.Equal(5, TestHelper.GetNumberOfProperties<CreateGameModel>());
+            Assert.Equal(6, game.PointsLimit);
+            Assert.Equal(6, TestHelper.GetNumberOfProperties<CreateGameModel>());
         }
 
         [Fact]
