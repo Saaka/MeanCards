@@ -6,6 +6,7 @@
         InProgress = 1,
         Selection = 2,
         Finished = 3,
-        Cancelled = 4
+        Skipped = 4,
+        Cancelled = 5
     }
 }

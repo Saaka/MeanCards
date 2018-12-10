@@ -48,8 +48,8 @@ namespace MeanCards.GameManagement
                 var maxNumber = await playersRepository.GetMaxPlayerNumberForGame(request.GameId);
                 var player = await CreatePlayer(request.GameId, request.UserId, ++maxNumber);
 
-                var cardCount = await CreatePlayerAnswerCards(request.GameId, player.PlayerId, GameConstants.StartingCardsCount);
-                if (cardCount != GameConstants.StartingCardsCount)
+                var cardCount = await CreatePlayerAnswerCards(request.GameId, player.PlayerId, GameConstants.StartingPlayerCardsCount);
+                if (cardCount != GameConstants.StartingPlayerCardsCount)
                     return new JoinGameResult(GameErrors.NotEnoughAnswerCards);
 
                 transaction.CommitTransaction();

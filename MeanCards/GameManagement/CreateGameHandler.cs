@@ -76,8 +76,8 @@ namespace MeanCards.GameManagement
                     player.PlayerId, 
                     questionCard.QuestionCardId);
 
-                var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingCardsCount);
-                if (cardCount != GameConstants.StartingCardsCount)
+                var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingPlayerCardsCount);
+                if (cardCount != GameConstants.StartingPlayerCardsCount)
                     return new CreateGameResult(GameErrors.NotEnoughAnswerCards);
 
                 transaction.CommitTransaction();
