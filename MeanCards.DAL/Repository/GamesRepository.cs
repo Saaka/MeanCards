@@ -42,6 +42,17 @@ namespace MeanCards.DAL.Repository
             return MapToModel(newGame);
         }
 
+        public async Task<bool> UpdateCheckpoint(int gameId, string checkpoint)
+        {
+            var game = await context.Games
+                .FirstOrDefaultAsync(g => g.GameId == gameId);
+
+            if (game == null) return false;
+
+            game.Checkpoint = checkpoint;
+            return await context.SaveChangesAsync() > 0;
+        }
+
         public async Task<GameModel> GetGameById(int gameId)
         {
             var query = from game in context.Games

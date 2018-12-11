@@ -1,4 +1,5 @@
 ﻿using MeanCards.GameManagement;
+using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.Core.Users;
 using MeanCards.UserManagement;
@@ -24,6 +25,9 @@ namespace MeanCards
                 //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
                 .AddScoped<IGetUserByCodeHandler, GetUserByCodeHandler>()
+
+                //Core services
+                .AddScoped<IGameCheckpointUpdater, GameCheckpointUpdater>()
 
                 //validators
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()

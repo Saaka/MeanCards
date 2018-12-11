@@ -4,5 +4,6 @@
     {
         public const string NoQuestionCardsAvailable = nameof(NoQuestionCardsAvailable);
         public const string NotEnoughAnswerCards = nameof(NotEnoughAnswerCards);
+        public const string CheckpointUpdateFailed = nameof(CheckpointUpdateFailed);
     }
 }

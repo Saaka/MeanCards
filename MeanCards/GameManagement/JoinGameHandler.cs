@@ -1,6 +1,7 @@
 ﻿using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Interfaces.Transactions;
+using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Players;
@@ -22,19 +23,22 @@ namespace MeanCards.GameManagement
         private readonly IPlayersRepository playersRepository;
         private readonly IPlayerCardsRepository playerCardsRepository;
         private readonly IAnswerCardsRepository answerCardsRepository;
+        private readonly IGameCheckpointUpdater gameCheckpointUpdater;
 
         public JoinGameHandler(
             IRequestValidator<JoinGame> requestValidator,
             IRepositoryTransactionsFactory repositoryTransactionsFactory,
             IPlayersRepository playersRepository,
             IPlayerCardsRepository playerCardsRepository,
-            IAnswerCardsRepository answerCardsRepository)
+            IAnswerCardsRepository answerCardsRepository,
+            IGameCheckpointUpdater gameCheckpointUpdater)
         {
             this.requestValidator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
             this.playersRepository = playersRepository;
             this.playerCardsRepository = playerCardsRepository;
             this.answerCardsRepository = answerCardsRepository;
+            this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
         public async Task<JoinGameResult> Handle(JoinGame request)
@@ -52,6 +56,7 @@ namespace MeanCards.GameManagement
                 if (cardCount != GameConstants.StartingPlayerCardsCount)
                     return new JoinGameResult(GameErrors.NotEnoughAnswerCards);
 
+                await gameCheckpointUpdater.Update(request.GameId);
                 transaction.CommitTransaction();
 
                 return new JoinGameResult
