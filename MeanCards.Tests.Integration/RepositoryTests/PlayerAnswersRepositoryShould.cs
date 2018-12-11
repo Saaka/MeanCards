@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.False(answer.IsSelectedAnswer);
             Assert.Equal(playerId, answer.PlayerId);
             Assert.Null(answer.SecondaryAnswerCardId);
-            Assert.Equal(4, TestHelper.GetNumberOfProperties<CreatePlayerAnswerModel>());
+            TestHelper.AssertNumberOfFields<CreatePlayerAnswerModel>(4);
         }
 
         private async Task<int> CreateQuestionCard(int languageId)

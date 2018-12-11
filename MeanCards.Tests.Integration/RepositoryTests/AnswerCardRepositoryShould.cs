@@ -20,7 +20,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var cards = await cardRepository.GetAllActiveAnswerCards();
 
             Assert.Equal(2, cards.Count);
-            Assert.Equal(3, TestHelper.GetNumberOfProperties<CreateAnswerCardModel>());
+            TestHelper.AssertNumberOfFields<CreateAnswerCardModel>(3);
         }
 
         [Fact]

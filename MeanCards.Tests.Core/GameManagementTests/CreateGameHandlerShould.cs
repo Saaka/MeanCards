@@ -30,6 +30,8 @@ namespace MeanCards.Tests.Core.GameManagementTests
             Assert.True(result.IsSuccessful);
             Assert.NotEqual(0, result.GameId);
             Assert.NotNull(result.Code);
+            Assert.NotNull(result.Checkpoint);
+            TestHelper.AssertNumberOfFields<CreateGameResult>(6);
         }
 
         [Fact]

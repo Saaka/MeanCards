@@ -31,7 +31,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal("12345", user.Model.Code);
             Assert.Equal("test@test.com", user.Model.Email);
             Assert.Equal("imageurl", user.Model.ImageUrl);
-            Assert.Equal(5, TestHelper.GetNumberOfProperties<CreateUserModel>());
+            TestHelper.AssertNumberOfFields<CreateUserModel>(5);
         }
 
         [Fact]

@@ -32,7 +32,8 @@ namespace MeanCards.DAL.Repository
                 ShowAdultContent = model.ShowAdultContent,
                 Status = (byte)GameStatusEnum.Created,
                 CreateDate = DateTime.UtcNow,
-                PointsLimit = model.PointsLimit
+                PointsLimit = model.PointsLimit,
+                Checkpoint = model.Checkpoint
             };
 
             context.Games.Add(newGame);
@@ -93,7 +94,8 @@ namespace MeanCards.DAL.Repository
                 OwnerId = game.OwnerId,
                 ShowAdultContent = game.ShowAdultContent,
                 Status = (GameStatusEnum)game.Status,
-                PointsLimit = game.PointsLimit
+                PointsLimit = game.PointsLimit,
+                Checkpoint = game.Checkpoint
             };
         }
     }

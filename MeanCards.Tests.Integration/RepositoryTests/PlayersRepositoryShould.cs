@@ -30,7 +30,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(gameId, player.GameId);
             Assert.Equal(1, player.Number);
             Assert.Equal(0, player.Points);
-            Assert.Equal(3, TestHelper.GetNumberOfProperties<CreatePlayerModel>());
+            TestHelper.AssertNumberOfFields<CreatePlayerModel>(3);
         }
 
         [Fact]

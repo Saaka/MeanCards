@@ -62,8 +62,9 @@ namespace MeanCards.GameManagement
                     return new CreateGameResult(validationResult.Error);
 
                 var gameCode = codeGenerator.Generate();
+                var checkpoint = codeGenerator.Generate();
 
-                var game = await CreateGameModel(request, gameCode);
+                var game = await CreateGameModel(request, gameCode, checkpoint);
                 var player = await CreatePlayerModel(game.GameId, request.OwnerId);
 
                 var questionCard = await questionCardsRepository
@@ -72,8 +73,8 @@ namespace MeanCards.GameManagement
                     return new CreateGameResult(GameErrors.NoQuestionCardsAvailable);
 
                 var gameRound = await CreateFirstRound(
-                    game.GameId, 
-                    player.PlayerId, 
+                    game.GameId,
+                    player.PlayerId,
                     questionCard.QuestionCardId);
 
                 var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingPlayerCardsCount);
@@ -86,7 +87,8 @@ namespace MeanCards.GameManagement
                 {
                     GameId = game.GameId,
                     PlayerId = player.PlayerId,
-                    Code = gameCode
+                    Code = gameCode,
+                    Checkpoint = checkpoint
                 };
             }
         }
@@ -117,7 +119,7 @@ namespace MeanCards.GameManagement
             return gameRound;
         }
 
-        private async Task<GameModel> CreateGameModel(CreateGame request, string gameCode)
+        private async Task<GameModel> CreateGameModel(CreateGame request, string gameCode, string checkpoint)
         {
             var game = await gamesRepository.CreateGame(new CreateGameModel
             {
@@ -126,6 +128,7 @@ namespace MeanCards.GameManagement
                 Name = request.Name,
                 OwnerId = request.OwnerId,
                 ShowAdultContent = request.ShowAdultContent,
+                Checkpoint = checkpoint,
                 PointsLimit = request.PointsLimit > 0 ? request.PointsLimit : GameConstants.DefaultPointsLimit
             });
             return game;
