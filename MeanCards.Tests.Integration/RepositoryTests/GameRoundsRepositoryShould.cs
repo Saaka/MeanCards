@@ -36,7 +36,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
             Assert.Equal(1, gameRound.Number);
-            Assert.Equal(GameRoundStatusEnum.Created, gameRound.Status);
+            Assert.Equal(GameRoundStatusEnum.Pending, gameRound.Status);
             TestHelper.AssertNumberOfFields<CreateGameRoundModel>(4);
         }
 

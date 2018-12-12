@@ -11,17 +11,13 @@ namespace MeanCards.Tests.Core.GameManagementTests.CoreServicesTests
         public async Task UpdateGameCheckpoint()
         {
             var game = await Fixture.CreateGame();
-
             var updater = Fixture.GetService<IGameCheckpointUpdater>();
-
-            var checkpoint = await updater.Update(game.GameId);
-
-            Assert.NotEqual(game.Checkpoint, checkpoint);
-
             var gamesRepository = Fixture.GetService<IGamesRepository>();
 
+            var checkpoint = await updater.Update(game.GameId);
             var updatedGame = await gamesRepository.GetGameById(game.GameId);
 
+            Assert.NotEqual(game.Checkpoint, checkpoint);
             Assert.Equal(updatedGame.Checkpoint, checkpoint);
         }
     }

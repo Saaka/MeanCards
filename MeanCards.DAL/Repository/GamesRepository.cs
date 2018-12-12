@@ -30,7 +30,7 @@ namespace MeanCards.DAL.Repository
                 Name = model.Name,
                 OwnerId = model.OwnerId,
                 ShowAdultContent = model.ShowAdultContent,
-                Status = (byte)GameStatusEnum.Created,
+                Status = (byte)GameStatusEnum.InProgress,
                 CreateDate = DateTime.UtcNow,
                 PointsLimit = model.PointsLimit,
                 Checkpoint = model.Checkpoint

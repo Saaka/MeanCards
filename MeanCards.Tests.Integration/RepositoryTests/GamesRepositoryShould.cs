@@ -35,7 +35,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal(languageId, game.LanguageId);
             Assert.Equal(userId, game.OwnerId);
             Assert.Equal("Test game", game.Name);
-            Assert.Equal(GameStatusEnum.Created, game.Status);
+            Assert.Equal(GameStatusEnum.InProgress, game.Status);
             Assert.Equal(6, game.PointsLimit);
             Assert.Equal("checkpoint1", game.Checkpoint);
             TestHelper.AssertNumberOfFields<CreateGameRoundModel>(4);

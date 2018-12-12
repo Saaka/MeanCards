@@ -29,7 +29,7 @@ namespace MeanCards.DAL.Repository
                 QuestionCardId = model.QuestionCardId,
                 OwnerId = model.RoundOwnerId,
                 CreateDate = DateTime.UtcNow,
-                Status = (byte)GameRoundStatusEnum.Created,
+                Status = (byte)GameRoundStatusEnum.Pending,
                 IsActive = true
             };
 

@@ -2,7 +2,7 @@
 {
     public enum GameRoundStatusEnum
     {
-        Created = 0,
+        Pending = 0,
         InProgress = 1,
         Selection = 2,
         Finished = 3,
