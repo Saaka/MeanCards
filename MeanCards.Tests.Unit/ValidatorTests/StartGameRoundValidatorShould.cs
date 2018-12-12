@@ -210,11 +210,39 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.InvalidGameRoundStatus, result.Error);
         }
-        private IGameRoundsRepository CreateGameRoundRepoMock(bool isRoundOwner = true, bool isRoundPending = true)
+
+        [Fact]
+        public async Task ReturnFailureForInvalidGameAndRoundCombination()
+        {
+            var playersRepo = CreatePlayersRepoMock();
+            var gameRoundRepo = CreateGameRoundRepoMock(
+                isRoundInGame: false);
+            var gameRepo = CreateGameRepositoryMock();
+
+            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+
+            var request = new StartGameRound
+            {
+                GameRoundId = 1,
+                PlayerId = 1,
+                UserId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.RoundNotLinkedWithGame, result.Error);
+        }
+
+        private IGameRoundsRepository CreateGameRoundRepoMock(
+            bool isRoundOwner = true, 
+            bool isRoundPending = true,
+            bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
             mock.Setup(x => x.IsGameRoundOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundOwner));
             mock.Setup(x => x.IsGameRoundPending(It.IsAny<int>())).Returns(Task.FromResult(isRoundPending));
+            mock.Setup(x => x.IsRoundInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundInGame));
 
             return mock.Object;
         }

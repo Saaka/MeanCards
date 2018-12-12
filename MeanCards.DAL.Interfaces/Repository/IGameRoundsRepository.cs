@@ -10,5 +10,7 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<GameRoundModel> GetCurrentGameRound(int gameId);
         Task<bool> IsGameRoundPending(int gameRoundId);
         Task<bool> IsGameRoundOwner(int gameRoundId, int playerId);
+        Task<bool> IsRoundInGame(int gameId, int gameRoundId);
+        Task<bool> StartGameRound(int gameRoundId);
     }
 }

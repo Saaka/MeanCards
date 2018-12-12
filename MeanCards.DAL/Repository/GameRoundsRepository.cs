@@ -93,5 +93,30 @@ namespace MeanCards.DAL.Repository
 
             return await query.AnyAsync();
         }
+
+        public async Task<bool> StartGameRound(int gameRoundId)
+        {
+            var query = from r in context.GameRounds
+                        where r.GameRoundId == gameRoundId
+                        select r;
+
+            var round = await query.FirstOrDefaultAsync();
+            if (round == null)
+                return false;
+
+            round.Status = (byte)GameRoundStatusEnum.InProgress;
+
+            return await context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> IsRoundInGame(int gameId, int gameRoundId)
+        {
+            var query = from r in context.GameRounds
+                        where r.GameRoundId == gameRoundId
+                            && r.GameId == gameId
+                        select r;
+
+            return await query.AnyAsync();
+        }
     }
 }

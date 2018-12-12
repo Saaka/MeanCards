@@ -37,6 +37,8 @@ namespace MeanCards.Validators.Games
             if (!(await gameRoundsRepository.IsGameRoundOwner(request.GameRoundId, request.PlayerId)
                 || await gamesRepository.IsGameOwner(request.GameRoundId, request.UserId)))
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
+            if (!await gameRoundsRepository.IsRoundInGame(request.GameId, request.GameRoundId))
+                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
 
             return new ValidatorResult();
         }
