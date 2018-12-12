@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MeanCards.Model.Core.Games
+﻿namespace MeanCards.Model.Core.Games
 {
-    class StartGameRound
+    public class StartGameRound
     {
+        public int UserId { get; set; }
+        public int PlayerId { get; set; }
+        public int GameRoundId { get; set; }
     }
 }

@@ -72,5 +72,15 @@ namespace MeanCards.DAL.Repository
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<bool> IsUserLinkedWithPlayer(int userId, int playerId)
+        {
+            var query = from player in context.Players
+                        where player.PlayerId == playerId
+                            && player.UserId == userId
+                        select player.PlayerId;
+
+            return await query.AnyAsync();
+        }
     }
 }

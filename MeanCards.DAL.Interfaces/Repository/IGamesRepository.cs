@@ -12,5 +12,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<GameModel> CreateGame(CreateGameModel model);
         Task<GameModel> GetGameById(int gameId);
         Task<GameModel> GetGameByCode(string code);
+        Task<bool> IsGameOwner(int gameRoundId, int userId);
     }
 }

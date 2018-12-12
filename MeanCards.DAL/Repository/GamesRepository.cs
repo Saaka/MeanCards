@@ -91,6 +91,17 @@ namespace MeanCards.DAL.Repository
             return exists;
         }
 
+        public async Task<bool> IsGameOwner(int gameRoundId, int userId)
+        {
+            var query = from g in context.Games
+                        join gr in context.GameRounds on g.GameId equals gr.GameId
+                        where gr.GameRoundId == gameRoundId
+                            && g.OwnerId == userId
+                        select g.GameId;
+
+            return await query.AnyAsync();
+        }
+
         private GameModel MapToModel(Game game)
         {
             if (game == null)

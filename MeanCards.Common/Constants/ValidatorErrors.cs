@@ -22,6 +22,14 @@
             public const string UserIdRequired = nameof(UserIdRequired);
             public const string GameNotFoundOrInactive = nameof(GameNotFoundOrInactive);
             public const string UserAlreadyJoined = nameof(UserAlreadyJoined);
+            public const string GameRoundIdRequired = nameof(GameRoundIdRequired);
+            public const string PlayerIdRequired = nameof(PlayerIdRequired);
+            public const string InvalidGameRoundStatus = nameof(InvalidGameRoundStatus);
+            public const string UserCantStartRound = nameof(UserCantStartRound);
+        }
+        public static class Players
+        {
+            public const string UserNotLinkedWithPlayer = nameof(UserNotLinkedWithPlayer);
         }
     }
 }
