@@ -17,9 +17,9 @@ namespace MeanCards.DAL.Entity
         public byte Status { get; set; }
         public int Number { get; set; }
         public int QuestionCardId { get; set; }
-        public int OwnerId { get; set; }
+        public int OwnerPlayerId { get; set; }
         public bool IsActive { get; set; }
-        public int? WinnerId { get; set; }
+        public int? WinnerPlayerId { get; set; }
         public DateTime CreateDate { get; set; }
 
         public Game Game { get; set; }

@@ -111,7 +111,7 @@ namespace MeanCards.GameManagement
             var gameRound = await gameRoundsRepository.CreateGameRound(new CreateGameRoundModel
             {
                 GameId = gameId,
-                RoundOwnerId = playerId,
+                OwnerPlayerId = playerId,
                 QuestionCardId = questionCardId,
                 RoundNumber = 1
             });

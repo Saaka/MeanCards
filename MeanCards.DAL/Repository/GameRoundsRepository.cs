@@ -27,7 +27,7 @@ namespace MeanCards.DAL.Repository
                 GameId = model.GameId,
                 Number = model.RoundNumber,
                 QuestionCardId = model.QuestionCardId,
-                OwnerId = model.RoundOwnerId,
+                OwnerPlayerId = model.OwnerPlayerId,
                 CreateDate = DateTime.UtcNow,
                 Status = (byte)GameRoundStatusEnum.Pending,
                 IsActive = true
@@ -46,9 +46,9 @@ namespace MeanCards.DAL.Repository
                 GameId = round.GameId,
                 GameRoundId = round.GameRoundId,
                 Number = round.Number,
-                OwnerId = round.OwnerId,
+                OwnerPlayerId = round.OwnerPlayerId,
                 QuestionCardId = round.QuestionCardId,
-                WinnerId = round.WinnerId,
+                WinnerPlayerId = round.WinnerPlayerId,
                 Status = (GameRoundStatusEnum)round.Status
             };
         }
@@ -63,8 +63,8 @@ namespace MeanCards.DAL.Repository
                             GameRoundId = round.GameRoundId,
                             Number = round.Number,
                             QuestionCardId = round.QuestionCardId,
-                            OwnerId = round.OwnerId,
-                            WinnerId = round.WinnerId,
+                            OwnerPlayerId = round.OwnerPlayerId,
+                            WinnerPlayerId = round.WinnerPlayerId,
                             Status = (GameRoundStatusEnum)round.Status
                         };
 

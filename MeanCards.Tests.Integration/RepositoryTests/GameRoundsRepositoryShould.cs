@@ -23,7 +23,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var createRound = new CreateGameRoundModel
             {
                 GameId = gameId,
-                RoundOwnerId = playerId,
+                OwnerPlayerId = playerId,
                 QuestionCardId = questionCardId,
                 RoundNumber = 1
             };
@@ -32,7 +32,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var gameRound = await repository.GetCurrentGameRound(gameId);
 
             Assert.NotNull(gameRound);
-            Assert.Equal(playerId, gameRound.OwnerId);
+            Assert.Equal(playerId, gameRound.OwnerPlayerId);
             Assert.Equal(gameId, gameRound.GameId);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
             Assert.Equal(1, gameRound.Number);

@@ -4,7 +4,11 @@ using System.Text;
 
 namespace MeanCards.GameManagement
 {
-    class StartGameRoundHandler
+    public interface IStartGameRoundHandler
+    {
+    }
+
+    public class StartGameRoundHandler : IStartGameRoundHandler
     {
     }
 }

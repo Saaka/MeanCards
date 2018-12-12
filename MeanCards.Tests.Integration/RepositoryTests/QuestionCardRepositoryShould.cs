@@ -128,7 +128,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 GameId = gameId,
                 QuestionCardId = questionCardId,
                 RoundNumber = 1,
-                RoundOwnerId = playerId
+                OwnerPlayerId = playerId
             });
         }
 

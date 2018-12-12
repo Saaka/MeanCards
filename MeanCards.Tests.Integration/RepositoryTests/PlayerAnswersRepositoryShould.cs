@@ -78,7 +78,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var createRound = new CreateGameRoundModel
             {
                 GameId = gameId,
-                RoundOwnerId = playerId,
+                OwnerPlayerId = playerId,
                 QuestionCardId = questionCardId,
                 RoundNumber = roundNumber
             };

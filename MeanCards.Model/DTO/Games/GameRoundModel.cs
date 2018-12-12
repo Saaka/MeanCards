@@ -9,7 +9,7 @@ namespace MeanCards.Model.DTO.Games
         public int GameId { get; set; }
         public GameRoundStatusEnum Status { get; set; }
         public int QuestionCardId { get; set; }
-        public int OwnerId { get; set; }
-        public int? WinnerId { get; set; }
+        public int OwnerPlayerId { get; set; }
+        public int? WinnerPlayerId { get; set; }
     }
 }
