@@ -30,14 +30,14 @@ namespace MeanCards.Validators.Games
 
             if (!await playersRepository.IsUserLinkedWithPlayer(request.UserId, request.GameId))
                 return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
+            if (!await gameRoundsRepository.IsRoundInGame(request.GameId, request.GameRoundId))
+                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
 
             if (!await gameRoundsRepository.IsGameRoundPending(request.GameRoundId))
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
             if (!(await gameRoundsRepository.IsGameRoundOwner(request.GameRoundId, request.UserId)
                 || await gamesRepository.IsGameOwner(request.GameRoundId, request.UserId)))
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
-            if (!await gameRoundsRepository.IsRoundInGame(request.GameId, request.GameRoundId))
-                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
 
             return new ValidatorResult();
         }
