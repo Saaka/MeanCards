@@ -20,6 +20,7 @@ namespace MeanCards.DAL.Storage
 
         public DbSet<Game> Games { get; set; }
         public DbSet<GameRound> GameRounds { get; set; }
+        public DbSet<GameCheckpoint> GameCheckpoints { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerCard> PlayersCards { get; set; }
         public DbSet<PlayerAnswer> PlayerAnswers { get; set; }
@@ -57,8 +58,20 @@ namespace MeanCards.DAL.Storage
                     .WithMany(x => x.Games)
                     .HasForeignKey(x => x.LanguageId)
                     .OnDelete(DeleteBehavior.Restrict);
+                b.HasMany(x => x.GameCheckpoints)
+                    .WithOne(x => x.Game)
+                    .HasForeignKey(x => x.GameId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasIndex(x => x.Code)
                     .IsUnique();
+            });
+            builder.Entity<GameCheckpoint>(b =>
+            {
+                b.HasKey(x => x.GameCheckpointId);
+                b.HasOne(x => x.Game)
+                    .WithMany(x => x.GameCheckpoints)
+                    .HasForeignKey(x => x.GameId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             builder.Entity<GameRound>(b =>
             {

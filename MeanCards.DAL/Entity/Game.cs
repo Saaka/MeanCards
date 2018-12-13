@@ -10,6 +10,7 @@ namespace MeanCards.DAL.Entity
         {
             GameRounds = new List<GameRound>();
             Players = new List<Player>();
+            GameCheckpoints = new List<GameCheckpoint>();
         }
 
         [Key]
@@ -34,5 +35,6 @@ namespace MeanCards.DAL.Entity
         public User Owner { get; set; }
         public List<GameRound> GameRounds { get; set; }
         public List<Player> Players { get; set; }
+        public List<GameCheckpoint> GameCheckpoints { get; set; }
     }
 }
