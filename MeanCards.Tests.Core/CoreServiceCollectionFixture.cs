@@ -44,7 +44,8 @@ namespace MeanCards.Tests.Core
             string gameName = "TestGame", 
             bool showAdultContent = false,
             int questionCardsAvailable = 20,
-            int answerCardsAvailable = 100)
+            int answerCardsAvailable = 100,
+            int pointsLimit = 10)
         {
             var userId = await CreateDefaultUser();
             var languageId = await CreateDefaultLanguage();
@@ -62,12 +63,19 @@ namespace MeanCards.Tests.Core
                 LanguageId = languageId,
                 Name = gameName,
                 OwnerId = userId,
-                ShowAdultContent = showAdultContent
+                ShowAdultContent = showAdultContent,
+                PointsLimit = pointsLimit
             });
 
             var gamesRepository = GetService<IGamesRepository>();
 
             return await gamesRepository.GetGameById(result.GameId);
+        }
+
+        public async Task<GameRoundModel> GetCurrentGameRound(int gameId)
+        {
+            var gameRoundRepository = GetService<IGameRoundsRepository>();
+            return await gameRoundRepository.GetCurrentGameRound(gameId);
         }
 
         public async Task<int> CreateDefaultUser(

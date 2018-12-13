@@ -8,7 +8,8 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<PlayerModel> CreatePlayer(CreatePlayerModel model);
         Task<PlayerModel> GetPlayerById(int playerId);
+        Task<PlayerModel> GetPlayerByUserId(int userId, int gameId);
         Task<int> GetMaxPlayerNumberForGame(int gameId);
-        Task<bool> IsUserLinkedWithPlayer(int userId, int playerId);
+        Task<bool> IsUserLinkedWithPlayer(int userId, int gameId);
     }
 }

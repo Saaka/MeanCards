@@ -35,32 +35,29 @@ namespace MeanCards.DAL.Repository
             return MapToModel(newPlayer);
         }
 
-        private PlayerModel MapToModel(Player player)
-        {
-            return new PlayerModel
-            {
-                PlayerId = player.PlayerId,
-                GameId = player.GameId,
-                Number = player.Number,
-                Points = player.Points,
-                UserId = player.UserId
-            };
-        }
-
         public async Task<PlayerModel> GetPlayerById(int playerId)
         {
-            var query = from player in context.Players
-                        where player.PlayerId == playerId
-                        select new PlayerModel
-                        {
-                            PlayerId = player.PlayerId,
-                            GameId = player.GameId,
-                            Points = player.Points,
-                            UserId = player.UserId,
-                            Number = player.Number
-                        };
+            var query = from p in context.Players
+                        where p.PlayerId == playerId
+                        select p;
 
-            return await query.FirstOrDefaultAsync();
+            var player = await query.FirstOrDefaultAsync();
+            if (player == null) return null;
+
+            return MapToModel(player);
+        }
+
+        public async Task<PlayerModel> GetPlayerByUserId(int userId, int gameId)
+        {
+            var query = from p in context.Players
+                        where p.UserId == userId
+                            && p.GameId == gameId
+                        select p;
+
+            var player = await query.FirstOrDefaultAsync();
+            if (player == null) return null;
+
+            return MapToModel(player);
         }
 
         public async Task<int> GetMaxPlayerNumberForGame(int gameId)
@@ -73,14 +70,26 @@ namespace MeanCards.DAL.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> IsUserLinkedWithPlayer(int userId, int playerId)
+        public async Task<bool> IsUserLinkedWithPlayer(int userId, int gameId)
         {
             var query = from player in context.Players
-                        where player.PlayerId == playerId
+                        where player.GameId == gameId
                             && player.UserId == userId
                         select player.PlayerId;
 
             return await query.AnyAsync();
+        }
+
+        private PlayerModel MapToModel(Player player)
+        {
+            return new PlayerModel
+            {
+                PlayerId = player.PlayerId,
+                GameId = player.GameId,
+                Number = player.Number,
+                Points = player.Points,
+                UserId = player.UserId
+            };
         }
     }
 }

@@ -25,7 +25,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -47,7 +46,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -69,7 +67,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -89,7 +86,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             var request = new StartGameRound
             {
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -97,27 +93,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.GameRoundIdRequired, result.Error);
-        }
-
-        [Fact]
-        public async Task ReturnFailureForMissingPlayerId()
-        {
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
-
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
-            {
-                GameRoundId = 1,
-                UserId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.PlayerIdRequired, result.Error);
         }
 
         [Fact]
@@ -132,7 +107,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1
             };
 
             var result = await validator.Validate(request);
@@ -154,7 +128,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             var request = new StartGameRound
             {
-                PlayerId = 1,
                 UserId = 1,
                 GameRoundId = 1
             };
@@ -178,7 +151,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -201,7 +173,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 
@@ -224,7 +195,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new StartGameRound
             {
                 GameRoundId = 1,
-                PlayerId = 1,
                 UserId = 1
             };
 

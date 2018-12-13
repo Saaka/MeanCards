@@ -84,11 +84,13 @@ namespace MeanCards.DAL.Repository
             return await query.AnyAsync();
         }
 
-        public async Task<bool> IsGameRoundOwner(int gameRoundId, int playerId)
+        public async Task<bool> IsGameRoundOwner(int gameRoundId, int userId)
         {
             var query = from round in context.GameRounds
-                        where round.GameRoundId == gameRoundId
-                            && round.OwnerPlayerId == playerId
+                        join player in context.Players on round.GameId equals player.GameId
+                        where round.GameRoundId == gameRoundId                            
+                            && round.OwnerPlayerId == player.PlayerId
+                            && player.UserId == userId
                         select round.GameRoundId;
 
             return await query.AnyAsync();
