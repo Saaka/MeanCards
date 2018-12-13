@@ -12,13 +12,30 @@ namespace MeanCards.Tests.Core.GameManagementTests.CoreServicesTests
         {
             var game = await Fixture.CreateGame();
             var updater = Fixture.GetService<IGameCheckpointUpdater>();
-            var gamesRepository = Fixture.GetService<IGamesRepository>();
+            var checkpointRepository = Fixture.GetService<IGameCheckpointRepository>();
 
-            var checkpoint = await updater.Update(game.GameId);
-            var updatedGame = await gamesRepository.GetGameById(game.GameId);
+            var oldCheckpoint = await checkpointRepository.GetCurrentCheckpoint(game.GameId);
 
-            Assert.NotEqual(game.Checkpoint, checkpoint);
-            Assert.Equal(updatedGame.Checkpoint, checkpoint);
+            var checkpoint = await updater.Update(game.GameId, "Test");
+
+            var newCheckpoint = await checkpointRepository.GetCurrentCheckpoint(game.GameId);
+
+            Assert.NotEqual(oldCheckpoint, checkpoint);
+            Assert.Equal(checkpoint, newCheckpoint);
+        }
+
+        [Fact]
+        public async Task GetListOfAllCheckpoints()
+        {
+            var game = await Fixture.CreateGame();
+            var updater = Fixture.GetService<IGameCheckpointUpdater>();
+            var checkpointRepository = Fixture.GetService<IGameCheckpointRepository>();
+            
+            await updater.Update(game.GameId, "Test");
+
+            var checkpoints = await checkpointRepository.GetCheckpointsForGame(game.GameId);
+
+            Assert.Equal(2, checkpoints.Count);
         }
     }
 }

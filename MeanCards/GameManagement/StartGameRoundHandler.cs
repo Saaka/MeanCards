@@ -44,7 +44,7 @@ namespace MeanCards.GameManagement
                 if (!started)
                     return new StartGameRoundResult(GameErrors.GameRoundCouldNotBeStarted);
 
-                var checkpoint = await gameCheckpointUpdater.Update(request.GameId);
+                var checkpoint = await gameCheckpointUpdater.Update(request.GameId, nameof(StartGameRound));
                 transaction.CommitTransaction();
 
                 return new StartGameRoundResult();

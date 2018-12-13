@@ -25,7 +25,6 @@ namespace MeanCards.Tests.Integration.RepositoryTests
                 Name = "Test game",
                 ShowAdultContent = true,
                 PointsLimit = 6,
-                Checkpoint = "checkpoint1"
             };
 
             var game = await gamesRepository.CreateGame(createModel);
@@ -37,8 +36,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.Equal("Test game", game.Name);
             Assert.Equal(GameStatusEnum.InProgress, game.Status);
             Assert.Equal(6, game.PointsLimit);
-            Assert.Equal("checkpoint1", game.Checkpoint);
-            TestHelper.AssertNumberOfFields<CreateGameRoundModel>(4);
+            TestHelper.AssertNumberOfFields<CreateGameModel>(6);
         }
 
         [Fact]

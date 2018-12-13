@@ -29,7 +29,6 @@ namespace MeanCards.DAL.Entity
         public bool IsActive { get; set; }
         public int PointsLimit { get; set; }
         public DateTime CreateDate { get; set; }
-        public string Checkpoint { get; set; }
 
         public Language Language { get; set; }
         public User Owner { get; set; }

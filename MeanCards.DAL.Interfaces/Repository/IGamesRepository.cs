@@ -8,7 +8,6 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<bool> ActiveGameExists(int gameId);
         Task<bool> IsUserInGame(int gameId, int userId);
-        Task<bool> UpdateCheckpoint(int gameId, string checkpoint);
         Task<GameModel> CreateGame(CreateGameModel model);
         Task<GameModel> GetGameById(int gameId);
         Task<GameModel> GetGameByCode(string code);

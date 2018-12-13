@@ -56,7 +56,7 @@ namespace MeanCards.GameManagement
                 if (cardCount != GameConstants.StartingPlayerCardsCount)
                     return new JoinGameResult(GameErrors.NotEnoughAnswerCards);
 
-                await gameCheckpointUpdater.Update(request.GameId);
+                await gameCheckpointUpdater.Update(request.GameId, nameof(JoinGame));
                 transaction.CommitTransaction();
 
                 return new JoinGameResult

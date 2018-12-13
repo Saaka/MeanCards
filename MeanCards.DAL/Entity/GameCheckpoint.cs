@@ -11,7 +11,7 @@ namespace MeanCards.DAL.Entity
         public int GameId { get; set; }
         [Required]
         [StringLength(32)]
-        public string CheckpointCode { get; set; }
+        public string Code { get; set; }
         [Required]
         [StringLength(64)]
         public string OperationType { get; set; }

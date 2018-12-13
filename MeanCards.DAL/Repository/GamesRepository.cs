@@ -33,24 +33,12 @@ namespace MeanCards.DAL.Repository
                 Status = (byte)GameStatusEnum.InProgress,
                 CreateDate = DateTime.UtcNow,
                 PointsLimit = model.PointsLimit,
-                Checkpoint = model.Checkpoint
             };
 
             context.Games.Add(newGame);
             await context.SaveChangesAsync();
 
             return MapToModel(newGame);
-        }
-
-        public async Task<bool> UpdateCheckpoint(int gameId, string checkpoint)
-        {
-            var game = await context.Games
-                .FirstOrDefaultAsync(g => g.GameId == gameId);
-
-            if (game == null) return false;
-
-            game.Checkpoint = checkpoint;
-            return await context.SaveChangesAsync() > 0;
         }
 
         public async Task<GameModel> GetGameById(int gameId)
@@ -117,7 +105,6 @@ namespace MeanCards.DAL.Repository
                 ShowAdultContent = game.ShowAdultContent,
                 Status = (GameStatusEnum)game.Status,
                 PointsLimit = game.PointsLimit,
-                Checkpoint = game.Checkpoint
             };
         }
     }

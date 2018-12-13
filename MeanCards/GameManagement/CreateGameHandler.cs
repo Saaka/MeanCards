@@ -2,6 +2,7 @@
 using MeanCards.Common.RandomCodeProvider;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.DAL.Interfaces.Transactions;
+using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DAL.Creation.Players;
@@ -30,6 +31,7 @@ namespace MeanCards.GameManagement
         private readonly IQuestionCardsRepository questionCardsRepository;
         private readonly IAnswerCardsRepository answerCardsRepository;
         private readonly ICodeGenerator codeGenerator;
+        private readonly IGameCheckpointUpdater gameCheckpointUpdater;
 
         public CreateGameHandler(
             IRequestValidator<CreateGame> requestValidator,
@@ -40,7 +42,8 @@ namespace MeanCards.GameManagement
             IPlayerCardsRepository playerCardsRepository,
             IQuestionCardsRepository questionCardsRepository,
             IAnswerCardsRepository answerCardsRepository,
-            ICodeGenerator codeGenerator)
+            ICodeGenerator codeGenerator,
+            IGameCheckpointUpdater gameCheckpointUpdater)
         {
             this.requestValidator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
@@ -51,6 +54,7 @@ namespace MeanCards.GameManagement
             this.questionCardsRepository = questionCardsRepository;
             this.answerCardsRepository = answerCardsRepository;
             this.codeGenerator = codeGenerator;
+            this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
         public async Task<CreateGameResult> Handle(CreateGame request)
@@ -62,10 +66,9 @@ namespace MeanCards.GameManagement
                     return new CreateGameResult(validationResult.Error);
 
                 var gameCode = codeGenerator.Generate();
-                var checkpoint = codeGenerator.Generate();
 
-                var game = await CreateGameModel(request, gameCode, checkpoint);
-                var player = await CreatePlayerModel(game.GameId, request.OwnerId);
+                var game = await CreateGame(request, gameCode);
+                var player = await CreatePlayer(game.GameId, request.OwnerId);
 
                 var questionCard = await questionCardsRepository
                     .GetRandomQuestionCardForGame(game.GameId);
@@ -80,6 +83,8 @@ namespace MeanCards.GameManagement
                 var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingPlayerCardsCount);
                 if (cardCount != GameConstants.StartingPlayerCardsCount)
                     return new CreateGameResult(GameErrors.NotEnoughAnswerCards);
+
+                var checkpoint = await gameCheckpointUpdater.Update(game.GameId, nameof(CreateGame));
 
                 transaction.CommitTransaction();
 
@@ -119,7 +124,7 @@ namespace MeanCards.GameManagement
             return gameRound;
         }
 
-        private async Task<GameModel> CreateGameModel(CreateGame request, string gameCode, string checkpoint)
+        private async Task<GameModel> CreateGame(CreateGame request, string gameCode)
         {
             var game = await gamesRepository.CreateGame(new CreateGameModel
             {
@@ -128,13 +133,12 @@ namespace MeanCards.GameManagement
                 Name = request.Name,
                 OwnerId = request.OwnerId,
                 ShowAdultContent = request.ShowAdultContent,
-                Checkpoint = checkpoint,
                 PointsLimit = request.PointsLimit > 0 ? request.PointsLimit : GameConstants.DefaultPointsLimit
             });
             return game;
         }
 
-        private async Task<PlayerModel> CreatePlayerModel(int gameId, int userId)
+        private async Task<PlayerModel> CreatePlayer(int gameId, int userId)
         {
             var player = await playersRepository.CreatePlayer(new CreatePlayerModel
             {
