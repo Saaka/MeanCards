@@ -71,19 +71,6 @@ namespace MeanCards.DAL.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> IsGameRoundPending(int gameRoundId)
-        {
-            var status = (byte)GameRoundStatusEnum.Pending;
-
-            var query = from round in context.GameRounds
-                        where round.IsActive
-                            && round.Status == status
-                            && round.GameRoundId == gameRoundId
-                        select round.GameRoundId;
-
-            return await query.AnyAsync();
-        }
-
         public async Task<bool> IsGameRoundOwner(int gameRoundId, int userId)
         {
             var query = from round in context.GameRounds
@@ -117,6 +104,32 @@ namespace MeanCards.DAL.Repository
                         where r.GameRoundId == gameRoundId
                             && r.GameId == gameId
                         select r;
+
+            return await query.AnyAsync();
+        }
+
+        public async Task<bool> IsGameRoundPending(int gameRoundId)
+        {
+            var status = (byte)GameRoundStatusEnum.Pending;
+
+            var query = from round in context.GameRounds
+                        where round.IsActive
+                            && round.Status == status
+                            && round.GameRoundId == gameRoundId
+                        select round.GameRoundId;
+
+            return await query.AnyAsync();
+        }
+
+        public async Task<bool> IsGameRoundInProgress(int gameRoundId)
+        {
+            var status = (byte)GameRoundStatusEnum.InProgress;
+
+            var query = from round in context.GameRounds
+                        where round.IsActive
+                            && round.Status == status
+                            && round.GameRoundId == gameRoundId
+                        select round.GameRoundId;
 
             return await query.AnyAsync();
         }

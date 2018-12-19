@@ -16,7 +16,8 @@ namespace MeanCards.Tests.Core.GameManagementTests.CoreServicesTests
 
             var oldCheckpoint = await checkpointRepository.GetCurrentCheckpoint(game.GameId);
 
-            var checkpoint = await updater.Update(game.GameId, "Test");
+            var checkpoint = await updater.Update(game.GameId, "Test1");
+            checkpoint = await updater.Update(game.GameId, "Test2");
 
             var newCheckpoint = await checkpointRepository.GetCurrentCheckpoint(game.GameId);
 
@@ -31,11 +32,13 @@ namespace MeanCards.Tests.Core.GameManagementTests.CoreServicesTests
             var updater = Fixture.GetService<IGameCheckpointUpdater>();
             var checkpointRepository = Fixture.GetService<IGameCheckpointRepository>();
             
-            await updater.Update(game.GameId, "Test");
+            await updater.Update(game.GameId, "Test1");
+            await updater.Update(game.GameId, "Test2");
+            await updater.Update(game.GameId, "Test3");
 
             var checkpoints = await checkpointRepository.GetCheckpointsForGame(game.GameId);
 
-            Assert.Equal(2, checkpoints.Count);
+            Assert.Equal(4, checkpoints.Count);
         }
     }
 }

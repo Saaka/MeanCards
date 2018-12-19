@@ -27,6 +27,8 @@
             public const string InvalidGameRoundStatus = nameof(InvalidGameRoundStatus);
             public const string UserCantStartRound = nameof(UserCantStartRound);
             public const string RoundNotLinkedWithGame = nameof(RoundNotLinkedWithGame);
+            public const string PlayerCardIdRequired = nameof(PlayerCardIdRequired);
+            public const string CardNotLinkedWithPlayer = nameof(CardNotLinkedWithPlayer);
         }
         public static class Players
         {

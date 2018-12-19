@@ -8,22 +8,23 @@ using Xunit;
 
 namespace MeanCards.Tests.Unit.ValidatorTests
 {
-    public class StartGameRoundValidatorShould
+    public class SubmitAnswerValidatorShould
     {
         [Fact]
         public async Task ReturnSuccessForValidData()
         {
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 GameRoundId = 1,
                 UserId = 1,
-                GameId = 1
+                GameId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -32,62 +33,19 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         }
 
         [Fact]
-        public async Task ReturnSuccessForGameOwner()
-        {
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundOwner: false);
-            var gameRepo = CreateGameRepositoryMock();
-
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
-            {
-                GameRoundId = 1,
-                UserId = 1,
-                GameId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact]
-        public async Task ReturnSuccessForGameRoundOwner()
+        public async Task ReturnFailureForMissingGameRoundId()
         {
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock(
-                isGameOwner: false);
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
-            {
-                GameRoundId = 1,
-                UserId = 1,
-                GameId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact]
-        public async Task ReturnFailureForMissingRoundId()
-        {
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
-
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 UserId = 1,
-                GameId = 1
+                GameId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -101,14 +59,15 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 UserId = 1,
-                GameRoundId = 1
+                GameRoundId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -122,14 +81,15 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
+                GameId = 1,
                 GameRoundId = 1,
-                GameId = 1
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -139,44 +99,43 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         }
 
         [Fact]
-        public async Task ReturnFailureForInvalidUserAndPlayer()
+        public async Task ReturnFailureForMissingPlayerCardId()
         {
             var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundOwner: false);
-            var gameRepo = CreateGameRepositoryMock(
-                isGameOwner: false);
+            var gameRoundRepo = CreateGameRoundRepoMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
-                UserId = 1,
+                GameId = 1,
                 GameRoundId = 1,
-                GameId = 1
+                UserId = 1
             };
 
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.UserCantStartRound, result.Error);
+            Assert.Equal(ValidatorErrors.Games.PlayerCardIdRequired, result.Error);
         }
 
         [Fact]
-        public async Task ReturnFailureForInvalidUserPlayerCombination()
+        public async Task ReturnFailureForInvalidUserAndPlayerCombination()
         {
             var playersRepo = CreatePlayersRepoMock(
                 isUserLinkedWithPlayer: false);
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 GameRoundId = 1,
                 UserId = 1,
-                GameId = 1
+                GameId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -190,16 +149,17 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundPending: false);
-            var gameRepo = CreateGameRepositoryMock();
+                isRoundInProgress: false);
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 GameRoundId = 1,
                 UserId = 1,
-                GameId = 1
+                GameId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -214,15 +174,16 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundInGame: false);
-            var gameRepo = CreateGameRepositoryMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
 
-            var validator = new StartGameRoundValidator(playersRepo, gameRoundRepo, gameRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
 
-            var request = new StartGameRound
+            var request = new SubmitAnswer
             {
                 GameRoundId = 1,
                 UserId = 1,
-                GameId = 1
+                GameId = 1,
+                PlayerCardId = 1
             };
 
             var result = await validator.Validate(request);
@@ -231,14 +192,39 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             Assert.Equal(ValidatorErrors.Games.RoundNotLinkedWithGame, result.Error);
         }
 
+
+        [Fact]
+        public async Task ReturnFailureForInvalidCardAndPlayerCombination()
+        {
+            var playersRepo = CreatePlayersRepoMock();
+            var gameRoundRepo = CreateGameRoundRepoMock();
+            var cardsRepo = CreatePlayerCardsRepoMock(
+                isCardLinkedWithUser: false);
+
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+
+            var request = new SubmitAnswer
+            {
+                GameRoundId = 1,
+                UserId = 1,
+                GameId = 1,
+                PlayerCardId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.CardNotLinkedWithPlayer, result.Error);
+        }
+
         private IGameRoundsRepository CreateGameRoundRepoMock(
-            bool isRoundOwner = true, 
-            bool isRoundPending = true,
+            bool isRoundOwner = true,
+            bool isRoundInProgress = true,
             bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
             mock.Setup(x => x.IsGameRoundOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundOwner));
-            mock.Setup(x => x.IsGameRoundPending(It.IsAny<int>())).Returns(Task.FromResult(isRoundPending));
+            mock.Setup(x => x.IsGameRoundInProgress(It.IsAny<int>())).Returns(Task.FromResult(isRoundInProgress));
             mock.Setup(x => x.IsRoundInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundInGame));
 
             return mock.Object;
@@ -252,10 +238,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             return mock.Object;
         }
 
-        private IGamesRepository CreateGameRepositoryMock(bool isGameOwner = true)
+        private IPlayerCardsRepository CreatePlayerCardsRepoMock(bool isCardLinkedWithUser = true)
         {
-            var mock = new Mock<IGamesRepository>();
-            mock.Setup(x => x.IsGameOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isGameOwner));
+            var mock = new Mock<IPlayerCardsRepository>();
+            mock.Setup(x => x.IsCardLinkedWithUser(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isCardLinkedWithUser));
 
             return mock.Object;
         }

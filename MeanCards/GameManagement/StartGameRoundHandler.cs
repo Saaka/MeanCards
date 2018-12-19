@@ -10,7 +10,7 @@ namespace MeanCards.GameManagement
 {
     public interface IStartGameRoundHandler
     {
-        Task<StartGameRoundResult> StartGameRound(StartGameRound request);
+        Task<StartGameRoundResult> Handle(StartGameRound request);
     }
 
     public class StartGameRoundHandler : IStartGameRoundHandler
@@ -32,7 +32,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<StartGameRoundResult> StartGameRound(StartGameRound request)
+        public async Task<StartGameRoundResult> Handle(StartGameRound request)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {

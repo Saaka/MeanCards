@@ -64,5 +64,16 @@ namespace MeanCards.DAL.Repository
                 IsUsed = false
             };
         }
+
+        public async Task<bool> IsCardLinkedWithUser(int userId, int playerCardId)
+        {
+            var query = from pc in context.PlayersCards
+                        join p in context.Players on pc.PlayerId equals p.PlayerId
+                        where p.UserId == userId
+                            && pc.PlayerCardId == playerCardId
+                        select pc.PlayerCardId;
+
+            return await query.AnyAsync();
+        }
     }
 }

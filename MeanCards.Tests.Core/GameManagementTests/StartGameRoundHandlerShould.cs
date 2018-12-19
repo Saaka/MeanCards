@@ -20,7 +20,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 UserId = game.OwnerId
             };
 
-            var result = await handler.StartGameRound(request);
+            var result = await handler.Handle(request);
 
             Assert.True(result.IsSuccessful);
             Assert.Null(result.Error);

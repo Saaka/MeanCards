@@ -24,7 +24,7 @@ namespace MeanCards.Tests.Core
         public override IServiceCollection RegisterServices(IServiceCollection serviceCollection)
         {
             var config = CoreTestsConfiguration.InitConfiguration();
-            var databaseName = $"MC_TESTS_{Guid.NewGuid().ToString("N")}";
+            var databaseName = $"MC_TESTS_{DateTime.Now.ToString("yyyyMMddHHmmss")}_{Guid.NewGuid().ToString("N")}";
             return serviceCollection
                 .RegisterCoreTestsContext(config, databaseName)
                 .RegisterDAL()
