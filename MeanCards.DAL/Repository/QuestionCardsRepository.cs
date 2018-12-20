@@ -57,16 +57,11 @@ namespace MeanCards.DAL.Repository
         {
             var query = from qc in context.QuestionCards
                         where qc.IsActive == true
-                        select new QuestionCardModel
-                        {
-                            QuestionCardId = qc.QuestionCardId,
-                            LanguageId = qc.LanguageId,
-                            Text = qc.Text,
-                            NumberOfAnswers = qc.NumberOfAnswers,
-                            IsAdultContent = qc.IsAdultContent
-                        };
+                        select qc;
 
-            return await query.ToListAsync();
+            var cards = await query.ToListAsync();
+
+            return cards.Select(MapToModel).ToList();
         }
 
         public async Task<List<QuestionCardModel>> GetQuestionCardsWithoutMatureContent()
@@ -74,16 +69,25 @@ namespace MeanCards.DAL.Repository
             var query = from qc in context.QuestionCards
                         where qc.IsActive == true
                                 && qc.IsAdultContent == false
-                        select new QuestionCardModel
-                        {
-                            QuestionCardId = qc.QuestionCardId,
-                            LanguageId = qc.LanguageId,
-                            Text = qc.Text,
-                            NumberOfAnswers = qc.NumberOfAnswers,
-                            IsAdultContent = qc.IsAdultContent
-                        };
+                        select qc;
 
-            return await query.ToListAsync();
+            var cards = await query.ToListAsync();
+
+            return cards.Select(MapToModel).ToList();
+        }
+
+        private QuestionCardModel MapToModel(QuestionCard card)
+        {
+            if (card == null)
+                return null;
+            return new QuestionCardModel
+            {
+                QuestionCardId = card.QuestionCardId,
+                LanguageId = card.LanguageId,
+                Text = card.Text,
+                NumberOfAnswers = card.NumberOfAnswers,
+                IsAdultContent = card.IsAdultContent
+            };
         }
 
         public async Task<QuestionCardModel> GetRandomQuestionCardForGame(int gameId)
@@ -108,6 +112,30 @@ namespace MeanCards.DAL.Repository
             int index = RandomFactory.Create().Next(count);
 
             return await query.Skip(index).FirstOrDefaultAsync();
+        }
+
+        public async Task<QuestionCardModel> GetRoundQuestionCard(int gameRoundId)
+        {
+            var query = from qc in context.QuestionCards
+                        join gr in context.GameRounds on qc.QuestionCardId equals gr.QuestionCardId
+                        where gr.GameRoundId == gameRoundId
+                        select qc;
+
+            var card = await query.FirstOrDefaultAsync();
+
+            return MapToModel(card);
+        }
+
+        public async Task<bool> IsQuestionCardMultiChoice(int gameRoundId)
+        {
+            var query = from qc in context.QuestionCards
+                        join gr in context.GameRounds on qc.QuestionCardId equals gr.QuestionCardId
+                        where gr.GameRoundId == gameRoundId
+                        select qc.NumberOfAnswers;
+
+            var numberOfAnswers = await query.FirstOrDefaultAsync();
+
+            return numberOfAnswers > 1;
         }
     }
 }

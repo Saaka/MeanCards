@@ -16,8 +16,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -38,8 +39,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -60,8 +62,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -82,8 +85,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -104,8 +108,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -127,8 +132,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
                 isUserLinkedWithPlayer: false);
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -151,8 +157,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundInProgress: false);
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -175,8 +182,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundInGame: false);
             var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -191,8 +199,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.RoundNotLinkedWithGame, result.Error);
         }
-
-
+        
         [Fact]
         public async Task ReturnFailureForInvalidCardAndPlayerCombination()
         {
@@ -200,8 +207,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var gameRoundRepo = CreateGameRoundRepoMock();
             var cardsRepo = CreatePlayerCardsRepoMock(
                 isCardLinkedWithUser: false);
+            var questionCardRepo = CreateQuestionCardRepoMock();
 
-            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo);
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
 
             var request = new SubmitAnswer
             {
@@ -215,6 +223,31 @@ namespace MeanCards.Tests.Unit.ValidatorTests
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.CardNotLinkedWithPlayer, result.Error);
+        }
+
+        [Fact]
+        public async Task ReturnFailureForMissingSecondPlayerCard()
+        {
+            var playersRepo = CreatePlayersRepoMock();
+            var gameRoundRepo = CreateGameRoundRepoMock();
+            var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock(
+                isMultiChoiceQuestion: true);
+
+            var validator = new SubmitAnswerValidator(playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+
+            var request = new SubmitAnswer
+            {
+                GameRoundId = 1,
+                UserId = 1,
+                GameId = 1,
+                PlayerCardId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.SecondPlayerCardIdRequired, result.Error);
         }
 
         private IGameRoundsRepository CreateGameRoundRepoMock(
@@ -242,6 +275,14 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var mock = new Mock<IPlayerCardsRepository>();
             mock.Setup(x => x.IsCardLinkedWithUser(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isCardLinkedWithUser));
+
+            return mock.Object;
+        }
+
+        private IQuestionCardsRepository CreateQuestionCardRepoMock(bool isMultiChoiceQuestion = false)
+        {
+            var mock = new Mock<IQuestionCardsRepository>();
+            mock.Setup(x => x.IsQuestionCardMultiChoice(It.IsAny<int>())).Returns(Task.FromResult(isMultiChoiceQuestion));
 
             return mock.Object;
         }

@@ -10,15 +10,18 @@ namespace MeanCards.Validators.Games
         private readonly IPlayersRepository playersRepository;
         private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IPlayerCardsRepository playerCardsRepository;
+        private readonly IQuestionCardsRepository questionCardsRepository;
 
         public SubmitAnswerValidator(
             IPlayersRepository playersRepository,
             IGameRoundsRepository gameRoundsRepository,
-            IPlayerCardsRepository playerCardsRepository)
+            IPlayerCardsRepository playerCardsRepository,
+            IQuestionCardsRepository questionCardsRepository)
         {
             this.playersRepository = playersRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.playerCardsRepository = playerCardsRepository;
+            this.questionCardsRepository = questionCardsRepository;
         }
 
         public async Task<ValidatorResult> Validate(SubmitAnswer request)
@@ -32,9 +35,15 @@ namespace MeanCards.Validators.Games
             if (request.PlayerCardId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.PlayerCardIdRequired);
 
-            if(request.SecondPlayerCardId.HasValue 
-                && !await playerCardsRepository.IsCardLinkedWithUser(request.UserId, request.SecondPlayerCardId.Value))
-                return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
+            if (await questionCardsRepository.IsQuestionCardMultiChoice(request.GameRoundId))
+            {
+                if (!request.SecondPlayerCardId.HasValue)
+                    return new ValidatorResult(ValidatorErrors.Games.SecondPlayerCardIdRequired);
+
+                if (request.SecondPlayerCardId.HasValue
+                    && !await playerCardsRepository.IsCardLinkedWithUser(request.UserId, request.SecondPlayerCardId.Value))
+                    return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
+            }
 
             if (!await playersRepository.IsUserLinkedWithPlayer(request.UserId, request.GameId))
                 return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
