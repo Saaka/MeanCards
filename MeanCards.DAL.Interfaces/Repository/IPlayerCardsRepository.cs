@@ -11,5 +11,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<int> CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models);
         Task<List<PlayerCardModel>> GetUnusedPlayerCards(int playerId);
         Task<bool> IsCardLinkedWithUser(int userId, int playerCardId);
+        Task<int> GetAnswerCardId(int playerCardId);
     }
 }

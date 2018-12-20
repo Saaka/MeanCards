@@ -1,5 +1,6 @@
 ﻿using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DTO.Games;
+using MeanCards.Model.DTO.Players;
 using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Interfaces.Repository

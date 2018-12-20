@@ -75,5 +75,14 @@ namespace MeanCards.DAL.Repository
 
             return await query.AnyAsync();
         }
+
+        public async Task<int> GetAnswerCardId(int playerCardId)
+        {
+            var query = from pc in context.PlayersCards
+                        where pc.PlayerCardId == playerCardId
+                        select pc.AnswerCardId;
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

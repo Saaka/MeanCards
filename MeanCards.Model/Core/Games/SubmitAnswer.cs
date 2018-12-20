@@ -6,5 +6,6 @@
         public int GameId { get; set; }
         public int GameRoundId { get; set; }
         public int PlayerCardId { get; set; }
+        public int? SecondPlayerCardId { get; set; }
     }
 }
