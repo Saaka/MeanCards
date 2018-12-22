@@ -24,15 +24,25 @@ namespace MeanCards.DAL.Repository
             var query = from pc in context.PlayersCards
                         where pc.IsUsed == false
                               && pc.PlayerId == playerId
-                        select new PlayerCardModel
-                        {
-                            PlayerCardId = pc.PlayerCardId,
-                            PlayerId = pc.PlayerId,
-                            AnswerCardId = pc.AnswerCardId,
-                            IsUsed = pc.IsUsed
-                        };
+                        select pc;
 
-            return await query.ToListAsync();
+            var cards = await query.ToListAsync();
+
+            return cards.Select(MapToModel).ToList();
+        }
+
+        private PlayerCardModel MapToModel(PlayerCard pc)
+        {
+            if (pc == null)
+                return null;
+
+            return new PlayerCardModel
+            {
+                PlayerCardId = pc.PlayerCardId,
+                PlayerId = pc.PlayerId,
+                AnswerCardId = pc.AnswerCardId,
+                IsUsed = pc.IsUsed
+            };
         }
 
         public async Task<int> CreatePlayerCards(IEnumerable<CreatePlayerCardModel> models)
@@ -65,24 +75,24 @@ namespace MeanCards.DAL.Repository
             };
         }
 
-        public async Task<bool> IsCardLinkedWithUser(int userId, int playerCardId)
-        {
-            var query = from pc in context.PlayersCards
-                        join p in context.Players on pc.PlayerId equals p.PlayerId
-                        where p.UserId == userId
-                            && pc.PlayerCardId == playerCardId
-                        select pc.PlayerCardId;
-
-            return await query.AnyAsync();
-        }
-
-        public async Task<int> GetAnswerCardId(int playerCardId)
+        public async Task<int> GetAnswerCardIdForPlayerCard(int playerCardId)
         {
             var query = from pc in context.PlayersCards
                         where pc.PlayerCardId == playerCardId
                         select pc.AnswerCardId;
 
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<PlayerCardModel> GetPlayerCard(int playerCardId)
+        {
+            var query = from pc in context.PlayersCards
+                        where pc.PlayerCardId == playerCardId
+                        select pc;
+
+            var card = await query.FirstOrDefaultAsync();
+
+            return MapToModel(card);
         }
     }
 }

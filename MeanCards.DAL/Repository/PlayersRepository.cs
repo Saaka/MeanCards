@@ -52,6 +52,7 @@ namespace MeanCards.DAL.Repository
             var query = from p in context.Players
                         where p.UserId == userId
                             && p.GameId == gameId
+                            && p.IsActive
                         select p;
 
             var player = await query.FirstOrDefaultAsync();
@@ -70,16 +71,6 @@ namespace MeanCards.DAL.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> IsUserLinkedWithPlayer(int userId, int gameId)
-        {
-            var query = from player in context.Players
-                        where player.GameId == gameId
-                            && player.UserId == userId
-                        select player.PlayerId;
-
-            return await query.AnyAsync();
-        }
-
         private PlayerModel MapToModel(Player player)
         {
             return new PlayerModel
@@ -88,7 +79,8 @@ namespace MeanCards.DAL.Repository
                 GameId = player.GameId,
                 Number = player.Number,
                 Points = player.Points,
-                UserId = player.UserId
+                UserId = player.UserId,
+                IsActive = player.IsActive
             };
         }
     }

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\MeanCards.DAL.Interfaces\MeanCards.DAL.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\Games\Base\" />
+  </ItemGroup>
+
 </Project>

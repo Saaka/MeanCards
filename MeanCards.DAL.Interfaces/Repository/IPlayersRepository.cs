@@ -10,6 +10,5 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<PlayerModel> GetPlayerById(int playerId);
         Task<PlayerModel> GetPlayerByUserId(int userId, int gameId);
         Task<int> GetMaxPlayerNumberForGame(int gameId);
-        Task<bool> IsUserLinkedWithPlayer(int userId, int gameId);
     }
 }

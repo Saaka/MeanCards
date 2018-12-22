@@ -237,9 +237,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
-            mock.Setup(x => x.IsGameRoundOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundOwner));
-            mock.Setup(x => x.IsGameRoundPending(It.IsAny<int>())).Returns(Task.FromResult(isRoundPending));
-            mock.Setup(x => x.IsRoundInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundInGame));
 
             return mock.Object;
         }
@@ -247,7 +244,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         private IPlayersRepository CreatePlayersRepoMock(bool isUserLinkedWithPlayer = true)
         {
             var mock = new Mock<IPlayersRepository>();
-            mock.Setup(x => x.IsUserLinkedWithPlayer(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isUserLinkedWithPlayer));
 
             return mock.Object;
         }

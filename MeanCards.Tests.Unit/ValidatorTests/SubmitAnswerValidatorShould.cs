@@ -256,9 +256,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
-            mock.Setup(x => x.IsGameRoundOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundOwner));
-            mock.Setup(x => x.IsGameRoundInProgress(It.IsAny<int>())).Returns(Task.FromResult(isRoundInProgress));
-            mock.Setup(x => x.IsRoundInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isRoundInGame));
 
             return mock.Object;
         }
@@ -266,7 +263,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         private IPlayersRepository CreatePlayersRepoMock(bool isUserLinkedWithPlayer = true)
         {
             var mock = new Mock<IPlayersRepository>();
-            mock.Setup(x => x.IsUserLinkedWithPlayer(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isUserLinkedWithPlayer));
 
             return mock.Object;
         }
@@ -274,7 +270,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         private IPlayerCardsRepository CreatePlayerCardsRepoMock(bool isCardLinkedWithUser = true)
         {
             var mock = new Mock<IPlayerCardsRepository>();
-            mock.Setup(x => x.IsCardLinkedWithUser(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isCardLinkedWithUser));
 
             return mock.Object;
         }
@@ -282,7 +277,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         private IQuestionCardsRepository CreateQuestionCardRepoMock(bool isMultiChoiceQuestion = false)
         {
             var mock = new Mock<IQuestionCardsRepository>();
-            mock.Setup(x => x.IsQuestionCardMultiChoice(It.IsAny<int>())).Returns(Task.FromResult(isMultiChoiceQuestion));
 
             return mock.Object;
         }

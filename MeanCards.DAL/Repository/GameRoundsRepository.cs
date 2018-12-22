@@ -41,10 +41,14 @@ namespace MeanCards.DAL.Repository
 
         private GameRoundModel MapToModel(GameRound round)
         {
+            if (round == null)
+                return null;
+
             return new GameRoundModel
             {
                 GameId = round.GameId,
                 GameRoundId = round.GameRoundId,
+                IsActive = round.IsActive,
                 Number = round.Number,
                 OwnerPlayerId = round.OwnerPlayerId,
                 QuestionCardId = round.QuestionCardId,
@@ -55,32 +59,13 @@ namespace MeanCards.DAL.Repository
 
         public async Task<GameRoundModel> GetCurrentGameRound(int gameId)
         {
-            var query = from round in context.GameRounds
-                        where round.GameId == gameId && round.IsActive
-                        select new GameRoundModel
-                        {
-                            GameId = round.GameId,
-                            GameRoundId = round.GameRoundId,
-                            Number = round.Number,
-                            QuestionCardId = round.QuestionCardId,
-                            OwnerPlayerId = round.OwnerPlayerId,
-                            WinnerPlayerId = round.WinnerPlayerId,
-                            Status = (GameRoundStatusEnum)round.Status
-                        };
+            var query = from r in context.GameRounds
+                        where r.GameId == gameId && r.IsActive
+                        select r;
 
-            return await query.FirstOrDefaultAsync();
-        }
+            var round = await query.FirstOrDefaultAsync();
 
-        public async Task<bool> IsGameRoundOwner(int gameRoundId, int userId)
-        {
-            var query = from round in context.GameRounds
-                        join player in context.Players on round.GameId equals player.GameId
-                        where round.GameRoundId == gameRoundId                            
-                            && round.OwnerPlayerId == player.PlayerId
-                            && player.UserId == userId
-                        select round.GameRoundId;
-
-            return await query.AnyAsync();
+            return MapToModel(round);
         }
 
         public async Task<bool> StartGameRound(int gameRoundId)
@@ -96,42 +81,6 @@ namespace MeanCards.DAL.Repository
             round.Status = (byte)GameRoundStatusEnum.InProgress;
 
             return await context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> IsRoundInGame(int gameId, int gameRoundId)
-        {
-            var query = from r in context.GameRounds
-                        where r.GameRoundId == gameRoundId
-                            && r.GameId == gameId
-                        select r;
-
-            return await query.AnyAsync();
-        }
-
-        public async Task<bool> IsGameRoundPending(int gameRoundId)
-        {
-            var status = (byte)GameRoundStatusEnum.Pending;
-
-            var query = from round in context.GameRounds
-                        where round.IsActive
-                            && round.Status == status
-                            && round.GameRoundId == gameRoundId
-                        select round.GameRoundId;
-
-            return await query.AnyAsync();
-        }
-
-        public async Task<bool> IsGameRoundInProgress(int gameRoundId)
-        {
-            var status = (byte)GameRoundStatusEnum.InProgress;
-
-            var query = from round in context.GameRounds
-                        where round.IsActive
-                            && round.Status == status
-                            && round.GameRoundId == gameRoundId
-                        select round.GameRoundId;
-
-            return await query.AnyAsync();
         }
     }
 }

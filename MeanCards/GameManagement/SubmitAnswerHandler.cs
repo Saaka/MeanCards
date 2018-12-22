@@ -68,7 +68,7 @@ namespace MeanCards.GameManagement
 
         private async Task<int> GetAnswerCardId(int playerCardId)
         {
-            return await playerCardsRepository.GetAnswerCardId(playerCardId);
+            return await playerCardsRepository.GetAnswerCardIdForPlayerCard(playerCardId);
         }
 
         private async Task<int?> GetSecondaryAnswerCardId(int? playerCardId)
@@ -76,7 +76,7 @@ namespace MeanCards.GameManagement
             if (!playerCardId.HasValue)
                 return null;
 
-            return await playerCardsRepository.GetAnswerCardId(playerCardId.Value);
+            return await playerCardsRepository.GetAnswerCardIdForPlayerCard(playerCardId.Value);
         }
     }
 }

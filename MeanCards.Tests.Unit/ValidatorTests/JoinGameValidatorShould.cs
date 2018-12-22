@@ -14,8 +14,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnSuccessForValidData()
         {
             var gameRepo = CreateGameRepositoryMock();
-            var usersRepo = CreateUserRepoMock();
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -32,8 +32,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForMissingGameId()
         {
             var gameRepo = CreateGameRepositoryMock();
-            var usersRepo = CreateUserRepoMock();
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -50,8 +50,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForMissingUserId()
         {
             var gameRepo = CreateGameRepositoryMock();
-            var usersRepo = CreateUserRepoMock();
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -68,8 +68,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForNotExistingGame()
         {
             var gameRepo = CreateGameRepositoryMock(false);
-            var usersRepo = CreateUserRepoMock();
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -87,8 +87,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForNotExistingUser()
         {
             var gameRepo = CreateGameRepositoryMock();
-            var usersRepo = CreateUserRepoMock(false);
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo(false);
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -106,8 +106,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForUserThatAlreadyJoined()
         {
             var gameRepo = CreateGameRepositoryMock(userAlreadyJoined: true);
-            var usersRepo = CreateUserRepoMock();
-            var validator = new JoinGameValidator(gameRepo, usersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
             {
@@ -130,10 +130,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             return mock.Object;
         }
 
-        private IUsersRepository CreateUserRepoMock(bool userExists = true)
+        private IPlayersRepository CreatePlayerRepo(bool userExists = true)
         {
-            var mock = new Mock<IUsersRepository>();
-            mock.Setup(m => m.ActiveUserExists(It.IsAny<int>())).Returns(Task.FromResult<bool>(userExists));
+            var mock = new Mock<IPlayersRepository>();
 
             return mock.Object;
         }

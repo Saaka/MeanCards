@@ -8,14 +8,14 @@ namespace MeanCards.Validators.Games
     public class JoinGameValidator : IRequestValidator<JoinGame>
     {
         private readonly IGamesRepository gamesRepository;
-        private readonly IUsersRepository usersRepository;
+        private readonly IPlayersRepository playersRepository;
 
         public JoinGameValidator(
             IGamesRepository gamesRepository,
-            IUsersRepository usersRepository)
+            IPlayersRepository playersRepository)
         {
             this.gamesRepository = gamesRepository;
-            this.usersRepository = usersRepository;
+            this.playersRepository = playersRepository;
         }
 
         public async Task<ValidatorResult> Validate(JoinGame request)
@@ -25,11 +25,12 @@ namespace MeanCards.Validators.Games
             if (request.UserId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.UserIdRequired);
 
-            if (!await gamesRepository.ActiveGameExists(request.GameId))
+            var game = await gamesRepository.GetGameById(request.GameId);
+            if (game == null || game.Status != Common.Enums.GameStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
-            if (!await usersRepository.ActiveUserExists(request.UserId))
-                return new ValidatorResult(ValidatorErrors.Users.UserIdNotFound);
-            if (await gamesRepository.IsUserInGame(request.GameId, request.UserId))
+
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);            
+            if (player != null && player.IsActive)
                 return new ValidatorResult(ValidatorErrors.Games.UserAlreadyJoined);
 
             return new ValidatorResult();

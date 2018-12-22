@@ -1,8 +1,5 @@
 ﻿using MeanCards.GameManagement;
 using MeanCards.Model.Core.Games;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

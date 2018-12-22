@@ -113,29 +113,17 @@ namespace MeanCards.DAL.Repository
 
             return await query.Skip(index).FirstOrDefaultAsync();
         }
-
-        public async Task<QuestionCardModel> GetRoundQuestionCard(int gameRoundId)
+        
+        public async Task<QuestionCardModel> GetActiveQuestionCardForRound(int gameRoundId)
         {
-            var query = from qc in context.QuestionCards
-                        join gr in context.GameRounds on qc.QuestionCardId equals gr.QuestionCardId
+            var query = from gr in context.GameRounds
+                        join qc in context.QuestionCards on gr.QuestionCardId equals qc.QuestionCardId
                         where gr.GameRoundId == gameRoundId
                         select qc;
 
             var card = await query.FirstOrDefaultAsync();
 
             return MapToModel(card);
-        }
-
-        public async Task<bool> IsQuestionCardMultiChoice(int gameRoundId)
-        {
-            var query = from qc in context.QuestionCards
-                        join gr in context.GameRounds on qc.QuestionCardId equals gr.QuestionCardId
-                        where gr.GameRoundId == gameRoundId
-                        select qc.NumberOfAnswers;
-
-            var numberOfAnswers = await query.FirstOrDefaultAsync();
-
-            return numberOfAnswers > 1;
         }
     }
 }

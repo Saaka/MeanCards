@@ -11,8 +11,7 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task CreateQuestionCards(List<CreateQuestionCardModel> models);
         Task<List<QuestionCardModel>> GetAllActiveQuestionCards();
         Task<List<QuestionCardModel>> GetQuestionCardsWithoutMatureContent();
-        Task<QuestionCardModel> GetRoundQuestionCard(int gameRoundId);
-        Task<bool> IsQuestionCardMultiChoice(int gameRoundId);
         Task<QuestionCardModel> GetRandomQuestionCardForGame(int gameId);
+        Task<QuestionCardModel> GetActiveQuestionCardForRound(int gameRoundId);
     }
 }

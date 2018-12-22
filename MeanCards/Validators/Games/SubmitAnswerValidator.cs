@@ -35,25 +35,27 @@ namespace MeanCards.Validators.Games
             if (request.PlayerCardId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.PlayerCardIdRequired);
 
-            if (await questionCardsRepository.IsQuestionCardMultiChoice(request.GameRoundId))
+            var questionCard = await questionCardsRepository.GetActiveQuestionCardForRound(request.GameRoundId);
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
+            if (player == null)
+                return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
+
+            if (questionCard.NumberOfAnswers > 1)
             {
                 if (!request.SecondPlayerCardId.HasValue)
                     return new ValidatorResult(ValidatorErrors.Games.SecondPlayerCardIdRequired);
 
-                if (request.SecondPlayerCardId.HasValue
-                    && !await playerCardsRepository.IsCardLinkedWithUser(request.UserId, request.SecondPlayerCardId.Value))
+                var playerCard = await playerCardsRepository.GetPlayerCard(request.SecondPlayerCardId.Value);
+
+                if (playerCard == null || playerCard.PlayerId != player.PlayerId)
                     return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
             }
 
-            if (!await playersRepository.IsUserLinkedWithPlayer(request.UserId, request.GameId))
-                return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
-            if (!await gameRoundsRepository.IsRoundInGame(request.GameId, request.GameRoundId))
-                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
-
-            if (!await gameRoundsRepository.IsGameRoundInProgress(request.GameRoundId))
+            var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
+            if (round == null
+                || round.GameRoundId != request.GameRoundId
+                || round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
-            if (!await playerCardsRepository.IsCardLinkedWithUser(request.UserId, request.PlayerCardId))
-                return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
 
             return new ValidatorResult();
         }

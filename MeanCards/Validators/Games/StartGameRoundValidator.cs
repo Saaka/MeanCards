@@ -30,17 +30,18 @@ namespace MeanCards.Validators.Games
             if (request.GameRoundId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.GameRoundIdRequired);
 
-            if (!await playersRepository.IsUserLinkedWithPlayer(request.UserId, request.GameId))
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
+            if (player == null)
                 return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
-            if (!await gameRoundsRepository.IsRoundInGame(request.GameId, request.GameRoundId))
-                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
 
-            if (!await gameRoundsRepository.IsGameRoundPending(request.GameRoundId))
+            var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
+            if (round == null || round.Status != Common.Enums.GameRoundStatusEnum.Pending)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
-            if (!(await gameRoundsRepository.IsGameRoundOwner(request.GameRoundId, request.UserId)
-                || await gamesRepository.IsGameOwner(request.GameRoundId, request.UserId)))
+                        
+            var game = await gamesRepository.GetGameById(request.GameId);
+            if(!(game.OwnerId == request.UserId || round.OwnerPlayerId == player.PlayerId))
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
-
+            
             return new ValidatorResult();
         }
     }
