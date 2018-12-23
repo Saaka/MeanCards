@@ -17,7 +17,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var gameRepo = CreateGameRepositoryMock();
             var playersRepo = CreatePlayerRepo();
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var userRepo = CreateUserRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -35,7 +36,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var gameRepo = CreateGameRepositoryMock();
             var playersRepo = CreatePlayerRepo();
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var userRepo = CreateUserRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -53,7 +55,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var gameRepo = CreateGameRepositoryMock();
             var playersRepo = CreatePlayerRepo();
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var userRepo = CreateUserRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -71,7 +74,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         {
             var gameRepo = CreateGameRepositoryMock(false);
             var playersRepo = CreatePlayerRepo();
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var userRepo = CreateUserRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -89,8 +93,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         public async Task ReturnFailureForNotExistingUser()
         {
             var gameRepo = CreateGameRepositoryMock();
-            var playersRepo = CreatePlayerRepo(false);
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var playersRepo = CreatePlayerRepo();
+            var userRepo = CreateUserRepo(
+                userExists: false);
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -101,7 +107,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.PlayerNotFound, result.Error);
+            Assert.Equal(ValidatorErrors.Users.UserIdNotFound, result.Error);
         }
 
         [Fact]
@@ -110,7 +116,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var gameRepo = CreateGameRepositoryMock(gameIsActive: true);
             var playersRepo = CreatePlayerRepo(
                 userAlreadyJoined: true);
-            var validator = new JoinGameValidator(gameRepo, playersRepo);
+            var userRepo = CreateUserRepo();
+            var validator = new JoinGameValidator(gameRepo, playersRepo, userRepo);
 
             var request = new JoinGame
             {
@@ -141,15 +148,26 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             return mock.Object;
         }
 
-        private IPlayersRepository CreatePlayerRepo(bool userExists = true, bool userAlreadyJoined = false)
+        private IPlayersRepository CreatePlayerRepo(bool userAlreadyJoined = false)
         {
             var mock = new Mock<IPlayersRepository>();
             mock.Setup(m => m.GetPlayerByUserId(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
             {
-                if (!userExists)
-                    return Task.FromResult<PlayerModel>(null);
+                //if (!userExists)
+                //    return Task.FromResult<PlayerModel>(null);
 
                 return Task.FromResult(new PlayerModel { IsActive = userAlreadyJoined });
+            });
+
+            return mock.Object;
+        }
+
+        private IUsersRepository CreateUserRepo(bool userExists = true)
+        {
+            var mock = new Mock<IUsersRepository>();
+            mock.Setup(m => m.ActiveUserExists(It.IsAny<int>())).Returns(() =>
+            {
+                return Task.FromResult<bool>(userExists);
             });
 
             return mock.Object;

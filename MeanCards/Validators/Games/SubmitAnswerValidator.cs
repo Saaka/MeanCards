@@ -40,20 +40,24 @@ namespace MeanCards.Validators.Games
             if (player == null)
                 return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
 
+            var firstPlayerCard = await playerCardsRepository.GetPlayerCard(request.PlayerCardId);
+            if (firstPlayerCard == null || firstPlayerCard.PlayerId != player.PlayerId)
+                return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
+
             if (questionCard.NumberOfAnswers > 1)
             {
                 if (!request.SecondPlayerCardId.HasValue)
                     return new ValidatorResult(ValidatorErrors.Games.SecondPlayerCardIdRequired);
 
-                var playerCard = await playerCardsRepository.GetPlayerCard(request.SecondPlayerCardId.Value);
-
-                if (playerCard == null || playerCard.PlayerId != player.PlayerId)
+                var secondPlayerCard = await playerCardsRepository.GetPlayerCard(request.SecondPlayerCardId.Value);
+                if (secondPlayerCard == null || secondPlayerCard.PlayerId != player.PlayerId)
                     return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
             }
 
             var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
-            if (round == null
-                || round.GameRoundId != request.GameRoundId
+            if (round == null)
+                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
+            if(round.GameRoundId != request.GameRoundId
                 || round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
