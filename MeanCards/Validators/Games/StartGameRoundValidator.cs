@@ -35,13 +35,17 @@ namespace MeanCards.Validators.Games
                 return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
 
             var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
-            if (round == null || round.Status != Common.Enums.GameRoundStatusEnum.Pending)
+            if (round == null)
+                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
+            if (round.Status != Common.Enums.GameRoundStatusEnum.Pending)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
-                        
+
             var game = await gamesRepository.GetGameById(request.GameId);
-            if(!(game.OwnerId == request.UserId || round.OwnerPlayerId == player.PlayerId))
+            if (game == null)
+                return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
+            if (!(game.OwnerId == request.UserId || round.OwnerPlayerId == player.PlayerId))
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
-            
+
             return new ValidatorResult();
         }
     }
