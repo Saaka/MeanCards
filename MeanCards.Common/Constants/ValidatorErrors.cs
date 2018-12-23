@@ -30,6 +30,7 @@
             public const string PlayerCardIdRequired = nameof(PlayerCardIdRequired);
             public const string SecondPlayerCardIdRequired = nameof(SecondPlayerCardIdRequired);
             public const string CardNotLinkedWithPlayer = nameof(CardNotLinkedWithPlayer);
+            public const string PlayerNotFound = nameof(PlayerNotFound);
         }
         public static class Players
         {

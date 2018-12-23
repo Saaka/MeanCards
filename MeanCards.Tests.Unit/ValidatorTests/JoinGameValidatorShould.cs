@@ -1,6 +1,8 @@
 ﻿using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Games;
+using MeanCards.Model.DTO.Games;
+using MeanCards.Model.DTO.Players;
 using MeanCards.Validators.Games;
 using Moq;
 using System.Threading.Tasks;
@@ -99,14 +101,15 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Users.UserIdNotFound, result.Error);
+            Assert.Equal(ValidatorErrors.Games.PlayerNotFound, result.Error);
         }
 
         [Fact]
         public async Task ReturnFailureForUserThatAlreadyJoined()
         {
-            var gameRepo = CreateGameRepositoryMock(userAlreadyJoined: true);
-            var playersRepo = CreatePlayerRepo();
+            var gameRepo = CreateGameRepositoryMock(gameIsActive: true);
+            var playersRepo = CreatePlayerRepo(
+                userAlreadyJoined: true);
             var validator = new JoinGameValidator(gameRepo, playersRepo);
 
             var request = new JoinGame
@@ -121,18 +124,33 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             Assert.Equal(ValidatorErrors.Games.UserAlreadyJoined, result.Error);
         }
 
-        private IGamesRepository CreateGameRepositoryMock(bool gameExists = true, bool userAlreadyJoined = false)
+        private IGamesRepository CreateGameRepositoryMock(bool gameExists = true, bool gameIsActive = true)
         {
             var mock = new Mock<IGamesRepository>();
-            mock.Setup(m => m.ActiveGameExists(It.IsAny<int>())).Returns(Task.FromResult<bool>(gameExists));
-            mock.Setup(m => m.IsUserInGame(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult<bool>(userAlreadyJoined));
+            mock.Setup(m => m.GetGameById(It.IsAny<int>())).Returns(() =>
+            {
+                if (!gameExists)
+                    return Task.FromResult<GameModel>(null);
+
+                return Task.FromResult(new GameModel
+                {
+                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Canceled
+                });
+            });
 
             return mock.Object;
         }
 
-        private IPlayersRepository CreatePlayerRepo(bool userExists = true)
+        private IPlayersRepository CreatePlayerRepo(bool userExists = true, bool userAlreadyJoined = false)
         {
             var mock = new Mock<IPlayersRepository>();
+            mock.Setup(m => m.GetPlayerByUserId(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
+            {
+                if (!userExists)
+                    return Task.FromResult<PlayerModel>(null);
+
+                return Task.FromResult(new PlayerModel { IsActive = userAlreadyJoined });
+            });
 
             return mock.Object;
         }

@@ -29,7 +29,9 @@ namespace MeanCards.Validators.Games
             if (game == null || game.Status != Common.Enums.GameStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
 
-            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);            
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
+            if (player == null)
+                return new ValidatorResult(ValidatorErrors.Games.PlayerNotFound);
             if (player != null && player.IsActive)
                 return new ValidatorResult(ValidatorErrors.Games.UserAlreadyJoined);
 

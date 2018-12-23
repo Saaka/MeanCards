@@ -63,33 +63,6 @@ namespace MeanCards.DAL.Repository
             return MapToModel(result);
         }
 
-        public async Task<bool> ActiveGameExists(int gameId)
-        {
-            var exists = await context.Games
-                .AnyAsync(x => x.GameId == gameId && x.IsActive);
-
-            return exists;
-        }
-
-        public async Task<bool> IsUserInGame(int gameId, int userId)
-        {
-            var exists = await context.Players
-                .AnyAsync(x => x.GameId == gameId && x.UserId == userId && x.IsActive);
-
-            return exists;
-        }
-
-        public async Task<bool> IsGameOwner(int gameRoundId, int userId)
-        {
-            var query = from g in context.Games
-                        join gr in context.GameRounds on g.GameId equals gr.GameId
-                        where gr.GameRoundId == gameRoundId
-                            && g.OwnerId == userId
-                        select g.GameId;
-
-            return await query.AnyAsync();
-        }
-
         private GameModel MapToModel(Game game)
         {
             if (game == null)

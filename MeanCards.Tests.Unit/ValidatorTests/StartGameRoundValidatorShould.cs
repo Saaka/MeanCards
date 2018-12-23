@@ -251,7 +251,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests
         private IGamesRepository CreateGameRepositoryMock(bool isGameOwner = true)
         {
             var mock = new Mock<IGamesRepository>();
-            mock.Setup(x => x.IsGameOwner(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(isGameOwner));
 
             return mock.Object;
         }
