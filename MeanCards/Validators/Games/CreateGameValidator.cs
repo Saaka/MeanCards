@@ -21,10 +21,10 @@ namespace MeanCards.Validators.Games
                 return new ValidatorResult(ValidatorErrors.Games.GameNameRequired);
             if (request.LanguageId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.GameLanguageRequired);
-            if (request.OwnerId == 0)
+            if (request.UserId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.GameOwnerRequired);
 
-            if (!await usersRepository.ActiveUserExists(request.OwnerId))
+            if (!await usersRepository.ActiveUserExists(request.UserId))
                 return new ValidatorResult(ValidatorErrors.Users.UserIdNotFound);
 
             return new ValidatorResult();

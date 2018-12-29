@@ -63,7 +63,7 @@ namespace MeanCards.Tests.Core
             {
                 LanguageId = languageId,
                 Name = gameName,
-                OwnerId = userId,
+                UserId = userId,
                 ShowAdultContent = showAdultContent,
                 PointsLimit = pointsLimit
             });

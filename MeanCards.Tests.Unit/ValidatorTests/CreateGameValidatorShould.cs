@@ -20,7 +20,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             {
                 LanguageId = 1,
                 Name = "Test",
-                OwnerId = 1,
+                UserId = 1,
                 ShowAdultContent = true
             };
 
@@ -38,7 +38,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new CreateGame
             {
                 Name = "Test",
-                OwnerId = 1,
+                UserId = 1,
                 ShowAdultContent = true
             };
 
@@ -57,7 +57,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             var request = new CreateGame
             {
                 LanguageId = 1,
-                OwnerId = 1,
+                UserId = 1,
                 ShowAdultContent = true
             };
 
@@ -96,7 +96,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests
             {
                 LanguageId = 1,
                 Name = "Test",
-                OwnerId = 1,
+                UserId = 1,
                 ShowAdultContent = true
             };
 

@@ -68,7 +68,7 @@ namespace MeanCards.GameManagement
                 var gameCode = codeGenerator.Generate();
 
                 var game = await CreateGame(request, gameCode);
-                var player = await CreatePlayer(game.GameId, request.OwnerId);
+                var player = await CreatePlayer(game.GameId, request.UserId);
 
                 var questionCard = await questionCardsRepository
                     .GetRandomQuestionCardForGame(game.GameId);
@@ -131,7 +131,7 @@ namespace MeanCards.GameManagement
                 Code = gameCode,
                 LanguageId = request.LanguageId,
                 Name = request.Name,
-                OwnerId = request.OwnerId,
+                OwnerId = request.UserId,
                 ShowAdultContent = request.ShowAdultContent,
                 PointsLimit = request.PointsLimit > 0 ? request.PointsLimit : GameConstants.DefaultPointsLimit
             });

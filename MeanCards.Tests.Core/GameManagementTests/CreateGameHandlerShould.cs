@@ -22,7 +22,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
             {
                 LanguageId = languageId,
                 Name = "TestGame",
-                OwnerId = userId,
+                UserId = userId,
                 ShowAdultContent = false
             });
 
@@ -48,7 +48,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
             {
                 LanguageId = languageId,
                 Name = "TestGame",
-                OwnerId = userId,
+                UserId = userId,
                 ShowAdultContent = false
             });
 
@@ -71,7 +71,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
             {
                 LanguageId = languageId,
                 Name = "TestGame",
-                OwnerId = userId,
+                UserId = userId,
                 ShowAdultContent = false
             });
 
