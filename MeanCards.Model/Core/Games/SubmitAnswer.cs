@@ -1,6 +1,8 @@
-﻿namespace MeanCards.Model.Core.Games
+﻿using MeanCards.Model.Core.Games.Base;
+
+namespace MeanCards.Model.Core.Games
 {
-    public class SubmitAnswer
+    public class SubmitAnswer : IGameRequest, IGameRoundRequest, IUserRequest
     {
         public int UserId { get; set; }
         public int GameId { get; set; }

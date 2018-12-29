@@ -1,10 +1,13 @@
 ﻿using MeanCards.GameManagement;
 using MeanCards.GameManagement.CoreServices;
+using MeanCards.Model.Core;
 using MeanCards.Model.Core.Games;
+using MeanCards.Model.Core.Games.Base;
 using MeanCards.Model.Core.Users;
 using MeanCards.UserManagement;
 using MeanCards.Validators;
 using MeanCards.Validators.Games;
+using MeanCards.Validators.Games.Base;
 using MeanCards.Validators.Users;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +36,10 @@ namespace MeanCards
                 .AddScoped<IGameCheckpointUpdater, GameCheckpointUpdater>()
 
                 //validators
+
+                .AddTransient<IRequestValidator<IGameRequest>, GameRequestValidator>()
+                .AddTransient<IRequestValidator<IGameRoundRequest>, GameRoundRequestValidator>()
+                .AddTransient<IRequestValidator<IUserRequest>, UserRequestValidator>()
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
                 .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>()
                 .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>()
