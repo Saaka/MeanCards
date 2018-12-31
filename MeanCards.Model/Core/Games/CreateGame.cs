@@ -1,6 +1,6 @@
 ﻿namespace MeanCards.Model.Core.Games
 {
-    public class CreateGame : IUserRequest
+    public class CreateGame : IBaseRequest, IUserRequest
     {
         public string Name { get; set; }
         public int LanguageId { get; set; }

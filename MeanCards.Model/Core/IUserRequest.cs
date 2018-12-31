@@ -2,6 +2,6 @@
 {
     public interface IUserRequest
     {
-        int UserId { get; set; }
+        int UserId { get; }
     }
 }

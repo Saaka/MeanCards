@@ -7,17 +7,20 @@ namespace MeanCards.Validators.Games
 {
     public class SubmitAnswerValidator : IRequestValidator<SubmitAnswer>
     {
+        private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IPlayersRepository playersRepository;
         private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IPlayerCardsRepository playerCardsRepository;
         private readonly IQuestionCardsRepository questionCardsRepository;
 
         public SubmitAnswerValidator(
+            IBaseGameRequestsValidator baseGameRequestsValidator,
             IPlayersRepository playersRepository,
             IGameRoundsRepository gameRoundsRepository,
             IPlayerCardsRepository playerCardsRepository,
             IQuestionCardsRepository questionCardsRepository)
         {
+            this.baseGameRequestsValidator = baseGameRequestsValidator;
             this.playersRepository = playersRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.playerCardsRepository = playerCardsRepository;
@@ -26,24 +29,20 @@ namespace MeanCards.Validators.Games
 
         public async Task<ValidatorResult> Validate(SubmitAnswer request)
         {
-            if (request.UserId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.UserIdRequired);
-            if (request.GameId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.GameIdRequired);
-            if (request.GameRoundId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.GameRoundIdRequired);
+            var baseResult = await baseGameRequestsValidator.Validate(request);
+            if (!baseResult.IsSuccessful)
+                return new ValidatorResult(baseResult.Error);
+
             if (request.PlayerCardId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.PlayerCardIdRequired);
 
-            var questionCard = await questionCardsRepository.GetActiveQuestionCardForRound(request.GameRoundId);
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
-            if (player == null)
-                return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
 
             var firstPlayerCard = await playerCardsRepository.GetPlayerCard(request.PlayerCardId);
             if (firstPlayerCard == null || firstPlayerCard.PlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
 
+            var questionCard = await questionCardsRepository.GetActiveQuestionCardForRound(request.GameRoundId);
             if (questionCard.NumberOfAnswers > 1)
             {
                 if (!request.SecondPlayerCardId.HasValue)
@@ -55,8 +54,6 @@ namespace MeanCards.Validators.Games
             }
 
             var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
-            if (round == null)
-                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
             if(round.GameRoundId != request.GameRoundId
                 || round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);

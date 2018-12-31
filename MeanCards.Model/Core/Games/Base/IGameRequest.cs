@@ -2,6 +2,6 @@
 {
     public interface IGameRequest
     {
-        int GameId { get; set; }
+        int GameId { get; }
     }
 }

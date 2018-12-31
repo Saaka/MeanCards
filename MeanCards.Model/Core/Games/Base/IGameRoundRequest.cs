@@ -2,6 +2,7 @@
 {
     public interface IGameRoundRequest
     {
-        int GameRoundId { get; set; }
+        int GameRoundId { get; }
+        int GameId { get; }
     }
 }

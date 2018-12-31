@@ -7,32 +7,28 @@ namespace MeanCards.Validators.Games
 {
     public class JoinGameValidator : IRequestValidator<JoinGame>
     {
+        private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IGamesRepository gamesRepository;
         private readonly IPlayersRepository playersRepository;
-        private readonly IUsersRepository usersRepository;
 
         public JoinGameValidator(
+            IBaseGameRequestsValidator baseGameRequestsValidator,
             IGamesRepository gamesRepository,
-            IPlayersRepository playersRepository,
-            IUsersRepository usersRepository)
+            IPlayersRepository playersRepository)
         {
+            this.baseGameRequestsValidator = baseGameRequestsValidator;
             this.gamesRepository = gamesRepository;
             this.playersRepository = playersRepository;
-            this.usersRepository = usersRepository;
         }
 
         public async Task<ValidatorResult> Validate(JoinGame request)
         {
-            if (request.GameId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.GameIdRequired);
-            if (request.UserId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.UserIdRequired);
+            var baseResult = await baseGameRequestsValidator.Validate(request);
+            if (!baseResult.IsSuccessful)
+                return new ValidatorResult(baseResult.Error);
 
-            if (!await usersRepository.ActiveUserExists(request.UserId))
-                return new ValidatorResult(ValidatorErrors.Users.UserIdNotFound);
-
-            var game = await gamesRepository.GetGameById(request.GameId);
-            if (game == null || game.Status != Common.Enums.GameStatusEnum.InProgress)
+            var gameStatus = await gamesRepository.GetGameStatus(request.GameId);
+            if (gameStatus != Common.Enums.GameStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
 
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);

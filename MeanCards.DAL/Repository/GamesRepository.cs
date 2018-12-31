@@ -78,7 +78,18 @@ namespace MeanCards.DAL.Repository
                 ShowAdultContent = game.ShowAdultContent,
                 Status = (GameStatusEnum)game.Status,
                 PointsLimit = game.PointsLimit,
+                IsActive = game.IsActive
             };
+        }
+
+        public async Task<GameStatusEnum> GetGameStatus(int gameId)
+        {
+            var query = from game in context.Games
+                        where game.GameId == gameId
+                        select (GameStatusEnum)game.Status;
+
+            var result = await query.FirstOrDefaultAsync();
+            return result;
         }
     }
 }

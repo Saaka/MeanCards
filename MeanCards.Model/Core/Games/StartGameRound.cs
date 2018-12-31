@@ -2,7 +2,7 @@
 
 namespace MeanCards.Model.Core.Games
 {
-    public class StartGameRound : IGameRequest, IGameRoundRequest, IUserRequest
+    public class StartGameRound : IBaseRequest, IGameRequest, IGameRoundRequest, IUserRequest, IPlayerRequest
     {
         public int UserId { get; set; }
         public int GameId { get; set; }

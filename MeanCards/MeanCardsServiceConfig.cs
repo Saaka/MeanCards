@@ -37,9 +37,11 @@ namespace MeanCards
 
                 //validators
 
+                .AddTransient<IBaseGameRequestsValidator, BaseGameRequestsValidator>()
                 .AddTransient<IRequestValidator<IGameRequest>, GameRequestValidator>()
                 .AddTransient<IRequestValidator<IGameRoundRequest>, GameRoundRequestValidator>()
                 .AddTransient<IRequestValidator<IUserRequest>, UserRequestValidator>()
+                .AddTransient<IRequestValidator<IPlayerRequest>, PlayerRequestValidator>()
                 .AddTransient<IRequestValidator<CreateUser>, CreateUserValidator>()
                 .AddTransient<IRequestValidator<AuthenticateGoogleUser>, AuthenticateGoogleUserValidator>()
                 .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>()

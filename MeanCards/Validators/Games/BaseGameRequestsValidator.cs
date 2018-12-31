@@ -2,25 +2,32 @@
 using MeanCards.Model.Core.Games.Base;
 using System.Threading.Tasks;
 
-namespace MeanCards.Validators.Games.Base
+namespace MeanCards.Validators.Games
 {
-    public class BaseGamesRequestValidator<T> : IRequestValidator<T>
+    public interface IBaseGameRequestsValidator : IRequestValidator<IBaseRequest>
+    {
+    }
+
+    public class BaseGameRequestsValidator : IBaseGameRequestsValidator
     {
         private readonly IRequestValidator<IGameRequest> gameRequestValidator;
         private readonly IRequestValidator<IGameRoundRequest> gameRoundRequestValidator;
         private readonly IRequestValidator<IUserRequest> userRequestValidator;
+        private readonly IRequestValidator<IPlayerRequest> playerRequestValidator;
 
-        public BaseGamesRequestValidator(
+        public BaseGameRequestsValidator(
             IRequestValidator<IGameRequest> gameRequestValidator,
             IRequestValidator<IGameRoundRequest> gameRoundRequestValidator, 
-            IRequestValidator<IUserRequest> userRequestValidator)
+            IRequestValidator<IUserRequest> userRequestValidator,
+            IRequestValidator<IPlayerRequest> playerRequestValidator)
         {
             this.gameRequestValidator = gameRequestValidator;
             this.gameRoundRequestValidator = gameRoundRequestValidator;
             this.userRequestValidator = userRequestValidator;
+            this.playerRequestValidator = playerRequestValidator;
         }
 
-        public async Task<ValidatorResult> Validate(T request)
+        public async Task<ValidatorResult> Validate(IBaseRequest request)
         {
             if(request is IGameRequest)
             {
@@ -37,6 +44,12 @@ namespace MeanCards.Validators.Games.Base
             if (request is IUserRequest)
             {
                 var result = await userRequestValidator.Validate(request as IUserRequest);
+                if (!result.IsSuccessful)
+                    return new ValidatorResult(result.Error);
+            }
+            if (request is IPlayerRequest)
+            {
+                var result = await playerRequestValidator.Validate(request as IPlayerRequest);
                 if (!result.IsSuccessful)
                     return new ValidatorResult(result.Error);
             }

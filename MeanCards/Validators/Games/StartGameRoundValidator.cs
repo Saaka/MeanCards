@@ -7,15 +7,18 @@ namespace MeanCards.Validators.Games
 {
     public class StartGameRoundValidator : IRequestValidator<StartGameRound>
     {
+        private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IPlayersRepository playersRepository;
         private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IGamesRepository gamesRepository;
 
         public StartGameRoundValidator(
+            IBaseGameRequestsValidator baseGameRequestsValidator,
             IPlayersRepository playersRepository,
             IGameRoundsRepository gameRoundsRepository,
             IGamesRepository gamesRepository)
         {
+            this.baseGameRequestsValidator = baseGameRequestsValidator;
             this.playersRepository = playersRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.gamesRepository = gamesRepository;
@@ -23,26 +26,16 @@ namespace MeanCards.Validators.Games
 
         public async Task<ValidatorResult> Validate(StartGameRound request)
         {
-            if (request.UserId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.UserIdRequired);
-            if (request.GameId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.GameIdRequired);
-            if (request.GameRoundId == 0)
-                return new ValidatorResult(ValidatorErrors.Games.GameRoundIdRequired);
-
-            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
-            if (player == null)
-                return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
-
+            var baseResult = await baseGameRequestsValidator.Validate(request);
+            if (!baseResult.IsSuccessful)
+                return new ValidatorResult(baseResult.Error);
+            
             var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
-            if (round == null)
-                return new ValidatorResult(ValidatorErrors.Games.RoundNotLinkedWithGame);
             if (round.Status != Common.Enums.GameRoundStatusEnum.Pending)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
             var game = await gamesRepository.GetGameById(request.GameId);
-            if (game == null)
-                return new ValidatorResult(ValidatorErrors.Games.GameNotFoundOrInactive);
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
             if (!(game.OwnerId == request.UserId || round.OwnerPlayerId == player.PlayerId))
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
 
