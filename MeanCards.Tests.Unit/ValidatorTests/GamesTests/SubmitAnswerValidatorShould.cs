@@ -9,7 +9,7 @@ using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MeanCards.Tests.Unit.ValidatorTests
+namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 {
     public class SubmitAnswerValidatorShould
     {

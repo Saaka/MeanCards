@@ -4,7 +4,7 @@ using MeanCards.Validators.Games;
 using Moq;
 using System.Threading.Tasks;
 
-namespace MeanCards.Tests.Unit.ValidatorTests
+namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 {
     public class BaseGameRequestsValidatorMock
     {
