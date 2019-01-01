@@ -19,10 +19,14 @@ namespace MeanCards.Validators.Games.Base
         {
             if (request.UserId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.UserIdRequired);
+            if (request.GameId == 0)
+                return new ValidatorResult(ValidatorErrors.Games.GameIdRequired);
 
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
-            if (player == null || !player.IsActive)
-                return new ValidatorResult(ValidatorErrors.Players.UserNotLinkedWithPlayer);
+            if (player == null)
+                return new ValidatorResult(ValidatorErrors.Games.PlayerNotFound);
+            if (!player.IsActive)
+                return new ValidatorResult(ValidatorErrors.Games.PlayerNotActive);
 
             return new ValidatorResult();
         }

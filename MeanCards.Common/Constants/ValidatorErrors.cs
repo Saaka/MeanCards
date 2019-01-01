@@ -31,6 +31,7 @@
             public const string SecondPlayerCardIdRequired = nameof(SecondPlayerCardIdRequired);
             public const string CardNotLinkedWithPlayer = nameof(CardNotLinkedWithPlayer);
             public const string PlayerNotFound = nameof(PlayerNotFound);
+            public const string PlayerNotActive = nameof(PlayerNotActive);
         }
         public static class Players
         {
