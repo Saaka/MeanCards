@@ -36,7 +36,7 @@ namespace MeanCards.Validators.Games
 
             var game = await gamesRepository.GetGameById(request.GameId);
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
-            if (!(game.OwnerId == request.UserId || round.OwnerPlayerId == player.PlayerId))
+            if (game.OwnerId != request.UserId && round.OwnerPlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
 
             return new ValidatorResult();
