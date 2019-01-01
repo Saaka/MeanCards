@@ -53,7 +53,7 @@ namespace MeanCards.Validators.Games
                     return new ValidatorResult(ValidatorErrors.Games.CardNotLinkedWithPlayer);
             }
 
-            var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
+            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
             if (round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 

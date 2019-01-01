@@ -30,7 +30,7 @@ namespace MeanCards.Validators.Games
             if (!baseResult.IsSuccessful)
                 return new ValidatorResult(baseResult.Error);
             
-            var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
+            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
             if (round.Status != Common.Enums.GameRoundStatusEnum.Pending)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 

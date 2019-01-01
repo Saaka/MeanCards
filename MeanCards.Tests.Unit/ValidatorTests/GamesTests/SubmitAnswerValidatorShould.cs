@@ -151,7 +151,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
-            mock.Setup(m => m.GetCurrentGameRound(It.IsAny<int>())).Returns(() =>
+            mock.Setup(m => m.GetGameRound(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
             {
                 if (!isRoundInGame)
                     return Task.FromResult<GameRoundModel>(null);
