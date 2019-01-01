@@ -54,8 +54,7 @@ namespace MeanCards.Validators.Games
             }
 
             var round = await gameRoundsRepository.GetCurrentGameRound(request.GameId);
-            if(round.GameRoundId != request.GameRoundId
-                || round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
+            if (round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
             return new ValidatorResult();

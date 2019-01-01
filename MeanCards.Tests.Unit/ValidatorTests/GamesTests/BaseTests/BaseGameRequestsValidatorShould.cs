@@ -1,11 +1,9 @@
 ﻿using MeanCards.Model.Core;
 using MeanCards.Model.Core.Games.Base;
-using MeanCards.Validators.Games;
-using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MeanCards.Tests.Unit.ValidatorTests.BaseTests
+namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.BaseTests
 {
     public class BaseGameRequestsValidatorShould : IClassFixture<BaseGameRequestsValidatorSut>
     {

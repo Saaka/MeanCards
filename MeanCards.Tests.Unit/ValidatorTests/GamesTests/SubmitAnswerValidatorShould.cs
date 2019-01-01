@@ -90,32 +90,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         }
 
         [Fact]
-        public async Task ReturnFailureForNotActiveRoundRequest()
-        {
-            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isCurrentRound: false);
-            var cardsRepo = CreatePlayerCardsRepoMock();
-            var questionCardRepo = CreateQuestionCardRepoMock();
-
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
-
-            var request = new SubmitAnswer
-            {
-                GameRoundId = RoundId,
-                UserId = 1,
-                GameId = 1,
-                PlayerCardId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.InvalidGameRoundStatus, result.Error);
-        }
-
-        [Fact]
         public async Task ReturnFailureForInvalidCardAndPlayerCombination()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
@@ -174,8 +148,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         private IGameRoundsRepository CreateGameRoundRepoMock(
             bool isRoundOwner = true,
             bool isRoundInProgressStatus = true,
-            bool isRoundInGame = true, 
-            bool isCurrentRound = true)
+            bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
             mock.Setup(m => m.GetCurrentGameRound(It.IsAny<int>())).Returns(() =>
@@ -187,7 +160,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 {
                     Status = isRoundInProgressStatus ? Common.Enums.GameRoundStatusEnum.InProgress : Common.Enums.GameRoundStatusEnum.Finished,
                     OwnerPlayerId = isRoundOwner ? RoundOwnerId : int.MaxValue,
-                    GameRoundId = isCurrentRound ? RoundId : int.MaxValue
+                    GameRoundId = RoundId
                 });
             });
 

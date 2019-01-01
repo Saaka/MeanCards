@@ -9,6 +9,7 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<GameRoundModel> CreateGameRound(CreateGameRoundModel model);
         Task<GameRoundModel> GetCurrentGameRound(int gameId);
+        Task<GameRoundModel> GetGameRound(int gameId, int gameRoundId);
         Task<bool> StartGameRound(int gameRoundId);
     }
 }

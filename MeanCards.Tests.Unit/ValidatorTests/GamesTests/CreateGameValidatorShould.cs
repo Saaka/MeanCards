@@ -27,6 +27,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var result = await validator.Validate(request);
 
             Assert.True(result.IsSuccessful);
+            Assert.Null(result.Error);
             baseMock.Verify(x => x.Validate(request));
         }
 

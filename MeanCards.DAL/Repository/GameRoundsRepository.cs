@@ -68,6 +68,18 @@ namespace MeanCards.DAL.Repository
             return MapToModel(round);
         }
 
+        public async Task<GameRoundModel> GetGameRound(int gameId, int gameRoundId)
+        {
+            var query = from r in context.GameRounds
+                        where r.GameId == gameId
+                                && r.GameRoundId == gameRoundId
+                        select r;
+
+            var round = await query.FirstOrDefaultAsync();
+
+            return MapToModel(round);
+        }
+
         public async Task<bool> StartGameRound(int gameRoundId)
         {
             var query = from r in context.GameRounds
