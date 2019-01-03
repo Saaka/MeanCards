@@ -39,6 +39,10 @@ namespace MeanCards.Validators.Games
             if (game.OwnerId != request.UserId && round.OwnerPlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.UserCantStartRound);
 
+            var playerCount = await playersRepository.GetActivePlayersCount(request.GameId);
+            if (playerCount < GameConstants.MinimumPlayersCount)
+                return new ValidatorResult(ValidatorErrors.Games.NotEnoughPlayers);
+
             return new ValidatorResult();
         }
     }

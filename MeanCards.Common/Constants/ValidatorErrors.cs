@@ -32,6 +32,7 @@
             public const string CardNotLinkedWithPlayer = nameof(CardNotLinkedWithPlayer);
             public const string PlayerNotFound = nameof(PlayerNotFound);
             public const string PlayerNotActive = nameof(PlayerNotActive);
+            public const string NotEnoughPlayers = nameof(NotEnoughPlayers);
         }
         public static class Players
         {

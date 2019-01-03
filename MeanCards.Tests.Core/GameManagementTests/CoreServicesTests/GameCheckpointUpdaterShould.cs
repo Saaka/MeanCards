@@ -28,7 +28,8 @@ namespace MeanCards.Tests.Core.GameManagementTests.CoreServicesTests
         [Fact]
         public async Task GetListOfAllCheckpoints()
         {
-            var game = await Fixture.CreateGame();
+            var game = await Fixture.CreateGame(
+                additionalPlayersCount: 0);
             var updater = Fixture.GetService<IGameCheckpointUpdater>();
             var checkpointRepository = Fixture.GetService<IGameCheckpointRepository>();
             

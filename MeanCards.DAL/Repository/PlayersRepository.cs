@@ -83,5 +83,15 @@ namespace MeanCards.DAL.Repository
                 IsActive = player.IsActive
             };
         }
+
+        public async Task<int> GetActivePlayersCount(int gameId)
+        {
+            var query = from player in context.Players
+                        where player.GameId == gameId
+                                && player.IsActive
+                        select player.PlayerId;
+
+            return await query.CountAsync();
+        }
     }
 }

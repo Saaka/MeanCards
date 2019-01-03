@@ -46,7 +46,8 @@ namespace MeanCards.Tests.Core
             bool showAdultContent = false,
             int questionCardsAvailable = 20,
             int answerCardsAvailable = 100,
-            int pointsLimit = 10)
+            int pointsLimit = 10,
+            int additionalPlayersCount = 2)
         {
             var userId = await CreateDefaultUser();
             var languageId = await CreateDefaultLanguage();
@@ -68,9 +69,21 @@ namespace MeanCards.Tests.Core
                 PointsLimit = pointsLimit
             });
 
+            await AddPlayersToGame(result.GameId, additionalPlayersCount);
+
             var gamesRepository = GetService<IGamesRepository>();
 
             return await gamesRepository.GetGameById(result.GameId);
+        }
+
+        private async Task AddPlayersToGame(int gameId, int playersCount)
+        {
+            int players = 0;
+            while(players < playersCount)
+            {
+                await AddNewPlayerToGame(gameId);
+                players++;
+            }
         }
 
         public async Task StartGameRound(int gameId, int gameRoundId, int userId)
@@ -82,6 +95,15 @@ namespace MeanCards.Tests.Core
                 GameId = gameId,
                 UserId = userId
             });
+        }
+
+        public async Task AddNewPlayerToGame(int gameId)
+        {
+            var userId = await CreateDefaultUser(
+                userName: Guid.NewGuid().ToString("N"),
+                email: $"{Guid.NewGuid().ToString()}@test.com",
+                userCode: Guid.NewGuid().ToString("N"));
+            await JoinPlayer(gameId, userId);
         }
 
         public async Task<JoinGameResult> JoinPlayer(int gameId, int userId)

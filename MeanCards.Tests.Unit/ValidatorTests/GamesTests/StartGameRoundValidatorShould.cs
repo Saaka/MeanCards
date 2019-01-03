@@ -130,6 +130,30 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             Assert.Equal(ValidatorErrors.Games.InvalidGameRoundStatus, result.Error);
         }
 
+        [Fact]
+        public async Task ReturnFailureForNotEnoughPlayers()
+        {
+            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
+            var playersRepo = CreatePlayersRepoMock(
+                hasEnoughPlayers: false);
+            var gameRoundRepo = CreateGameRoundRepoMock();
+            var gameRepo = CreateGameRepositoryMock();
+
+            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
+
+            var request = new StartGameRound
+            {
+                GameRoundId = 1,
+                UserId = 1,
+                GameId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.NotEnoughPlayers, result.Error);
+        }
+
         private const int RoundOwnerId = 1;
         private const int GameOwnerId = 1;
 
@@ -154,7 +178,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             return mock.Object;
         }
 
-        private IPlayersRepository CreatePlayersRepoMock(bool isUserLinkedWithPlayer = true)
+        private IPlayersRepository CreatePlayersRepoMock(
+            bool isUserLinkedWithPlayer = true,
+            bool hasEnoughPlayers = true)
         {
             var mock = new Mock<IPlayersRepository>();
             mock.Setup(m => m.GetPlayerByUserId(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
@@ -166,6 +192,14 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 {
                     PlayerId = RoundOwnerId
                 });
+            });
+
+            mock.Setup(m => m.GetActivePlayersCount(It.IsAny<int>())).Returns(() =>
+            {
+                if(!hasEnoughPlayers)
+                    return Task.FromResult<int>(1);
+
+                return Task.FromResult<int>(GameConstants.MinimumPlayersCount);
             });
 
             return mock.Object;
