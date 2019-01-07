@@ -25,7 +25,6 @@
             public const string GameRoundIdRequired = nameof(GameRoundIdRequired);
             public const string PlayerIdRequired = nameof(PlayerIdRequired);
             public const string InvalidGameRoundStatus = nameof(InvalidGameRoundStatus);
-            public const string UserCantStartRound = nameof(UserCantStartRound);
             public const string RoundNotLinkedWithGame = nameof(RoundNotLinkedWithGame);
             public const string PlayerCardIdRequired = nameof(PlayerCardIdRequired);
             public const string SecondPlayerCardIdRequired = nameof(SecondPlayerCardIdRequired);
@@ -33,6 +32,7 @@
             public const string PlayerNotFound = nameof(PlayerNotFound);
             public const string PlayerNotActive = nameof(PlayerNotActive);
             public const string NotEnoughPlayers = nameof(NotEnoughPlayers);
+            public const string InvalidUserAction = nameof(InvalidUserAction);
         }
         public static class Players
         {

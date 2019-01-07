@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace MeanCards.Validators.Games
 {
-    public class StartGameRoundValidator : IRequestValidator<StartGameRound>
+    public class EndSubmissionsValidator : IRequestValidator<EndSubmissions>
     {
         private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IPlayersRepository playersRepository;
         private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IGamesRepository gamesRepository;
 
-        public StartGameRoundValidator(
+        public EndSubmissionsValidator(
             IBaseGameRequestsValidator baseGameRequestsValidator,
             IPlayersRepository playersRepository,
             IGameRoundsRepository gameRoundsRepository,
@@ -24,24 +24,20 @@ namespace MeanCards.Validators.Games
             this.gamesRepository = gamesRepository;
         }
 
-        public async Task<ValidatorResult> Validate(StartGameRound request)
+        public async Task<ValidatorResult> Validate(EndSubmissions request)
         {
             var baseResult = await baseGameRequestsValidator.Validate(request);
             if (!baseResult.IsSuccessful)
                 return new ValidatorResult(baseResult.Error);
-            
+
             var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
-            if (round.Status != Common.Enums.GameRoundStatusEnum.Pending)
+            if (round.Status != Common.Enums.GameRoundStatusEnum.InProgress)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
             var game = await gamesRepository.GetGameById(request.GameId);
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
             if (game.OwnerId != request.UserId && round.OwnerPlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidUserAction);
-
-            var playerCount = await playersRepository.GetActivePlayersCount(request.GameId);
-            if (playerCount < GameConstants.MinimumPlayersCount)
-                return new ValidatorResult(ValidatorErrors.Games.NotEnoughPlayers);
 
             return new ValidatorResult();
         }

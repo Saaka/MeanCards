@@ -27,6 +27,7 @@ namespace MeanCards
                 .AddScoped<IJoinGameHandler, JoinGameHandler>()
                 .AddScoped<IStartGameRoundHandler, StartGameRoundHandler>()
                 .AddScoped<ISubmitAnswerHandler, SubmitAnswerHandler>()
+                .AddScoped<IEndSubmissionsHandler, EndSubmissionsHandler>()
 
                 //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
@@ -47,7 +48,8 @@ namespace MeanCards
                 .AddTransient<IRequestValidator<CreateGame>, CreateGameValidator>()
                 .AddTransient<IRequestValidator<JoinGame>, JoinGameValidator>()
                 .AddTransient<IRequestValidator<StartGameRound>, StartGameRoundValidator>()
-                .AddTransient< IRequestValidator<SubmitAnswer>, SubmitAnswerValidator>();
+                .AddTransient<IRequestValidator<SubmitAnswer>, SubmitAnswerValidator>()
+                .AddTransient<IRequestValidator<EndSubmissions>, EndSubmissionsValidator>();
 
             return services;
         }

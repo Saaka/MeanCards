@@ -103,7 +103,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var result = await validator.Validate(request);
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.UserCantStartRound, result.Error);
+            Assert.Equal(ValidatorErrors.Games.InvalidUserAction, result.Error);
         }
 
         [Fact]
