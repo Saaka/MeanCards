@@ -19,7 +19,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -44,7 +45,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -69,7 +71,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
             var gameRoundRepo = GameRoundsRepositoryMock.Create(
-                isRoundInProgressStatus: false).Object;
+                status: Common.Enums.GameRoundStatusEnum.Finished).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -94,7 +96,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock(
                 isCardLinkedWithUser: false);
             var questionCardRepo = CreateQuestionCardRepoMock();
@@ -120,7 +123,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock(
                 isMultiChoiceQuestion: true);

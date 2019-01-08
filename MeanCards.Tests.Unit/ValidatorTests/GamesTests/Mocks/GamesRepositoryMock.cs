@@ -7,7 +7,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
 {
     public static class GamesRepositoryMock
     {
-        public static Mock<IGamesRepository> Create(bool gameExists = true, bool isGameOwner = true)
+        public static Mock<IGamesRepository> Create(
+            bool gameExists = true, 
+            bool isGameOwner = true,
+            bool gameIsActive = true)
         {
             var mock = new Mock<IGamesRepository>();
             mock.Setup(m => m.GetGameById(It.IsAny<int>())).Returns(() =>
@@ -18,6 +21,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
                 return Task.FromResult(new GameModel
                 {
                     OwnerId = isGameOwner ? MockConstants.GameOwnerId : int.MaxValue,
+                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Canceled,
+                    IsActive = gameIsActive
                 });
             });
 

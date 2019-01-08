@@ -17,8 +17,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnSuccessForValidData()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
             var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
@@ -40,9 +41,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnSuccessForGameOwner()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundOwner: false);
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                isRoundOwner: false,
+                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
             var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
@@ -63,8 +65,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnSuccessForGameRoundOwner()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
             var gameRepo = GamesRepositoryMock.Create(
                 isGameOwner: false).Object;
 
@@ -86,9 +89,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForInvalidUserAndPlayer()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundOwner: false);
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                isRoundOwner: false,
+                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
             var gameRepo = GamesRepositoryMock.Create( 
                 isGameOwner: false).Object;
 
@@ -111,9 +115,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForInvalidRoundStatus()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundPending: false);
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Finished).Object;
             var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
@@ -135,9 +139,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForNotEnoughPlayers()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock(
-                hasEnoughPlayers: false);
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create(
+                roundHasEnoughPlayers: false).Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
             var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
@@ -156,53 +161,5 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         }
 
         private const int RoundOwnerId = 1;
-
-        private IGameRoundsRepository CreateGameRoundRepoMock(
-            bool isRoundOwner = true,
-            bool isRoundPending = true,
-            bool isRoundInGame = true)
-        {
-            var mock = new Mock<IGameRoundsRepository>();
-            mock.Setup(m => m.GetGameRound(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
-            {
-                if (!isRoundInGame)
-                    return Task.FromResult<GameRoundModel>(null);
-
-                return Task.FromResult(new GameRoundModel
-                {
-                    Status = isRoundPending ? Common.Enums.GameRoundStatusEnum.Pending : Common.Enums.GameRoundStatusEnum.Finished,
-                    OwnerPlayerId = isRoundOwner ? RoundOwnerId : int.MaxValue
-                });
-            });
-
-            return mock.Object;
-        }
-
-        private IPlayersRepository CreatePlayersRepoMock(
-            bool isUserLinkedWithPlayer = true,
-            bool hasEnoughPlayers = true)
-        {
-            var mock = new Mock<IPlayersRepository>();
-            mock.Setup(m => m.GetPlayerByUserId(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
-            {
-                if (!isUserLinkedWithPlayer)
-                    return Task.FromResult<PlayerModel>(null);
-
-                return Task.FromResult(new PlayerModel
-                {
-                    PlayerId = RoundOwnerId
-                });
-            });
-
-            mock.Setup(m => m.GetActivePlayersCount(It.IsAny<int>())).Returns(() =>
-            {
-                if (!hasEnoughPlayers)
-                    return Task.FromResult<int>(1);
-
-                return Task.FromResult<int>(GameConstants.MinimumPlayersCount);
-            });
-
-            return mock.Object;
-        }
     }
 }

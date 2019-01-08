@@ -13,7 +13,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var gameRepo = GamesRepositoryMock.Create().Object;
             var playerAnswersRepo = PlayerAnswersRepositoryMock.Create().Object;
 

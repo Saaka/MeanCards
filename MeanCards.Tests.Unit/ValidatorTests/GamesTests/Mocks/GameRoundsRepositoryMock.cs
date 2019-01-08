@@ -7,9 +7,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
 {
     public class GameRoundsRepositoryMock
     {
-        public static  Mock<IGameRoundsRepository> Create(
+        public static Mock<IGameRoundsRepository> Create(
             bool isRoundOwner = true,
-            bool isRoundInProgressStatus = true,
+            Common.Enums.GameRoundStatusEnum status = Common.Enums.GameRoundStatusEnum.Finished,
             bool isRoundInGame = true)
         {
             var mock = new Mock<IGameRoundsRepository>();
@@ -20,7 +20,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
 
                 return Task.FromResult(new GameRoundModel
                 {
-                    Status = isRoundInProgressStatus ? Common.Enums.GameRoundStatusEnum.InProgress : Common.Enums.GameRoundStatusEnum.Finished,
+                    Status = status,
                     OwnerPlayerId = isRoundOwner ? MockConstants.RoundOwnerId : int.MaxValue,
                     GameRoundId = MockConstants.RoundId
                 });
