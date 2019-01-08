@@ -33,6 +33,7 @@
             public const string PlayerNotActive = nameof(PlayerNotActive);
             public const string NotEnoughPlayers = nameof(NotEnoughPlayers);
             public const string InvalidUserAction = nameof(InvalidUserAction);
+            public const string NotEnoughSubmittedAnswers = nameof(NotEnoughSubmittedAnswers);
         }
         public static class Players
         {

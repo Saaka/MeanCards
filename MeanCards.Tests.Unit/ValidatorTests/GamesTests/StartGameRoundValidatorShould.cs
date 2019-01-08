@@ -3,6 +3,7 @@ using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Model.DTO.Players;
+using MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks;
 using MeanCards.Validators.Games;
 using Moq;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -42,7 +43,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundOwner: false);
-            var gameRepo = CreateGameRepositoryMock();
+            var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -64,8 +65,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock(
-                isGameOwner: false);
+            var gameRepo = GamesRepositoryMock.Create(
+                isGameOwner: false).Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -88,8 +89,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundOwner: false);
-            var gameRepo = CreateGameRepositoryMock(
-                isGameOwner: false);
+            var gameRepo = GamesRepositoryMock.Create( 
+                isGameOwner: false).Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -113,7 +114,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = CreatePlayersRepoMock();
             var gameRoundRepo = CreateGameRoundRepoMock(
                 isRoundPending: false);
-            var gameRepo = CreateGameRepositoryMock();
+            var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -137,7 +138,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = CreatePlayersRepoMock(
                 hasEnoughPlayers: false);
             var gameRoundRepo = CreateGameRoundRepoMock();
-            var gameRepo = CreateGameRepositoryMock();
+            var gameRepo = GamesRepositoryMock.Create().Object;
 
             var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
 
@@ -155,7 +156,6 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         }
 
         private const int RoundOwnerId = 1;
-        private const int GameOwnerId = 1;
 
         private IGameRoundsRepository CreateGameRoundRepoMock(
             bool isRoundOwner = true,
@@ -196,28 +196,11 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             mock.Setup(m => m.GetActivePlayersCount(It.IsAny<int>())).Returns(() =>
             {
-                if(!hasEnoughPlayers)
+                if (!hasEnoughPlayers)
                     return Task.FromResult<int>(1);
 
                 return Task.FromResult<int>(GameConstants.MinimumPlayersCount);
             });
-
-            return mock.Object;
-        }
-
-        private IGamesRepository CreateGameRepositoryMock(bool gameExists = true, bool isGameOwner = true)
-        {
-            var mock = new Mock<IGamesRepository>();
-            mock.Setup(m => m.GetGameById(It.IsAny<int>())).Returns(() =>
-           {
-               if (!gameExists)
-                   return Task.FromResult<GameModel>(null);
-
-               return Task.FromResult(new GameModel
-               {
-                   OwnerId = isGameOwner ?  GameOwnerId : int.MaxValue,
-               });
-           });
 
             return mock.Object;
         }

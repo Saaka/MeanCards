@@ -5,5 +5,6 @@
         public const int StartingPlayerCardsCount = 10;
         public const int DefaultPointsLimit = 5;
         public const int MinimumPlayersCount = 3;
+        public const int MinimumAnswersCount = 2;
     }
 }

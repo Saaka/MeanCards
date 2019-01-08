@@ -9,6 +9,7 @@ namespace MeanCards.DAL.Interfaces.Repository
     {
         Task<int> CreatePlayerAnswer(CreatePlayerAnswerModel model);
         Task<List<PlayerAnswerModel>> GetAllPlayerAnswers(int gameRoundId);
+        Task<int> GetNumberOfAnswers(int gameRoundId);
         Task MarkAnswerAsSelected(int answerId);
     }
 }

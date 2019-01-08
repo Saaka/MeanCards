@@ -4,6 +4,7 @@ using MeanCards.Model.Core.Games;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Model.DTO.Players;
 using MeanCards.Model.DTO.QuestionCards;
+using MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks;
 using MeanCards.Validators.Games;
 using Moq;
 using System.Threading.Tasks;
@@ -13,13 +14,12 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 {
     public class SubmitAnswerValidatorShould
     {
-
         [Fact]
         public async Task ReturnSuccessForValidData()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -27,7 +27,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             var request = new SubmitAnswer
             {
-                GameRoundId = RoundId,
+                GameRoundId = MockConstants.RoundId,
                 UserId = 1,
                 GameId = 1,
                 PlayerCardId = 1
@@ -43,8 +43,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForMissingPlayerCardId()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -53,7 +53,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var request = new SubmitAnswer
             {
                 GameId = 1,
-                GameRoundId = RoundId,
+                GameRoundId = MockConstants.RoundId,
                 UserId = 1
             };
 
@@ -67,9 +67,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForInvalidRoundStatus()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock(
-                isRoundInProgressStatus: false);
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                isRoundInProgressStatus: false).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
 
@@ -77,7 +77,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             var request = new SubmitAnswer
             {
-                GameRoundId = RoundId,
+                GameRoundId = MockConstants.RoundId,
                 UserId = 1,
                 GameId = 1,
                 PlayerCardId = 1
@@ -93,8 +93,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForInvalidCardAndPlayerCombination()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
             var cardsRepo = CreatePlayerCardsRepoMock(
                 isCardLinkedWithUser: false);
             var questionCardRepo = CreateQuestionCardRepoMock();
@@ -103,7 +103,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             var request = new SubmitAnswer
             {
-                GameRoundId = RoundId,
+                GameRoundId = MockConstants.RoundId,
                 UserId = 1,
                 GameId = 1,
                 PlayerCardId = 1
@@ -119,8 +119,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForMissingSecondPlayerCard()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = CreatePlayersRepoMock();
-            var gameRoundRepo = CreateGameRoundRepoMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create().Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock(
                 isMultiChoiceQuestion: true);
@@ -129,7 +129,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             var request = new SubmitAnswer
             {
-                GameRoundId = RoundId,
+                GameRoundId = MockConstants.RoundId,
                 UserId = 1,
                 GameId = 1,
                 PlayerCardId = 1
@@ -140,50 +140,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.SecondPlayerCardIdRequired, result.Error);
         }
-
-        private const int CardOwnerId = 1;
-        private const int RoundOwnerId = 1;
-        private const int RoundId = 1;
-
-        private IGameRoundsRepository CreateGameRoundRepoMock(
-            bool isRoundOwner = true,
-            bool isRoundInProgressStatus = true,
-            bool isRoundInGame = true)
-        {
-            var mock = new Mock<IGameRoundsRepository>();
-            mock.Setup(m => m.GetGameRound(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
-            {
-                if (!isRoundInGame)
-                    return Task.FromResult<GameRoundModel>(null);
-
-                return Task.FromResult(new GameRoundModel
-                {
-                    Status = isRoundInProgressStatus ? Common.Enums.GameRoundStatusEnum.InProgress : Common.Enums.GameRoundStatusEnum.Finished,
-                    OwnerPlayerId = isRoundOwner ? RoundOwnerId : int.MaxValue,
-                    GameRoundId = RoundId
-                });
-            });
-
-            return mock.Object;
-        }
-
-        private IPlayersRepository CreatePlayersRepoMock(bool isUserLinkedWithPlayer = true)
-        {
-            var mock = new Mock<IPlayersRepository>();
-            mock.Setup(m => m.GetPlayerByUserId(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
-            {
-                if (!isUserLinkedWithPlayer)
-                    return Task.FromResult<PlayerModel>(null);
-
-                return Task.FromResult(new PlayerModel
-                {
-                    PlayerId = CardOwnerId
-                });
-            });
-
-            return mock.Object;
-        }
-
+        
         private IPlayerCardsRepository CreatePlayerCardsRepoMock(bool isCardLinkedWithUser = true)
         {
             var mock = new Mock<IPlayerCardsRepository>();
@@ -191,7 +148,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
            {
                return Task.FromResult(new PlayerCardModel
                {
-                   PlayerId = isCardLinkedWithUser ? CardOwnerId : int.MaxValue
+                   PlayerId = isCardLinkedWithUser ? MockConstants.CardOwnerId : int.MaxValue
                });
            });
 

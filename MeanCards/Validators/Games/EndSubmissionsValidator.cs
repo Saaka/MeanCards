@@ -11,17 +11,20 @@ namespace MeanCards.Validators.Games
         private readonly IPlayersRepository playersRepository;
         private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IGamesRepository gamesRepository;
+        private readonly IPlayerAnswersRepository playerAnswersRepository;
 
         public EndSubmissionsValidator(
             IBaseGameRequestsValidator baseGameRequestsValidator,
             IPlayersRepository playersRepository,
             IGameRoundsRepository gameRoundsRepository,
-            IGamesRepository gamesRepository)
+            IGamesRepository gamesRepository,
+            IPlayerAnswersRepository playerAnswersRepository)
         {
             this.baseGameRequestsValidator = baseGameRequestsValidator;
             this.playersRepository = playersRepository;
             this.gameRoundsRepository = gameRoundsRepository;
             this.gamesRepository = gamesRepository;
+            this.playerAnswersRepository = playerAnswersRepository;
         }
 
         public async Task<ValidatorResult> Validate(EndSubmissions request)
@@ -38,6 +41,10 @@ namespace MeanCards.Validators.Games
             var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
             if (game.OwnerId != request.UserId && round.OwnerPlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidUserAction);
+
+            var numberOfAnswers = await playerAnswersRepository.GetNumberOfAnswers(request.GameRoundId);
+            if (numberOfAnswers < GameConstants.MinimumAnswersCount)
+                return new ValidatorResult(ValidatorErrors.Games.NotEnoughSubmittedAnswers);
 
             return new ValidatorResult();
         }

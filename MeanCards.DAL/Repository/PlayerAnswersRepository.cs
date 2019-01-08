@@ -53,6 +53,14 @@ namespace MeanCards.DAL.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<int> GetNumberOfAnswers(int gameRoundId)
+        {
+            var query = from pa in context.PlayerAnswers
+                        where pa.GameRoundId == gameRoundId
+                        select pa.PlayerAnswerId;
+
+            return await query.CountAsync();
+        }
 
         public async Task MarkAnswerAsSelected(int playerAnswerId)
         {
