@@ -40,7 +40,8 @@ namespace MeanCards.GameManagement
                 if (!validatorResult.IsSuccessful)
                     return new StartGameRoundResult(validatorResult.Error);
 
-                var started = await gameRoundsRepository.StartGameRound(request.GameRoundId);
+                var started = await gameRoundsRepository
+                    .UpdateGameRoundStatus(request.GameRoundId, Common.Enums.GameRoundStatusEnum.InProgress);
                 if (!started)
                     return new StartGameRoundResult(GameErrors.GameRoundCouldNotBeStarted);
 

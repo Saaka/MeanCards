@@ -1,6 +1,6 @@
-﻿using MeanCards.Model.DAL.Creation.Games;
+﻿using MeanCards.Common.Enums;
+using MeanCards.Model.DAL.Creation.Games;
 using MeanCards.Model.DTO.Games;
-using MeanCards.Model.DTO.Players;
 using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Interfaces.Repository
@@ -10,6 +10,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<GameRoundModel> CreateGameRound(CreateGameRoundModel model);
         Task<GameRoundModel> GetCurrentGameRound(int gameId);
         Task<GameRoundModel> GetGameRound(int gameId, int gameRoundId);
-        Task<bool> StartGameRound(int gameRoundId);
+        Task<bool> UpdateGameRoundStatus(int gameRoundId, GameRoundStatusEnum status);
     }
 }

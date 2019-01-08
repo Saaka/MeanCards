@@ -125,6 +125,33 @@ namespace MeanCards.Tests.Core
             return cards.Select(x=> x.PlayerCardId).FirstOrDefault();
         }
 
+        public async Task SubmitAnswersForAllPlayers(int gameId, int gameRoundId, int roundOwnerPlayerId)
+        {
+            var repo = GetService<IPlayersRepository>();
+            var players = await repo.GetAllPlayers(gameId);
+            foreach(var player in players)
+            {
+                if (player.PlayerId == roundOwnerPlayerId) continue;
+
+                var playerCardId = await GetRandomPlayerCard(player.PlayerId);
+                await SubmitAnswer(gameId, gameRoundId, player.UserId, playerCardId);
+            }
+        }
+        
+        public async Task SubmitAnswer(int gameId, int gameRoundId, int userId, int playerCardId)
+        {
+            var request = new SubmitAnswer
+            {
+                GameId = gameId,
+                GameRoundId = gameRoundId,
+                UserId = userId,
+                PlayerCardId = playerCardId
+            };
+
+            var handler = GetService<ISubmitAnswerHandler>();
+            await handler.Handle(request);
+        }
+
         public async Task<GameRoundModel> GetCurrentGameRound(int gameId)
         {
             var gameRoundRepository = GetService<IGameRoundsRepository>();

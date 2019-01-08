@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 using MeanCards.Model.DAL.Creation.Players;
+using System.Collections.Generic;
 
 namespace MeanCards.DAL.Repository
 {
@@ -92,6 +93,17 @@ namespace MeanCards.DAL.Repository
                         select player.PlayerId;
 
             return await query.CountAsync();
+        }
+
+        public async Task<List<PlayerModel>> GetAllPlayers(int gameId)
+        {
+            var query = from p in context.Players
+                        where p.GameId == gameId
+                            && p.IsActive
+                        select p;
+
+            return (await query.ToListAsync())
+                .Select(MapToModel).ToList();
         }
     }
 }

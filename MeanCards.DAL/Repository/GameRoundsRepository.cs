@@ -80,7 +80,7 @@ namespace MeanCards.DAL.Repository
             return MapToModel(round);
         }
 
-        public async Task<bool> StartGameRound(int gameRoundId)
+        public async Task<bool> UpdateGameRoundStatus(int gameRoundId, GameRoundStatusEnum status)
         {
             var query = from r in context.GameRounds
                         where r.GameRoundId == gameRoundId
@@ -90,7 +90,7 @@ namespace MeanCards.DAL.Repository
             if (round == null)
                 return false;
 
-            round.Status = (byte)GameRoundStatusEnum.InProgress;
+            round.Status = (byte)status;
 
             return await context.SaveChangesAsync() > 0;
         }
