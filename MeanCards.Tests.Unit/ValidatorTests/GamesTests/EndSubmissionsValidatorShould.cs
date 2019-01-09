@@ -12,13 +12,12 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnSuccessForValidData()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = PlayersRepositoryMock.Create().Object;
             var gameRoundRepo = GameRoundsRepositoryMock.Create(
                 status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
-            var gameRepo = GamesRepositoryMock.Create().Object;
             var playerAnswersRepo = PlayerAnswersRepositoryMock.Create().Object;
+            var gameOrRoundOnwerRuleMock = GameOrRoundOwnerRuleMock.Create<EndSubmissions>();
 
-            var validator = new EndSubmissionsValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo,  playerAnswersRepo);
+            var validator = new EndSubmissionsValidator(baseMock.Object, gameRoundRepo,  playerAnswersRepo, gameOrRoundOnwerRuleMock.Object);
 
             var request = new EndSubmissions
             {
@@ -31,6 +30,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             Assert.True(result.IsSuccessful);
             baseMock.Verify(x => x.Validate(request));
+            gameOrRoundOnwerRuleMock.Verify(x => x.Validate(request));
         }
     }
 }

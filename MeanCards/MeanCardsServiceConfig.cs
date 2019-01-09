@@ -8,6 +8,7 @@ using MeanCards.UserManagement;
 using MeanCards.Validators;
 using MeanCards.Validators.Games;
 using MeanCards.Validators.Games.Base;
+using MeanCards.Validators.Games.ValidationRules;
 using MeanCards.Validators.Users;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,7 +50,10 @@ namespace MeanCards
                 .AddTransient<IRequestValidator<JoinGame>, JoinGameValidator>()
                 .AddTransient<IRequestValidator<StartGameRound>, StartGameRoundValidator>()
                 .AddTransient<IRequestValidator<SubmitAnswer>, SubmitAnswerValidator>()
-                .AddTransient<IRequestValidator<EndSubmissions>, EndSubmissionsValidator>();
+                .AddTransient<IRequestValidator<EndSubmissions>, EndSubmissionsValidator>()
+                
+                .AddTransient<IGameOrRoundOwnerRule, GameOrRoundOwnerRule>()
+                ;
 
             return services;
         }

@@ -20,9 +20,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = PlayersRepositoryMock.Create().Object;
             var gameRoundRepo = GameRoundsRepositoryMock.Create(
                 status: Common.Enums.GameRoundStatusEnum.Pending).Object;
-            var gameRepo = GamesRepositoryMock.Create().Object;
+            var gameOrRoundOnwerRuleMock = GameOrRoundOwnerRuleMock.Create<StartGameRound>();
 
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
+            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameOrRoundOnwerRuleMock.Object);
 
             var request = new StartGameRound
             {
@@ -35,82 +35,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             Assert.True(result.IsSuccessful);
             baseMock.Verify(x => x.Validate(request));
+            gameOrRoundOnwerRuleMock.Verify(x => x.Validate(request));
         }
-
-        [Fact]
-        public async Task ReturnSuccessForGameOwner()
-        {
-            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create(
-                isRoundOwner: false,
-                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
-            var gameRepo = GamesRepositoryMock.Create().Object;
-
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
-            {
-                GameRoundId = 1,
-                UserId = 1,
-                GameId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact]
-        public async Task ReturnSuccessForGameRoundOwner()
-        {
-            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create(
-                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
-            var gameRepo = GamesRepositoryMock.Create(
-                isGameOwner: false).Object;
-
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
-            {
-                GameRoundId = 1,
-                UserId = 1,
-                GameId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact]
-        public async Task ReturnFailureForInvalidUserAndPlayer()
-        {
-            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var playersRepo = PlayersRepositoryMock.Create().Object;
-            var gameRoundRepo = GameRoundsRepositoryMock.Create(
-                isRoundOwner: false,
-                status: Common.Enums.GameRoundStatusEnum.Pending).Object;
-            var gameRepo = GamesRepositoryMock.Create( 
-                isGameOwner: false).Object;
-
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
-
-            var request = new StartGameRound
-            {
-                UserId = 1,
-                GameRoundId = 1,
-                GameId = 1
-            };
-
-            var result = await validator.Validate(request);
-
-            Assert.False(result.IsSuccessful);
-            Assert.Equal(ValidatorErrors.Games.InvalidUserAction, result.Error);
-        }
-
+        
         [Fact]
         public async Task ReturnFailureForInvalidRoundStatus()
         {
@@ -118,9 +45,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playersRepo = PlayersRepositoryMock.Create().Object;
             var gameRoundRepo = GameRoundsRepositoryMock.Create(
                 status: Common.Enums.GameRoundStatusEnum.Finished).Object;
-            var gameRepo = GamesRepositoryMock.Create().Object;
+            var gameOrRoundOnwerRuleMock = GameOrRoundOwnerRuleMock.Create<StartGameRound>();
 
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
+            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameOrRoundOnwerRuleMock.Object);
 
             var request = new StartGameRound
             {
@@ -143,9 +70,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 roundHasEnoughPlayers: false).Object;
             var gameRoundRepo = GameRoundsRepositoryMock.Create(
                 status: Common.Enums.GameRoundStatusEnum.Pending).Object;
-            var gameRepo = GamesRepositoryMock.Create().Object;
+            var gameOrRoundOnwerRuleMock = GameOrRoundOwnerRuleMock.Create<StartGameRound>();
 
-            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameRepo);
+            var validator = new StartGameRoundValidator(baseMock.Object, playersRepo, gameRoundRepo, gameOrRoundOnwerRuleMock.Object);
 
             var request = new StartGameRound
             {
