@@ -17,7 +17,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playerAnswersRepo = PlayerAnswersRepositoryMock.Create().Object;
             var gameOrRoundOnwerRuleMock = GameOrRoundOwnerRuleMock.Create<EndSubmissions>();
 
-            var validator = new EndSubmissionsValidator(baseMock.Object, gameRoundRepo,  playerAnswersRepo, gameOrRoundOnwerRuleMock.Object);
+            var validator = new EndSubmissionsValidator(baseMock.Object, gameRoundRepo, playerAnswersRepo, gameOrRoundOnwerRuleMock.Object);
 
             var request = new EndSubmissions
             {

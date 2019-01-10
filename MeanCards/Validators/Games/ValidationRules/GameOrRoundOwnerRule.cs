@@ -1,8 +1,6 @@
 ﻿using MeanCards.Common.Constants;
 using MeanCards.DAL.Interfaces.Repository;
-using MeanCards.Model.Core;
 using MeanCards.Model.Core.Games.Base;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace MeanCards.Validators.Games.ValidationRules
@@ -31,10 +29,10 @@ namespace MeanCards.Validators.Games.ValidationRules
         public async Task<ValidatorResult> Validate<T>(T request)
             where T: IGameRoundRequest, IPlayerRequest
         {
-            var game = await gamesRepository.GetGameById((request as IGameRoundRequest).GameId);
+            var game = await gamesRepository.GetGameById(request.GameId);
+            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
+            var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
 
-            var round = await gameRoundsRepository.GetGameRound(game.GameId, request.GameRoundId);
-            var player = await playersRepository.GetPlayerByUserId(request.UserId, game.GameId);
             if (game.OwnerId != request.UserId && round.OwnerPlayerId != player.PlayerId)
                 return new ValidatorResult(ValidatorErrors.Games.InvalidUserAction);
 
