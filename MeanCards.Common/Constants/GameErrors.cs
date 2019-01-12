@@ -8,5 +8,7 @@
         public const string GameRoundCouldNotBeStarted = nameof(GameRoundCouldNotBeStarted);
         public const string SubmitAnswerFailed = nameof(SubmitAnswerFailed);
         public const string CouldNotEndAnswersSubmissions = nameof(CouldNotEndAnswersSubmissions);
+        public const string GameRoundCouldNotBeSkipped = nameof(GameRoundCouldNotBeSkipped);
+        public const string CouldNotFindNextRoundOwner = nameof(CouldNotFindNextRoundOwner);
     }
 }

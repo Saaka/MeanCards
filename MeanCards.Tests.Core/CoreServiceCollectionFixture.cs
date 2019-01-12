@@ -158,6 +158,12 @@ namespace MeanCards.Tests.Core
             return await gameRoundRepository.GetCurrentGameRound(gameId);
         }
 
+        public async Task<GameRoundModel> GetGameRound(int gameId, int gameRoundId)
+        {
+            var gameRoundRepository = GetService<IGameRoundsRepository>();
+            return await gameRoundRepository.GetGameRound(gameId, gameRoundId);
+        }
+
         public async Task<int> CreateDefaultUser(
             string userName = "Kowalski",
             string email = "test@test.com",

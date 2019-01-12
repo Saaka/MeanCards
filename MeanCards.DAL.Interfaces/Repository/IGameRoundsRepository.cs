@@ -11,5 +11,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<GameRoundModel> GetCurrentGameRound(int gameId);
         Task<GameRoundModel> GetGameRound(int gameId, int gameRoundId);
         Task<bool> UpdateGameRoundStatus(int gameRoundId, GameRoundStatusEnum status);
+        Task<bool> SkipRound(int gameRoundId);
     }
 }

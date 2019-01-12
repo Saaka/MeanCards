@@ -94,5 +94,21 @@ namespace MeanCards.DAL.Repository
 
             return await context.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> SkipRound(int gameRoundId)
+        {
+            var query = from r in context.GameRounds
+                        where r.GameRoundId == gameRoundId
+                        select r;
+
+            var round = await query.FirstOrDefaultAsync();
+            if (round == null)
+                return false;
+
+            round.Status = (byte)GameRoundStatusEnum.Skipped;
+            round.IsActive = false;
+
+            return await context.SaveChangesAsync() > 0;
+        }
     }
 }

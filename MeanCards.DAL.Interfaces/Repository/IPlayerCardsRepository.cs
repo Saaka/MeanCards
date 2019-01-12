@@ -12,5 +12,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<List<PlayerCardModel>> GetUnusedPlayerCards(int playerId);
         Task<int> GetAnswerCardIdForPlayerCard(int playerCardId);
         Task<PlayerCardModel> GetPlayerCard(int playerCardId);
+        Task<int> GetCardsCountForPlayer(int playerId);
     }
 }

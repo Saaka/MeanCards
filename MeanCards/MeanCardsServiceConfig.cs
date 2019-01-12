@@ -29,6 +29,7 @@ namespace MeanCards
                 .AddScoped<IStartGameRoundHandler, StartGameRoundHandler>()
                 .AddScoped<ISubmitAnswerHandler, SubmitAnswerHandler>()
                 .AddScoped<IEndSubmissionsHandler, EndSubmissionsHandler>()
+                .AddScoped<ISkipRoundHandler, SkipRoundHandler>()
 
                 //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
@@ -36,7 +37,8 @@ namespace MeanCards
 
                 //Core services
                 .AddScoped<IGameCheckpointUpdater, GameCheckpointUpdater>()
-
+                .AddScoped<INextGameRoundOwnerProvider, NextGameRoundOwnerProvider>()
+                
                 //validators
 
                 .AddTransient<IBaseGameRequestsValidator, BaseGameRequestsValidator>()
@@ -51,7 +53,8 @@ namespace MeanCards
                 .AddTransient<IRequestValidator<StartGameRound>, StartGameRoundValidator>()
                 .AddTransient<IRequestValidator<SubmitAnswer>, SubmitAnswerValidator>()
                 .AddTransient<IRequestValidator<EndSubmissions>, EndSubmissionsValidator>()
-                
+                .AddTransient<IRequestValidator<SkipRound>, SkipRoundValidator>()
+
                 .AddTransient<IGameOrRoundOwnerRule, GameOrRoundOwnerRule>()
                 ;
 
