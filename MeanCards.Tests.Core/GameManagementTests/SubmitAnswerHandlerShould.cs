@@ -5,6 +5,7 @@ using Xunit;
 
 namespace MeanCards.Tests.Core.GameManagementTests
 {
+    [Collection(TestCollections.GameHandlers)]
     public class SubmitAnswerHandlerShould : BaseCoreTests
     {
         [Fact]

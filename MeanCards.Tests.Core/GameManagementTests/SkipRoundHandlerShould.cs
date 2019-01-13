@@ -5,6 +5,7 @@ using Xunit;
 
 namespace MeanCards.Tests.Core.GameManagementTests
 {
+    [Collection(TestCollections.GameHandlers)]
     public class SkipRoundHandlerShould : BaseCoreTests
     {
         [Fact]
