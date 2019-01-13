@@ -24,35 +24,29 @@ namespace MeanCards.GameManagement
     {
         private readonly IRequestValidator<CreateGame> requestValidator;
         private readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
+        private readonly IGameRoundCreator gameRoundCreator;
+        private readonly IPlayerCardsCreator playerCardsCreator;
         private readonly IGamesRepository gamesRepository;
-        private readonly IGameRoundsRepository gameRoundsRepository;
         private readonly IPlayersRepository playersRepository;
-        private readonly IPlayerCardsRepository playerCardsRepository;
-        private readonly IQuestionCardsRepository questionCardsRepository;
-        private readonly IAnswerCardsRepository answerCardsRepository;
         private readonly ICodeGenerator codeGenerator;
         private readonly IGameCheckpointUpdater gameCheckpointUpdater;
 
         public CreateGameHandler(
             IRequestValidator<CreateGame> requestValidator,
             IRepositoryTransactionsFactory repositoryTransactionsFactory,
+            IGameRoundCreator gameRoundCreator,
+            IPlayerCardsCreator playerCardsCreator,
             IGamesRepository gamesRepository,
-            IGameRoundsRepository gameRoundsRepository,
             IPlayersRepository playersRepository,
-            IPlayerCardsRepository playerCardsRepository,
-            IQuestionCardsRepository questionCardsRepository,
-            IAnswerCardsRepository answerCardsRepository,
             ICodeGenerator codeGenerator,
             IGameCheckpointUpdater gameCheckpointUpdater)
         {
             this.requestValidator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
+            this.gameRoundCreator = gameRoundCreator;
+            this.playerCardsCreator = playerCardsCreator;
             this.gamesRepository = gamesRepository;
-            this.gameRoundsRepository = gameRoundsRepository;
             this.playersRepository = playersRepository;
-            this.playerCardsRepository = playerCardsRepository;
-            this.questionCardsRepository = questionCardsRepository;
-            this.answerCardsRepository = answerCardsRepository;
             this.codeGenerator = codeGenerator;
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
@@ -68,21 +62,17 @@ namespace MeanCards.GameManagement
                 var gameCode = codeGenerator.Generate();
 
                 var game = await CreateGame(request, gameCode);
+                
                 var player = await CreatePlayer(game.GameId, request.UserId);
 
-                var questionCard = await questionCardsRepository
-                    .GetRandomQuestionCardForGame(game.GameId);
-                if (questionCard == null)
-                    return new CreateGameResult(GameErrors.NoQuestionCardsAvailable);
+                var createRoundResult = await gameRoundCreator
+                    .CreateFirstRound(game.GameId, player.PlayerId);
+                if (!createRoundResult.IsSuccessful)
+                    return new CreateGameResult(createRoundResult.Error);
 
-                var gameRound = await CreateFirstRound(
-                    game.GameId,
-                    player.PlayerId,
-                    questionCard.QuestionCardId);
-
-                var cardCount = await CreatePlayerAnswerCards(game, player, GameConstants.StartingPlayerCardsCount);
-                if (cardCount != GameConstants.StartingPlayerCardsCount)
-                    return new CreateGameResult(GameErrors.NotEnoughAnswerCards);
+                var createCardsResult = await playerCardsCreator.CreateCardsForPlayer(game.GameId, player.PlayerId);
+                if (!createCardsResult.IsSuccessful)
+                    return new CreateGameResult(createCardsResult.Error);
 
                 var checkpoint = await gameCheckpointUpdater.Update(game.GameId, nameof(CreateGame));
 
@@ -96,32 +86,6 @@ namespace MeanCards.GameManagement
                     Checkpoint = checkpoint
                 };
             }
-        }
-
-        private async Task<int> CreatePlayerAnswerCards(GameModel game, PlayerModel player, int count)
-        {
-            var cards = await answerCardsRepository.GetRandomAnswerCardsForGame(game.GameId, count);
-
-            var playerCards = cards.Select(c => new CreatePlayerCardModel
-            {
-                PlayerId = player.PlayerId,
-                AnswerCardId = c.AnswerCardId
-            }).ToList();
-
-            return await playerCardsRepository.CreatePlayerCards(playerCards);
-        }
-
-        private async Task<GameRoundModel> CreateFirstRound(int gameId, int playerId, int questionCardId)
-        {
-            var gameRound = await gameRoundsRepository.CreateGameRound(new CreateGameRoundModel
-            {
-                GameId = gameId,
-                OwnerPlayerId = playerId,
-                QuestionCardId = questionCardId,
-                RoundNumber = 1
-            });
-
-            return gameRound;
         }
 
         private async Task<GameModel> CreateGame(CreateGame request, string gameCode)

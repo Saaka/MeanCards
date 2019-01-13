@@ -13,13 +13,10 @@ namespace MeanCards.GameManagement.CoreServices
     public class NextGameRoundOwnerProvider : INextGameRoundOwnerProvider
     {
         private readonly IPlayersRepository playersRepository;
-        private readonly IGameRoundsRepository gameRoundsRepository;
 
-        public NextGameRoundOwnerProvider(IPlayersRepository playersRepository,
-            IGameRoundsRepository gameRoundsRepository)
+        public NextGameRoundOwnerProvider(IPlayersRepository playersRepository)
         {
             this.playersRepository = playersRepository;
-            this.gameRoundsRepository = gameRoundsRepository;
         }
 
         public async Task<GetNextRoundOwnerResult> GetNextOwner(int gameId, int lastRoundOwnerPlayerId)

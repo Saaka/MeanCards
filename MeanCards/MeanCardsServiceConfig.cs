@@ -38,6 +38,8 @@ namespace MeanCards
                 //Core services
                 .AddScoped<IGameCheckpointUpdater, GameCheckpointUpdater>()
                 .AddScoped<INextGameRoundOwnerProvider, NextGameRoundOwnerProvider>()
+                .AddScoped<IGameRoundCreator, GameRoundCreator>()
+                .AddScoped<IPlayerCardsCreator, PlayerCardsCreator>()
                 
                 //validators
 
