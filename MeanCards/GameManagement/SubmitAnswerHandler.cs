@@ -5,6 +5,7 @@ using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Validators;
+using System;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
@@ -48,22 +49,41 @@ namespace MeanCards.GameManagement
                     return new SubmitAnswerResult(validatorResult.Error);
 
                 var player = await playersRepository.GetPlayerByUserId(request.UserId, request.GameId);
-                var playerAnswerId = await playerAnswerRepository.CreatePlayerAnswer(new CreatePlayerAnswerModel
-                {
-                    GameRoundId = request.GameRoundId,
-                    PlayerId = player.PlayerId,
-                    AnswerCardId = await GetAnswerCardId(request.PlayerCardId),
-                    SecondaryAnswerCardId = await GetSecondaryAnswerCardId(request.SecondPlayerCardId)
-                });
+                int playerAnswerId = await SubmitAnswer(request, player);
                 if (playerAnswerId == 0)
                     return new SubmitAnswerResult(GameErrors.SubmitAnswerFailed);
 
-                await gameCheckpointUpdater.Update(request.GameId, nameof(SubmitAnswer));
+                await gameCheckpointUpdater.Update(request.GameId, nameof(Model.Core.Games.SubmitAnswer));
 
                 transaction.CommitTransaction();
 
                 return new SubmitAnswerResult();
             }
+        }
+
+        private async Task<int> SubmitAnswer(SubmitAnswer request, Model.DTO.Players.PlayerModel player)
+        {
+            var submitModel = new CreatePlayerAnswerModel
+            {
+                GameRoundId = request.GameRoundId,
+                PlayerId = player.PlayerId,
+                AnswerCardId = await GetAnswerCardId(request.PlayerCardId),
+                SecondaryAnswerCardId = await GetSecondaryAnswerCardId(request.SecondPlayerCardId)
+            };
+            var answerId =  await playerAnswerRepository.CreatePlayerAnswer(submitModel);
+
+            await MarkCardAsUsed(request.PlayerCardId);
+            await MarkCardAsUsed(request.SecondPlayerCardId);
+
+            return answerId;
+        }
+
+        private async Task MarkCardAsUsed(int? playerCardId)
+        {
+            if (!playerCardId.HasValue)
+                return;
+
+            await playerCardsRepository.MarkCardAsUsed(playerCardId.Value);   
         }
 
         private async Task<int> GetAnswerCardId(int playerCardId)

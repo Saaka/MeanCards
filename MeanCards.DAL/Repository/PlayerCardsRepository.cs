@@ -95,14 +95,35 @@ namespace MeanCards.DAL.Repository
             return MapToModel(card);
         }
 
-        public async Task<int> GetCardsCountForPlayer(int playerId)
+        public async Task<List<PlayerCardsInfo>> GetPlayersCardsInfo(int gameId)
+        {
+            var query = from p in context.Players
+                        join pc in context.PlayersCards on p.PlayerId equals pc.PlayerId
+                        where p.IsActive
+                            && p.GameId == gameId
+                            && pc.IsUsed == false
+                        group pc by pc.PlayerId into gpc
+                        select new PlayerCardsInfo
+                        {
+                             PlayerId  = gpc.Key,
+                             PlayerCardsCount = gpc.Count()
+                        };
+
+            return await query.ToListAsync();
+        }
+
+        public async Task MarkCardAsUsed(int playerCardId)
         {
             var query = from pc in context.PlayersCards
-                        where pc.PlayerId == playerId
-                            && pc.IsUsed == false
-                        select pc.PlayerCardId;
+                        where pc.PlayerCardId == playerCardId
+                        select pc;
 
-            return await query.CountAsync();
+            var card = await query.FirstOrDefaultAsync();
+            if (card == null)
+                return;
+
+            card.IsUsed = true;
+            await context.SaveChangesAsync();
         }
     }
 }

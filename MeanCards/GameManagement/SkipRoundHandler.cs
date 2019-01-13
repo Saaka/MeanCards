@@ -90,14 +90,14 @@ namespace MeanCards.GameManagement
 
         private async Task FillPlayerCards(int gameId)
         {
-            var players = await playersRepository.GetAllPlayers(gameId);
-            
-            foreach(var player in players)
-            {
-                var cardsCount = await playerCardsRepository.GetCardsCountForPlayer(player.PlayerId);
-                var missingCardCount = GameConstants.StartingPlayerCardsCount - cardsCount;
+            var players = await playerCardsRepository.GetPlayersCardsInfo(gameId);
 
-                await CreatePlayerAnswerCards(gameId, player.PlayerId, missingCardCount);
+            foreach (var player in players)
+            {
+                var missingCardCount = GameConstants.StartingPlayerCardsCount - player.PlayerCardsCount;
+
+                if (missingCardCount > 0)
+                    await CreatePlayerAnswerCards(gameId, player.PlayerId, missingCardCount);
             }
         }
 
