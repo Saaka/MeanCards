@@ -11,6 +11,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<GameModel> GetGameById(int gameId);
         Task<GameStatusEnum> GetGameStatus(int gameId);
         Task<GameModel> GetGameByCode(string code);
-        Task<bool> EndGame(int gameId);
+        Task<bool> CancelGame(int gameId);
     }
 }

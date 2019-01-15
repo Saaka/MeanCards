@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface IEndGameHandler
+    public interface ICancelGameHandler
     {
-        Task<EndGameResult> Handle(EndGame request);
+        Task<CancelGameResult> Handle(CancelGame request);
     }
 
-    public class EndGameHandler : IEndGameHandler
+    public class CancelGameHandler : ICancelGameHandler
     {
-        private readonly IRequestValidator<EndGame> validator;
+        private readonly IRequestValidator<CancelGame> validator;
         private readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
         private readonly IGamesRepository gamesRepository;
         private readonly IGameCheckpointUpdater gameCheckpointUpdater;
 
-        public EndGameHandler(
-            IRequestValidator<EndGame> requestValidator,
+        public CancelGameHandler(
+            IRequestValidator<CancelGame> requestValidator,
             IRepositoryTransactionsFactory repositoryTransactionsFactory,
             IGamesRepository gamesRepository,
             IGameCheckpointUpdater gameCheckpointUpdater)
@@ -32,22 +32,22 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<EndGameResult> Handle(EndGame request)
+        public async Task<CancelGameResult> Handle(CancelGame request)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
                 var validatorResult = await validator.Validate(request);
                 if (!validatorResult.IsSuccessful)
-                    return new EndGameResult(validatorResult.Error);
+                    return new CancelGameResult(validatorResult.Error);
 
-                var ended = await gamesRepository.EndGame(request.GameId);
+                var ended = await gamesRepository.CancelGame(request.GameId);
                 if (!ended)
-                    return new EndGameResult(GameErrors.GameCouldNotBeEnded);
+                    return new CancelGameResult(GameErrors.GameCouldNotBeCancelled);
 
                 var checkpoint = await gameCheckpointUpdater.Update(request.GameId, nameof(SkipRound));
                 transaction.CommitTransaction();
 
-                return new EndGameResult();
+                return new CancelGameResult();
             }
         }
     }

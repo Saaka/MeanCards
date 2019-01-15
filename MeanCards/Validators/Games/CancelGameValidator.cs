@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace MeanCards.Validators.Games
 {
-    public class EndGameValidator : IRequestValidator<EndGame>
+    public class CancelGameValidator : IRequestValidator<CancelGame>
     {
         private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IGameOwnerRule gameOwnerRule;
         private readonly IGamesRepository gamesRepository;
 
-        public EndGameValidator(
+        public CancelGameValidator(
             IBaseGameRequestsValidator baseGameRequestsValidator,
             IGameOwnerRule gameOwnerRule,
             IGamesRepository gamesRepository)
@@ -23,7 +23,7 @@ namespace MeanCards.Validators.Games
             this.gamesRepository = gamesRepository;
         }
 
-        public async Task<ValidatorResult> Validate(EndGame request)
+        public async Task<ValidatorResult> Validate(CancelGame request)
         {
             var baseResult = await baseGameRequestsValidator.Validate(request);
             if (!baseResult.IsSuccessful)

@@ -91,7 +91,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.BaseTests
 
                 return Task.FromResult(new GameModel
                 {
-                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Canceled,
+                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Cancelled,
                     IsActive = gameIsActive
                 });
             });

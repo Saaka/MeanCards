@@ -5,16 +5,16 @@ using Xunit;
 namespace MeanCards.Tests.Core.GameManagementTests
 {
     [Collection(TestCollections.GameHandlers)]
-    public class EndGameHandlerShould : BaseCoreTests
+    public class CancelGameHandlerShould : BaseCoreTests
     {
         [Fact]
-        public async Task EndGameWithPendingStatus()
+        public async Task CancelGameWithPendingStatus()
         {
             var game = await Fixture.CreateGame();
 
-            var handler = Fixture.GetService<IEndGameHandler>();
+            var handler = Fixture.GetService<ICancelGameHandler>();
 
-            var request = new Model.Core.Games.EndGame
+            var request = new Model.Core.Games.CancelGame
             {
                 GameId = game.GameId,
                 UserId = game.OwnerId

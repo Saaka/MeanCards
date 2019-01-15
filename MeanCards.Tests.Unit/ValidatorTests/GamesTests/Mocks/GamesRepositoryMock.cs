@@ -22,7 +22,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
                 return Task.FromResult(new GameModel
                 {
                     OwnerId = isGameOwner ? MockConstants.GameOwnerId : int.MaxValue,
-                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Canceled,
+                    Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Cancelled,
                     IsActive = gameIsActive
                 });
             });

@@ -30,7 +30,7 @@ namespace MeanCards
                 .AddScoped<ISubmitAnswerHandler, SubmitAnswerHandler>()
                 .AddScoped<IEndSubmissionsHandler, EndSubmissionsHandler>()
                 .AddScoped<ISkipRoundHandler, SkipRoundHandler>()
-                .AddScoped<IEndGameHandler, EndGameHandler>()
+                .AddScoped<ICancelGameHandler, CancelGameHandler>()
 
                 //query handlers
                 .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
@@ -57,7 +57,7 @@ namespace MeanCards
                 .AddTransient<IRequestValidator<SubmitAnswer>, SubmitAnswerValidator>()
                 .AddTransient<IRequestValidator<EndSubmissions>, EndSubmissionsValidator>()
                 .AddTransient<IRequestValidator<SkipRound>, SkipRoundValidator>()
-                .AddTransient<IRequestValidator<EndGame>, EndGameValidator>()
+                .AddTransient<IRequestValidator<CancelGame>, CancelGameValidator>()
 
                 .AddTransient<IGameOrRoundOwnerRule, GameOrRoundOwnerRule>()
                 .AddTransient<IGameOwnerRule, GameOwnerRule>()

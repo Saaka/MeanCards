@@ -92,7 +92,7 @@ namespace MeanCards.DAL.Repository
             return result;
         }
 
-        public async Task<bool> EndGame(int gameId)
+        public async Task<bool> CancelGame(int gameId)
         {
             var query = from g in context.Games
                         where g.GameId == gameId
@@ -103,7 +103,7 @@ namespace MeanCards.DAL.Repository
                 return false;
 
             game.IsActive = false;
-            game.Status = (byte)GameStatusEnum.Canceled;
+            game.Status = (byte)GameStatusEnum.Cancelled;
 
             return await context.SaveChangesAsync() > 0;
         }

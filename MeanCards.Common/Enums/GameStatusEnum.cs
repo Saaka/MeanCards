@@ -4,6 +4,6 @@
     {
         InProgress = 0,
         Finished = 1,
-        Canceled = 2
+        Cancelled = 2
     }
 }
