@@ -72,5 +72,15 @@ namespace MeanCards.DAL.Repository
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> HasPlayerSubmittedAnswer(int playerId, int gameRoundId)
+        {
+            var query = from pa in context.PlayerAnswers
+                        where pa.PlayerId == playerId
+                            && pa.GameRoundId == gameRoundId
+                        select pa.PlayerAnswerId;
+
+            return await query.AnyAsync();
+        }
     }
 }

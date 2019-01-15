@@ -34,6 +34,7 @@
             public const string NotEnoughPlayers = nameof(NotEnoughPlayers);
             public const string InvalidUserAction = nameof(InvalidUserAction);
             public const string NotEnoughSubmittedAnswers = nameof(NotEnoughSubmittedAnswers);
+            public const string PlayerAlreadySubmittedAnswer = nameof(PlayerAlreadySubmittedAnswer);
         }
         public static class Players
         {

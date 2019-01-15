@@ -23,8 +23,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
+            var playerAnswersRepo = CreatePlayerAnswersRepository();
 
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
 
             var request = new SubmitAnswer
             {
@@ -49,8 +50,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
+            var playerAnswersRepo = CreatePlayerAnswersRepository();
 
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
 
             var request = new SubmitAnswer
             {
@@ -64,7 +66,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.PlayerCardIdRequired, result.Error);
         }
-        
+
         [Fact]
         public async Task ReturnFailureForInvalidRoundStatus()
         {
@@ -74,8 +76,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 status: Common.Enums.GameRoundStatusEnum.Finished).Object;
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock();
+            var playerAnswersRepo = CreatePlayerAnswersRepository();
 
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
 
             var request = new SubmitAnswer
             {
@@ -101,8 +104,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var cardsRepo = CreatePlayerCardsRepoMock(
                 isCardLinkedWithUser: false);
             var questionCardRepo = CreateQuestionCardRepoMock();
+            var playerAnswersRepo = CreatePlayerAnswersRepository();
 
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
 
             var request = new SubmitAnswer
             {
@@ -128,8 +132,9 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var cardsRepo = CreatePlayerCardsRepoMock();
             var questionCardRepo = CreateQuestionCardRepoMock(
                 isMultiChoiceQuestion: true);
+            var playerAnswersRepo = CreatePlayerAnswersRepository();
 
-            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo);
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
 
             var request = new SubmitAnswer
             {
@@ -144,7 +149,35 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.SecondPlayerCardIdRequired, result.Error);
         }
-        
+
+        [Fact]
+        public async Task ReturnFailureForAlreadySubmittedAnswer ()
+        {
+            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
+            var playersRepo = PlayersRepositoryMock.Create().Object;
+            var gameRoundRepo = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
+            var cardsRepo = CreatePlayerCardsRepoMock();
+            var questionCardRepo = CreateQuestionCardRepoMock();
+            var playerAnswersRepo = CreatePlayerAnswersRepository(
+                playerAlreadySubmitted: true);
+
+            var validator = new SubmitAnswerValidator(baseMock.Object, playersRepo, gameRoundRepo, cardsRepo, questionCardRepo, playerAnswersRepo);
+
+            var request = new SubmitAnswer
+            {
+                GameRoundId = MockConstants.RoundId,
+                UserId = 1,
+                GameId = 1,
+                PlayerCardId = 1
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.PlayerAlreadySubmittedAnswer, result.Error);
+        }
+
         private IPlayerCardsRepository CreatePlayerCardsRepoMock(bool isCardLinkedWithUser = true)
         {
             var mock = new Mock<IPlayerCardsRepository>();
@@ -168,6 +201,17 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
                 {
                     NumberOfAnswers = isMultiChoiceQuestion ? (byte)2 : (byte)1
                 });
+            });
+
+            return mock.Object;
+        }
+
+        private IPlayerAnswersRepository CreatePlayerAnswersRepository(bool playerAlreadySubmitted = false)
+        {
+            var mock = new Mock<IPlayerAnswersRepository>();
+            mock.Setup(m => m.HasPlayerSubmittedAnswer(It.IsAny<int>(), It.IsAny<int>())).Returns(() =>
+            {
+                return Task.FromResult(playerAlreadySubmitted);
             });
 
             return mock.Object;
