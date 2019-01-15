@@ -9,6 +9,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
     {
         public static Mock<IGameRoundsRepository> Create(
             bool isRoundOwner = true,
+            bool isRoundActive = true,
             Common.Enums.GameRoundStatusEnum status = Common.Enums.GameRoundStatusEnum.Finished,
             bool isRoundInGame = true)
         {
@@ -20,6 +21,7 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
 
                 return Task.FromResult(new GameRoundModel
                 {
+                    IsActive = isRoundActive,
                     Status = status,
                     OwnerPlayerId = isRoundOwner ? MockConstants.RoundOwnerId : int.MaxValue,
                     GameRoundId = MockConstants.RoundId

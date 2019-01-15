@@ -31,13 +31,13 @@ namespace MeanCards.Validators.Games
             if (!baseResult.IsSuccessful)
                 return new ValidatorResult(baseResult.Error);
 
-            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
-            if (!statuses.Contains(round.Status))
-                return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
-
             var isOwnerResult = await gameOrRoundOwnerRule.Validate(request);
             if (!isOwnerResult.IsSuccessful)
                 return new ValidatorResult(isOwnerResult.Error);
+
+            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
+            if (!round.IsActive || !statuses.Contains(round.Status))
+                return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
             return new ValidatorResult();
         }
