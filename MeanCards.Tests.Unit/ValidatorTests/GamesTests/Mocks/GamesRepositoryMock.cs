@@ -8,9 +8,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
     public static class GamesRepositoryMock
     {
         public static Mock<IGamesRepository> Create(
-            bool gameExists = true, 
+            bool gameExists = true,
             bool isGameOwner = true,
-            bool gameIsActive = true)
+            bool gameIsActive = true,
+            Common.Enums.GameStatusEnum gameStatus = Common.Enums.GameStatusEnum.InProgress)
         {
             var mock = new Mock<IGamesRepository>();
             mock.Setup(m => m.GetGameById(It.IsAny<int>())).Returns(() =>
@@ -24,6 +25,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
                     Status = gameIsActive ? Common.Enums.GameStatusEnum.InProgress : Common.Enums.GameStatusEnum.Canceled,
                     IsActive = gameIsActive
                 });
+            });
+            mock.Setup(m => m.GetGameStatus(It.IsAny<int>())).Returns(() =>
+            {
+                return Task.FromResult(gameStatus);
             });
 
             return mock;
