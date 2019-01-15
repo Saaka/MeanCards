@@ -10,5 +10,6 @@
         public const string CouldNotEndAnswersSubmissions = nameof(CouldNotEndAnswersSubmissions);
         public const string GameRoundCouldNotBeSkipped = nameof(GameRoundCouldNotBeSkipped);
         public const string CouldNotFindNextRoundOwner = nameof(CouldNotFindNextRoundOwner);
+        public const string GameCouldNotBeEnded = nameof(GameCouldNotBeEnded);
     }
 }

@@ -1,4 +1,6 @@
-﻿using MeanCards.DAL.Interfaces.Transactions;
+﻿using MeanCards.Common.Constants;
+using MeanCards.DAL.Interfaces.Repository;
+using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators;
@@ -15,15 +17,18 @@ namespace MeanCards.GameManagement
     {
         private readonly IRequestValidator<EndGame> validator;
         private readonly IRepositoryTransactionsFactory repositoryTransactionsFactory;
+        private readonly IGamesRepository gamesRepository;
         private readonly IGameCheckpointUpdater gameCheckpointUpdater;
 
         public EndGameHandler(
             IRequestValidator<EndGame> requestValidator,
             IRepositoryTransactionsFactory repositoryTransactionsFactory,
+            IGamesRepository gamesRepository,
             IGameCheckpointUpdater gameCheckpointUpdater)
         {
             this.validator = requestValidator;
             this.repositoryTransactionsFactory = repositoryTransactionsFactory;
+            this.gamesRepository = gamesRepository;
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
@@ -35,6 +40,9 @@ namespace MeanCards.GameManagement
                 if (!validatorResult.IsSuccessful)
                     return new EndGameResult(validatorResult.Error);
 
+                var ended = await gamesRepository.EndGame(request.GameId);
+                if (!ended)
+                    return new EndGameResult(GameErrors.GameCouldNotBeEnded);
 
                 var checkpoint = await gameCheckpointUpdater.Update(request.GameId, nameof(SkipRound));
                 transaction.CommitTransaction();

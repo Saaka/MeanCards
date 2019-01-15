@@ -91,5 +91,21 @@ namespace MeanCards.DAL.Repository
             var result = await query.FirstOrDefaultAsync();
             return result;
         }
+
+        public async Task<bool> EndGame(int gameId)
+        {
+            var query = from g in context.Games
+                        where g.GameId == gameId
+                        select g;
+
+            var game = await query.FirstOrDefaultAsync();
+            if (game == null)
+                return false;
+
+            game.IsActive = false;
+            game.Status = (byte)GameStatusEnum.Canceled;
+
+            return await context.SaveChangesAsync() > 0;
+        }
     }
 }

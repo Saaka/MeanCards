@@ -60,6 +60,7 @@ namespace MeanCards
                 .AddTransient<IRequestValidator<EndGame>, EndGameValidator>()
 
                 .AddTransient<IGameOrRoundOwnerRule, GameOrRoundOwnerRule>()
+                .AddTransient<IGameOwnerRule, GameOwnerRule>()
                 ;
 
             return services;
