@@ -12,5 +12,6 @@ namespace MeanCards.DAL.Interfaces.Repository
         Task<int> GetNumberOfAnswers(int gameRoundId);
         Task MarkAnswerAsSelected(int answerId);
         Task<bool> HasPlayerSubmittedAnswer(int playerId, int gameRoundId);
+        Task<bool> IsAnswerSubmitted(int playerAnswerId, int gameRoundId);
     }
 }
