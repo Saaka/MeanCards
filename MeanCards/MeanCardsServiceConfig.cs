@@ -63,6 +63,7 @@ namespace MeanCards
 
                 .AddTransient<IGameOrRoundOwnerRule, GameOrRoundOwnerRule>()
                 .AddTransient<IGameOwnerRule, GameOwnerRule>()
+                .AddTransient<IRoundOwnerRule, RoundOwnerRule>()
                 ;
 
             return services;
