@@ -11,5 +11,7 @@
         public const string GameRoundCouldNotBeSkipped = nameof(GameRoundCouldNotBeSkipped);
         public const string CouldNotFindNextRoundOwner = nameof(CouldNotFindNextRoundOwner);
         public const string GameCouldNotBeCancelled = nameof(GameCouldNotBeCancelled);
+        public const string SelectAnswerFailed = nameof(SelectAnswerFailed);
+        public const string CouldNotAddPointToPlayer = nameof(CouldNotAddPointToPlayer);
     }
 }

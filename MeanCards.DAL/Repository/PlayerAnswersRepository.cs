@@ -7,6 +7,7 @@ using MeanCards.DAL.Interfaces.Repository;
 using System.Collections.Generic;
 using MeanCards.Model.DTO.Players;
 using MeanCards.Model.DAL.Creation.Players;
+using MeanCards.Model.DAL.Modification.Players;
 
 namespace MeanCards.DAL.Repository
 {
@@ -62,15 +63,16 @@ namespace MeanCards.DAL.Repository
             return await query.CountAsync();
         }
 
-        public async Task MarkAnswerAsSelected(int playerAnswerId)
+        public async Task<bool> MarkAnswerAsSelected(int playerAnswerId)
         {
             var answer = await context.PlayerAnswers
                 .FirstOrDefaultAsync(x => x.PlayerAnswerId == playerAnswerId);
             if (answer != null)
             {
                 answer.IsSelectedAnswer = true;
-                await context.SaveChangesAsync();
+                return await context.SaveChangesAsync() > 0;
             }
+            return false;
         }
 
         public async Task<bool> HasPlayerSubmittedAnswer(int playerId, int gameRoundId)
@@ -91,6 +93,48 @@ namespace MeanCards.DAL.Repository
                         select pa.PlayerAnswerId;
 
             return await query.AnyAsync();
+        }
+
+        public async Task<bool> IsAnsweringPlayerActive(int playerAnswerId, int gameRoundId)
+        {
+            var query = from pa in context.PlayerAnswers
+                        join p in context.Players on pa.PlayerId equals p.PlayerId
+                        where pa.PlayerAnswerId == playerAnswerId
+                            && pa.GameRoundId == gameRoundId
+                            && p.IsActive == true
+                        select p.PlayerId;
+
+            return await query.AnyAsync();
+        }
+
+        public async Task<AddPlayerPointResult> AddPointForAnswer(int playerAnswerId, int gameRoundId)
+        {
+            var query = from pa in context.PlayerAnswers
+                        join p in context.Players on pa.PlayerId equals p.PlayerId
+                        where pa.PlayerAnswerId == playerAnswerId
+                            && pa.GameRoundId == gameRoundId
+                            && p.IsActive == true
+                        select p;
+
+            var player = await query.FirstOrDefaultAsync();
+            if (player != null)
+            {
+                player.Points = player.Points + 1;
+
+                if (await context.SaveChangesAsync() > 0)
+                {
+                    return new AddPlayerPointResult
+                    {
+                        IsSuccessful = true,
+                        PlayerPoints = new PlayerPointsInfo
+                        {
+                            PlayerId = player.PlayerId,
+                            Points = player.Points
+                        }
+                    };
+                }
+            }
+            return new AddPlayerPointResult();
         }
     }
 }

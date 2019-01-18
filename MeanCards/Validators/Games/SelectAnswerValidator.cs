@@ -43,6 +43,10 @@ namespace MeanCards.Validators.Games
             if (!answerExists)
                 return new ValidatorResult(ValidatorErrors.Games.PlayerAnswerDoesNotExists);
 
+            var playerIsActive = await playerAnswersRepository.IsAnsweringPlayerActive(request.PlayerAnswerId, request.GameRoundId);
+            if (!playerIsActive)
+                return new ValidatorResult(ValidatorErrors.Games.SelectedAnswerPlayerIsNotActive);
+
             return new ValidatorResult();
         }
     }

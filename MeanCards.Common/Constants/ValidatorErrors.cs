@@ -36,6 +36,7 @@
             public const string NotEnoughSubmittedAnswers = nameof(NotEnoughSubmittedAnswers);
             public const string PlayerAlreadySubmittedAnswer = nameof(PlayerAlreadySubmittedAnswer);
             public const string PlayerAnswerDoesNotExists = nameof(PlayerAnswerDoesNotExists);
+            public const string SelectedAnswerPlayerIsNotActive = nameof(SelectedAnswerPlayerIsNotActive);
         }
         public static class Players
         {

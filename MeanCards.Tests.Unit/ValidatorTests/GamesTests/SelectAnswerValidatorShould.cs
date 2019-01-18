@@ -82,5 +82,30 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.InvalidGameRoundStatus, result.Error);
         }
+
+        [Fact]
+        public async Task ReturnFailureForInactiveAnsweringPlayer()
+        {
+            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
+            var playerAnswersRepo = PlayerAnswersRepositoryMock.Create(
+                isAnsweringPlayerActive: false).Object;
+            var roundOnwerRuleMock = RoundOwnerRuleMock.Create<SelectAnswer>();
+            var gameRoundRepository = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Selection).Object;
+
+            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo, gameRoundRepository);
+
+            var request = new SelectAnswer
+            {
+                GameRoundId = 1,
+                UserId = 1,
+                GameId = 1,
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.SelectedAnswerPlayerIsNotActive, result.Error);
+        }
     }
 }
