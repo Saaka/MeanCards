@@ -11,15 +11,18 @@ namespace MeanCards.Validators.Games
         private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
         private readonly IRoundOwnerRule roundOwnerRule;
         private readonly IPlayerAnswersRepository playerAnswersRepository;
+        private readonly IGameRoundsRepository gameRoundsRepository;
 
         public SelectAnswerValidator(
             IBaseGameRequestsValidator baseGameRequestsValidator,
             IRoundOwnerRule roundOwnerRule,
-            IPlayerAnswersRepository playerAnswersRepository)
+            IPlayerAnswersRepository playerAnswersRepository,
+            IGameRoundsRepository gameRoundsRepository)
         {
             this.baseGameRequestsValidator = baseGameRequestsValidator;
             this.roundOwnerRule = roundOwnerRule;
             this.playerAnswersRepository = playerAnswersRepository;
+            this.gameRoundsRepository = gameRoundsRepository;
         }
 
         public async Task<ValidatorResult> Validate(SelectAnswer request)
@@ -31,6 +34,10 @@ namespace MeanCards.Validators.Games
             var isOwnerResult = await roundOwnerRule.Validate(request);
             if (!isOwnerResult.IsSuccessful)
                 return new ValidatorResult(isOwnerResult.Error);
+
+            var round = await gameRoundsRepository.GetGameRound(request.GameId, request.GameRoundId);
+            if (round.Status != Common.Enums.GameRoundStatusEnum.Selection)
+                return new ValidatorResult(ValidatorErrors.Games.InvalidGameRoundStatus);
 
             var answerExists = await playerAnswersRepository.IsAnswerSubmitted(request.PlayerAnswerId, request.GameRoundId);
             if (!answerExists)

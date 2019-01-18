@@ -15,8 +15,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
             var playerAnswersRepo = PlayerAnswersRepositoryMock.Create().Object;
             var roundOnwerRuleMock = RoundOwnerRuleMock.Create<SelectAnswer>();
+            var gameRoundRepository = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Selection).Object;
 
-            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo);
+            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo, gameRoundRepository);
 
             var request = new SelectAnswer
             {
@@ -39,8 +41,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
             var playerAnswersRepo = PlayerAnswersRepositoryMock.Create(
                 isAnswerSubmitted: false).Object;
             var roundOnwerRuleMock = RoundOwnerRuleMock.Create<SelectAnswer>();
+            var gameRoundRepository = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.Selection).Object;
 
-            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo);
+            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo, gameRoundRepository);
 
             var request = new SelectAnswer
             {
@@ -53,6 +57,30 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.PlayerAnswerDoesNotExists, result.Error);
+        }
+
+        [Fact]
+        public async Task ReturnFailureForInvalidRoundStatus()
+        {
+            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
+            var playerAnswersRepo = PlayerAnswersRepositoryMock.Create().Object;
+            var roundOnwerRuleMock = RoundOwnerRuleMock.Create<SelectAnswer>();
+            var gameRoundRepository = GameRoundsRepositoryMock.Create(
+                status: Common.Enums.GameRoundStatusEnum.InProgress).Object;
+
+            var validator = new SelectAnswerValidator(baseMock.Object, roundOnwerRuleMock.Object, playerAnswersRepo, gameRoundRepository);
+
+            var request = new SelectAnswer
+            {
+                GameRoundId = 1,
+                UserId = 1,
+                GameId = 1,
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.InvalidGameRoundStatus, result.Error);
         }
     }
 }
