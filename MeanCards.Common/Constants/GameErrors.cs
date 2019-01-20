@@ -13,5 +13,7 @@
         public const string GameCouldNotBeCancelled = nameof(GameCouldNotBeCancelled);
         public const string SelectAnswerFailed = nameof(SelectAnswerFailed);
         public const string CouldNotAddPointToPlayer = nameof(CouldNotAddPointToPlayer);
+        public const string RoundWinnerSelectionFailed= nameof(RoundWinnerSelectionFailed);
+        public const string GameCouldNotBeEnded = nameof(GameCouldNotBeEnded);
     }
 }

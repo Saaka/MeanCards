@@ -9,6 +9,7 @@ namespace MeanCards.DAL.Entity
         public User()
         {
             Games = new List<Game>();
+            WonGames = new List<Game>();
         }
         
         [StringLength(64)]
@@ -19,5 +20,6 @@ namespace MeanCards.DAL.Entity
         public string ImageUrl { get; set; }
 
         public virtual List<Game> Games { get; set; }
+        public virtual List<Game> WonGames { get; set; }
     }
 }

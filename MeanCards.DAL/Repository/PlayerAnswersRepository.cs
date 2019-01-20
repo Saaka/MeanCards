@@ -129,7 +129,8 @@ namespace MeanCards.DAL.Repository
                         PlayerPoints = new PlayerPointsInfo
                         {
                             PlayerId = player.PlayerId,
-                            Points = player.Points
+                            Points = player.Points,
+                            UserId = player.UserId
                         }
                     };
                 }

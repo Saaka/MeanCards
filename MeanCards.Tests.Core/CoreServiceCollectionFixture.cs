@@ -10,6 +10,7 @@ using MeanCards.Model.DAL.Creation.Languages;
 using MeanCards.Model.DAL.Creation.QuestionCards;
 using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DTO.Games;
+using MeanCards.Model.DTO.Players;
 using MeanCards.Tests.Base.Fixtures;
 using MeanCards.Tests.Core.Config;
 using Microsoft.Extensions.DependencyInjection;
@@ -97,13 +98,24 @@ namespace MeanCards.Tests.Core
             });
         }
 
-        public async Task AddNewPlayerToGame(int gameId)
+        public async Task EndSubmissions(int gameId, int gameRoundId, int userId)
+        {
+            var handler = GetService<IEndSubmissionsHandler>();
+            await handler.Handle(new EndSubmissions
+            {
+                GameRoundId = gameRoundId,
+                GameId = gameId,
+                UserId = userId
+            });
+        }
+
+        public async Task<JoinGameResult> AddNewPlayerToGame(int gameId)
         {
             var userId = await CreateDefaultUser(
                 userName: Guid.NewGuid().ToString("N"),
                 email: $"{Guid.NewGuid().ToString()}@test.com",
                 userCode: Guid.NewGuid().ToString("N"));
-            await JoinPlayer(gameId, userId);
+            return await JoinPlayer(gameId, userId);
         }
 
         public async Task<JoinGameResult> JoinPlayer(int gameId, int userId)
@@ -114,6 +126,14 @@ namespace MeanCards.Tests.Core
                 GameId = gameId,
                 UserId = userId
             });
+        }
+
+        public async Task<PlayerAnswerModel> GetPlayerAnswer(int gameRoundId, int playerId)
+        {
+            var repo = GetService<IPlayerAnswersRepository>();
+
+            return (await repo.GetAllPlayerAnswers(gameRoundId))
+                .FirstOrDefault(x => x.PlayerId == playerId);
         }
 
         public async Task<int> GetRandomPlayerCard(int playerId)

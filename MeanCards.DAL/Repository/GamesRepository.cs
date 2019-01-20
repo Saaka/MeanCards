@@ -75,6 +75,7 @@ namespace MeanCards.DAL.Repository
                 LanguageId = game.LanguageId,
                 Name = game.Name,
                 OwnerId = game.OwnerId,
+                WinnerId = game.WinnerId,
                 ShowAdultContent = game.ShowAdultContent,
                 Status = (GameStatusEnum)game.Status,
                 PointsLimit = game.PointsLimit,
@@ -104,6 +105,23 @@ namespace MeanCards.DAL.Repository
 
             game.IsActive = false;
             game.Status = (byte)GameStatusEnum.Cancelled;
+
+            return await context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> EndGame(int gameId, int winnerId)
+        {
+            var query = from g in context.Games
+                        where g.GameId == gameId
+                        select g;
+
+            var game = await query.FirstOrDefaultAsync();
+            if (game == null)
+                return false;
+
+            game.WinnerId = winnerId;
+            game.IsActive = false;
+            game.Status = (byte)GameStatusEnum.Finished;
 
             return await context.SaveChangesAsync() > 0;
         }

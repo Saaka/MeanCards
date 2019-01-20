@@ -97,6 +97,11 @@ namespace MeanCards.DAL.Repository
 
         public async Task<bool> SkipRound(int gameRoundId)
         {
+            return await UpdateGameRoundStatusAndDeactivate(gameRoundId, GameRoundStatusEnum.Skipped);
+        }
+
+        private async Task<bool> UpdateGameRoundStatusAndDeactivate(int gameRoundId, GameRoundStatusEnum status)
+        {
             var query = from r in context.GameRounds
                         where r.GameRoundId == gameRoundId
                         select r;
@@ -105,7 +110,24 @@ namespace MeanCards.DAL.Repository
             if (round == null)
                 return false;
 
-            round.Status = (byte)GameRoundStatusEnum.Skipped;
+            round.Status = (byte)status;
+            round.IsActive = false;
+
+            return await context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> SelectRoundWinner(int gameRoundId, int playerId)
+        {
+            var query = from r in context.GameRounds
+                        where r.GameRoundId == gameRoundId
+                        select r;
+
+            var round = await query.FirstOrDefaultAsync();
+            if (round == null)
+                return false;
+
+            round.WinnerPlayerId = playerId;
+            round.Status = (byte)GameRoundStatusEnum.Finished;
             round.IsActive = false;
 
             return await context.SaveChangesAsync() > 0;

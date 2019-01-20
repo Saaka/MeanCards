@@ -28,12 +28,14 @@ namespace MeanCards.DAL.Entity
         public bool ShowAdultContent { get; set; }
         public bool IsActive { get; set; }
         public int PointsLimit { get; set; }
+        public int? WinnerId { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public Language Language { get; set; }
-        public User Owner { get; set; }
-        public List<GameRound> GameRounds { get; set; }
-        public List<Player> Players { get; set; }
-        public List<GameCheckpoint> GameCheckpoints { get; set; }
+        public virtual Language Language { get; set; }
+        public virtual User Owner { get; set; }
+        public virtual User Winner { get; set; }
+        public virtual List<GameRound> GameRounds { get; set; }
+        public virtual List<Player> Players { get; set; }
+        public virtual List<GameCheckpoint> GameCheckpoints { get; set; }
     }
 }

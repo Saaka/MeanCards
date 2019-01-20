@@ -50,6 +50,10 @@ namespace MeanCards.DAL.Storage
                     .WithMany(x => x.Games)
                     .HasForeignKey(x => x.OwnerId)
                     .OnDelete(DeleteBehavior.Restrict);
+                b.HasOne(x => x.Winner)
+                    .WithMany(x => x.WonGames)
+                    .HasForeignKey(x => x.WinnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 b.HasMany(x => x.GameRounds)
                     .WithOne(x => x.Game)
                     .HasForeignKey(x => x.GameId)

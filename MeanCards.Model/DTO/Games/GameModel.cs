@@ -10,6 +10,7 @@ namespace MeanCards.Model.DTO.Games
         public GameStatusEnum Status { get; set; }
         public int LanguageId { get; set; }
         public int OwnerId { get; set; }
+        public int? WinnerId { get; set; }
         public bool ShowAdultContent { get; set; }
         public int PointsLimit { get; set; }
         public bool IsActive { get; set; }
