@@ -157,6 +157,13 @@ namespace MeanCards.Tests.Core
                 await SubmitAnswer(gameId, gameRoundId, player.UserId, playerCardId);
             }
         }
+
+        public async Task<PlayerModel> GetPlayer(int playerId)
+        {
+            var repo = GetService<IPlayersRepository>();
+
+            return await repo.GetPlayerById(playerId);
+        }
         
         public async Task SubmitAnswer(int gameId, int gameRoundId, int userId, int playerCardId)
         {
@@ -170,6 +177,13 @@ namespace MeanCards.Tests.Core
 
             var handler = GetService<ISubmitAnswerHandler>();
             await handler.Handle(request);
+        }
+
+        public async Task<GameModel> GetGame(int gameId)
+        {
+            var repo = GetService<IGamesRepository>();
+
+            return await repo.GetGameById(gameId);
         }
 
         public async Task<GameRoundModel> GetCurrentGameRound(int gameId)
