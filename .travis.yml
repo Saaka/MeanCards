@@ -9,3 +9,4 @@ script:
 - dotnet build
 - dotnet test MeanCards.Tests.Integration/MeanCards.Tests.Integration.csproj
 - dotnet test MeanCards.Tests.Unit/MeanCards.Tests.Unit.csproj
+- npm test --prefix MeanCards.Web\ClientApp
