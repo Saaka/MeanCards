@@ -32,9 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Unit", "Mea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.ViewModel", "MeanCards.ViewModel\MeanCards.ViewModel.csproj", "{D8DF19EC-81BF-4BC2-8CE0-93F0694C0468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Tests.Core", "MeanCards.Tests.Core\MeanCards.Tests.Core.csproj", "{54BE2402-27A7-478A-B2A1-833343F2FD43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Core", "MeanCards.Tests.Core\MeanCards.Tests.Core.csproj", "{54BE2402-27A7-478A-B2A1-833343F2FD43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Tests.Base", "MeanCards.Tests.Base\MeanCards.Tests.Base.csproj", "{7CE94140-23C0-4A48-8269-F31ED6A51726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeanCards.Tests.Base", "MeanCards.Tests.Base\MeanCards.Tests.Base.csproj", "{7CE94140-23C0-4A48-8269-F31ED6A51726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeanCards.Web", "MeanCards.Web\MeanCards.Web.csproj", "{85FD6002-D1BA-4AD6-81A9-69CF93C82F90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +92,10 @@ Global
 		{7CE94140-23C0-4A48-8269-F31ED6A51726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CE94140-23C0-4A48-8269-F31ED6A51726}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CE94140-23C0-4A48-8269-F31ED6A51726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85FD6002-D1BA-4AD6-81A9-69CF93C82F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85FD6002-D1BA-4AD6-81A9-69CF93C82F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85FD6002-D1BA-4AD6-81A9-69CF93C82F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85FD6002-D1BA-4AD6-81A9-69CF93C82F90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
