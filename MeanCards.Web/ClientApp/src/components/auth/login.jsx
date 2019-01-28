@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
+import {AuthService} from '../services/Services';
 
 export class Login extends Component {
+    authService = new AuthService();
     state = {
         email: '',
         password: ''
     };
+
     handleLogin = (event) => {
         event.preventDefault();
         console.log(this.state);
+        
+        this.authService
+            .login(this.state.email, this.state.password)
+            .then(userData => {
+                console.log(userData);
+                alert(`Logged in as ${userData.name}`);
+            })
+            .catch(err => {
+                alert(err);
+            })
     };
     handleChange = (e) => {
         this.setState(
