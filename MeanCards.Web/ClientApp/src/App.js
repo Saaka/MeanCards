@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { Counter } from './components/Counter';
+import { Login } from './components/auth/auth-components';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -14,6 +15,7 @@ export default class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <Route path='/countdown' component={Countdown} />
+                <Route path='/login' component={Login} />
             </Layout>
         );
     }
