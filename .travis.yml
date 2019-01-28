@@ -5,8 +5,11 @@ mono: none
 dotnet: 2.2.103
 install:
 - dotnet restore
+cache:
+  directories:
+    - node_modules
 script:
 - dotnet build
 - dotnet test MeanCards.Tests.Integration/MeanCards.Tests.Integration.csproj
 - dotnet test MeanCards.Tests.Unit/MeanCards.Tests.Unit.csproj
-- npm test --prefix MeanCards.Web\ClientApp
+- npm test --prefix MeanCards.Web/ClientApp
