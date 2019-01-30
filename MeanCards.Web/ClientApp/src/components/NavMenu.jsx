@@ -43,7 +43,7 @@ export class NavMenu extends Component {
                 </NavItem>
                 { this.authService.isLoggedIn() ?
                   <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/login">Logout</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
                   </NavItem> :
                   < NavItem >
                     <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>

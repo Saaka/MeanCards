@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { CounterWithAuth } from './components/Counter';
 import { Login } from './components/auth/AuthComponents';
+import { Logout } from './components/auth/Logout';
 
 
 export default class App extends Component {
@@ -17,6 +18,7 @@ export default class App extends Component {
                 <Route path='/counter' component={CounterWithAuth} />
                 <Route path='/countdown' component={Countdown} />
                 <Route path='/login' component={Login} />
+                <Route path='/logout' component={Logout} />
             </Layout>
         );
     }
