@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AuthService } from '../services/Services';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export class Login extends Component {
     authService = new AuthService();
@@ -42,7 +43,7 @@ export class Login extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <h1>Login</h1>
+                        <h1>Login <FontAwesomeIcon icon="sign-in-alt"/></h1>
                         <form onSubmit={this.handleLogin}>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
