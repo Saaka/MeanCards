@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AuthService} from '../services/Services';
+import { AuthService } from '../services/Services';
 
 export class Login extends Component {
     authService = new AuthService();
@@ -11,12 +11,12 @@ export class Login extends Component {
     handleLogin = (event) => {
         event.preventDefault();
         console.log(this.state);
-        
+
         this.authService
             .login(this.state.email, this.state.password)
             .then(userData => {
-                console.log(userData);
-                alert(`Logged in as ${userData.name}`);
+                console.log('logged in:', userData);
+                this.goToMainPage();
             })
             .catch(err => {
                 alert(err);
@@ -29,6 +29,13 @@ export class Login extends Component {
             }
         )
     };
+    componentWillMount() {
+        if (this.authService.isLoggedIn())
+            this.goToMainPage();
+    };
+    goToMainPage() {
+        this.props.history.replace('/');
+    }
 
     render() {
         return (

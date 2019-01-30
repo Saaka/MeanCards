@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { AuthService } from './services/Services';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
+  authService = new AuthService();
   static displayName = NavMenu.name;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -15,13 +17,13 @@ export class NavMenu extends Component {
     };
   }
 
-  toggleNavbar () {
+  toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed
     });
-  }
+  };
 
-  render () {
+  render() {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -39,9 +41,14 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/countdown">Countdown</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
-                </NavItem>
+                { this.authService.isLoggedIn() ?
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/login">Logout</NavLink>
+                  </NavItem> :
+                  < NavItem >
+                    <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
+                  </NavItem> 
+                }
               </ul>
             </Collapse>
           </Container>

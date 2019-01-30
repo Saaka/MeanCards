@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import withAuth from './auth/withAuth';
 
-export class Counter extends Component {
+class Counter extends Component {
   static displayName = Counter.name;
 
   constructor (props) {
@@ -29,3 +30,6 @@ export class Counter extends Component {
     );
   }
 }
+
+const CounterWithAuth = withAuth(Counter);
+export { CounterWithAuth };
