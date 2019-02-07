@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AuthService } from '../services/Services';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { LoaderButton } from '../common/CommonComponents'
 
 export class Login extends Component {
     authService = new AuthService();
@@ -45,16 +45,14 @@ export class Login extends Component {
             isLoading: isLoading
         });
     };
-    isLoading() {
-        return this.state.isLoading;
-    };
 
     render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <h1>Login <FontAwesomeIcon icon="sign-in-alt" /></h1>
+                        <h1>Login</h1>
+                        <br />
                         <form onSubmit={this.handleLogin}>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
@@ -74,7 +72,7 @@ export class Login extends Component {
                                     name="password"
                                     onChange={this.handleChange} />
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.isLoading}>Login {this.isLoading() ? <FontAwesomeIcon icon="spinner" spin /> : ""}</button>
+                            <LoaderButton type="submit" className="btn btn-primary" text="Login" isLoading={this.state.isLoading} />
                         </form>
                     </div>
                 </div>
