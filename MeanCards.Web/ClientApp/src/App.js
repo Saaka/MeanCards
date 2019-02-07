@@ -3,7 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
-import { CounterWithAuth } from './components/Counter';
+import { Counter } from './components/Counter';
 import { Login } from './components/auth/AuthComponents';
 import { Logout } from './components/auth/Logout';
 
@@ -15,7 +15,7 @@ export default class App extends Component {
         return (
             <Layout>
                 <Route exact path='/' component={Home} />
-                <Route path='/counter' component={CounterWithAuth} />
+                <Route path='/counter' component={Counter} />
                 <Route path='/countdown' component={Countdown} />
                 <Route path='/login' component={Login} />
                 <Route path='/logout' component={Logout} />

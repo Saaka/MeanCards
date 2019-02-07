@@ -6,12 +6,14 @@ export class Login extends Component {
     authService = new AuthService();
     state = {
         email: '',
-        password: ''
+        password: '',
+        isLoading: false
     };
 
     handleLogin = (event) => {
         event.preventDefault();
         console.log(this.state);
+        this.enableLoader(true);
 
         this.authService
             .login(this.state.email, this.state.password)
@@ -20,8 +22,9 @@ export class Login extends Component {
                 this.goToMainPage();
             })
             .catch(err => {
+                this.enableLoader(false);
                 alert(err);
-            })
+            });
     };
     handleChange = (e) => {
         this.setState(
@@ -36,14 +39,22 @@ export class Login extends Component {
     };
     goToMainPage() {
         this.props.history.replace('/');
-    }
+    };
+    enableLoader(isLoading) {
+        this.setState({
+            isLoading: isLoading
+        });
+    };
+    isLoading() {
+        return this.state.isLoading;
+    };
 
     render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <h1>Login <FontAwesomeIcon icon="sign-in-alt"/></h1>
+                        <h1>Login <FontAwesomeIcon icon="sign-in-alt" /></h1>
                         <form onSubmit={this.handleLogin}>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
@@ -63,7 +74,7 @@ export class Login extends Component {
                                     name="password"
                                     onChange={this.handleChange} />
                             </div>
-                            <button type="submit" className="btn btn-primary">Login</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.isLoading}>Login {this.isLoading() ? <FontAwesomeIcon icon="spinner" spin /> : ""}</button>
                         </form>
                     </div>
                 </div>

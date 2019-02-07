@@ -32,4 +32,4 @@ class Counter extends Component {
 }
 
 const CounterWithAuth = withAuth(Counter);
-export { CounterWithAuth };
+export { CounterWithAuth as Counter };
