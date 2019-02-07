@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AuthService } from '../services/Services';
-import { LoaderButton } from '../common/CommonComponents'
+import { LoaderButton } from '../common/CommonComponents';
 
 export class Login extends Component {
     authService = new AuthService();

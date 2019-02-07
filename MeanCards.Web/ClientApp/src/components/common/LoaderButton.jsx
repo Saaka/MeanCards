@@ -1,5 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Icon } from './CommonComponents';
 
 const LoaderButton = (props) => {
 
@@ -8,10 +8,10 @@ const LoaderButton = (props) => {
     };
 
     return (
-        <button type={props.type} 
-            className={props.className} 
+        <button type={props.type}
+            className={props.className}
             disabled={isLoading() || props.disabled}>
-                {props.text} {isLoading() ? <FontAwesomeIcon icon="spinner" spin /> : ""}
+            {props.text} {isLoading() ? <Icon icon="spinner" spin /> : ""}
         </button>
     );
 };
