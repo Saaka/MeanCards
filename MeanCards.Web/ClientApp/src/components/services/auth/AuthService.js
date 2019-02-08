@@ -1,12 +1,12 @@
 import decode from 'jwt-decode';
-import { HttpService } from '../Services';
+import { HttpService, Constants } from '../Services';
 
 export class AuthService {
     tokenName = 'user_token';
     httpService = new HttpService();
 
     login = (email, password) => {
-        return this.httpService.post("auth/login", {
+        return this.httpService.post(Constants.ApiRoutes.LOGIN, {
             password: password,
             email: email
         })
