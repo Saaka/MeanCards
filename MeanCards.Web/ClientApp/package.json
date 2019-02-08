@@ -1,5 +1,5 @@
 {
-  "name": "MeanCards.Web",
+  "name": "mean-cards-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
