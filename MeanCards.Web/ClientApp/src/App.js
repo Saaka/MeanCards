@@ -4,8 +4,8 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { Counter } from './components/Counter';
-import { Login } from './components/Components';
 import { Logout } from './components/auth/Logout';
+import { Login } from './components/Components';
 
 
 export default class App extends Component {
