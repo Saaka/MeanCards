@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AuthService } from '../services/Services';
 
-export default function withAuth(AuthComponent) {
+const withAuth = (AuthComponent) =>  {
     const authService = new AuthService();
 
     return class AuthWrapper extends Component {
@@ -43,3 +43,5 @@ export default function withAuth(AuthComponent) {
         }
     };
 }
+
+export { withAuth };

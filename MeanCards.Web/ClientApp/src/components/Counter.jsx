@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withAuth from './auth/withAuth';
+import { withAuth } from './auth/AuthComponents';
 
 class Counter extends Component {
   static displayName = Counter.name;
