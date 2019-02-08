@@ -33,10 +33,6 @@ export class Login extends Component {
             }
         )
     };
-    componentWillMount() {
-        if (this.authService.isLoggedIn())
-            this.goToMainPage();
-    };
     goToMainPage() {
         this.props.history.replace('/');
     };
@@ -44,6 +40,11 @@ export class Login extends Component {
         this.setState({
             isLoading: isLoading
         });
+    };
+    
+    componentWillMount() {
+        if (this.authService.isLoggedIn())
+            this.goToMainPage();
     };
 
     render() {
