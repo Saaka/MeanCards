@@ -4,7 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { Counter } from './components/Counter';
-import { Login } from './components/auth/AuthComponents';
+import { Login } from './components/auth/Login';
 import { Logout } from './components/auth/Logout';
 
 
