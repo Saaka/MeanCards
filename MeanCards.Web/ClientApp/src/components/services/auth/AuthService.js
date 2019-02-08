@@ -1,13 +1,12 @@
 import decode from 'jwt-decode';
-import {ConfigService} from '../Services';
-import Axios from 'axios';
+import { HttpService } from '../Services';
 
 export class AuthService {
-    configService = new ConfigService();
     tokenName = 'user_token';
+    httpService = new HttpService();
 
     login = (email, password) => {
-        return Axios.post(`${this.configService.ApiUrl}/auth/login`, {
+        return this.httpService.post("auth/login", {
             password: password,
             email: email
         })
