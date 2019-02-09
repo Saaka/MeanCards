@@ -2,18 +2,34 @@ import { ConfigService } from './Services';
 import Axios from 'axios';
 
 class HttpService {
-    configService = new ConfigService();
 
-    getFullAddress = (address) => {
-        return `${this.configService.ApiUrl}/${address}`;
+    constructor(baseAddress) {
+        this.configService = new ConfigService();
+        this.baseAddress =  baseAddress || this.configService.ApiUrl;
+    };
+
+    _axios = null;
+    get axios() {
+        if(!this._axios)
+            this._axios = this.createAxios(this.baseAddress);
+
+        return this._axios;
+    }
+
+    createAxios = (baseAddress) => {
+        return Axios.create({
+            baseURL: `${baseAddress}/`
+        });
     };
 
     get = (address) => {
-        return Axios.get(this.getFullAddress(address));
+        return this.axios
+            .get(address);
     };
 
     post = (address, data) => {
-        return Axios.post(this.getFullAddress(address), data);
+        return this.axios
+            .post(address, data);
     };
 };
 

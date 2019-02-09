@@ -1,28 +1,33 @@
-import { ConfigService, HttpService, AuthService } from './Services';
+import { HttpService, AuthService } from './Services';
 import Axios from 'axios';
 
 class AuthHttpService extends HttpService {
-    configService = new ConfigService();
-    authService = new AuthService();
 
-    getAuthConfiguration = () => {
-        var token = this.authService.getToken();
+    createAxios = () => {
+        var headers = this.getHeaders();
+        return Axios.create({
+            baseURL: `${this.baseAddress}/`,
+            headers: headers
+        });
+    };
 
-        return {
-            headers: {
-                'Authorization': `Bearer ${token}` 
-            }
+    getHeaders = () => {
+        var authService = new AuthService();
+        var token = authService.getToken();
+
+        return  {
+            'Authorization': `Bearer ${token}` 
         };
     };
 
     get = (address) => {
-        return Axios
-            .get(this.getFullAddress(address), this.getAuthConfiguration());
+        return this.axios
+            .get(address);
     };
 
     post = (address, data) => {
-        return Axios
-            .post(this.getFullAddress(address), data, this.getAuthConfiguration());
+        return this.axios
+            .post(address, data);
     };
 };
 
