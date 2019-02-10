@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from './CommonComponents';
+import { Icon } from 'CommonComponents';
 
 const LoaderButton = (props) => {
 

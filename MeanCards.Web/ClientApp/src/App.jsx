@@ -4,7 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { Counter } from './components/Counter';
-import { Login, Logout } from './components/auth/AuthComponents';
+import { Login, Logout } from 'AuthComponents';
 import './App.scss';
 
 export default class App extends Component {

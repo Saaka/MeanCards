@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AuthService } from 'Services';
-import { Icon } from '../common/CommonComponents';
+import { Icon } from 'CommonComponents';
 
 export class Logout extends Component {
     authService = new AuthService();

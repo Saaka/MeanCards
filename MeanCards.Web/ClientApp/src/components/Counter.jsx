@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withAuth } from './auth/AuthComponents';
+import { withAuth } from 'AuthComponents';
 import { AuthHttpService } from 'Services';
 
 class Counter extends Component {
