@@ -1,4 +1,4 @@
-import { HttpService, AuthService } from './Services';
+import { HttpService, AuthService } from 'Services';
 import Axios from 'axios';
 
 class AuthHttpService extends HttpService {

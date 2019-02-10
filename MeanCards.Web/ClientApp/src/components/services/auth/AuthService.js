@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import { HttpService, Constants } from '../Services';
+import { HttpService, Constants } from 'Services';
 
 export class AuthService {
     tokenName = 'user_token';

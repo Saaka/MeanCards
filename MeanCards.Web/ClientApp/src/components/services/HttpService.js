@@ -1,4 +1,4 @@
-import { ConfigService } from './Services';
+import { ConfigService } from 'Services';
 import Axios from 'axios';
 
 class HttpService {

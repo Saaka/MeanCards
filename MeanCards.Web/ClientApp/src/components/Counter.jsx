@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withAuth } from './auth/AuthComponents';
-import { AuthHttpService } from './services/Services';
+import { AuthHttpService } from 'Services';
 
 class Counter extends Component {
   static displayName = Counter.name;

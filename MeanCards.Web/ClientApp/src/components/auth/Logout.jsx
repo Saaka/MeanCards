@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AuthService } from '../services/Services';
+import { AuthService } from 'Services';
 import { Icon } from '../common/CommonComponents';
 
 export class Logout extends Component {
