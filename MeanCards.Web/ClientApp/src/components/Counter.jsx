@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withAuth } from 'AuthComponents';
 import { AuthHttpService } from 'Services';
 
 class Counter extends Component {
@@ -42,5 +41,4 @@ class Counter extends Component {
   }
 }
 
-const CounterWithAuth = withAuth(Counter);
-export { CounterWithAuth as Counter };
+export { Counter };
