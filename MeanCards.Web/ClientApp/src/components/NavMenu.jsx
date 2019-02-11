@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { AuthService } from 'Services';
-import './NavMenu.css';
+import './NavMenu.scss';
 
 export class NavMenu extends Component {
   authService = new AuthService();
