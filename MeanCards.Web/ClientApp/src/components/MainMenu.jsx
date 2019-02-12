@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { ListGroup, ListGroupItem, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 export class MainMenu extends Component {
-
-
     render() {
         return (
-            <ListGroup>
-                <ListGroupItem tag={Link} to="/">Home</ListGroupItem>
-                <ListGroupItem tag={Link} to="/counter">Counter</ListGroupItem>
-                <ListGroupItem tag={Link} to="/countdown">Countdown</ListGroupItem>
-            </ListGroup>
+            <Row className="justify-content-md-center">
+                <div className="col-sm-12 col-md-6">
+                    <h1>Menu</h1>
+                    <div className="list-group">
+                        <ListGroupItem tag={Link} to="/">Home</ListGroupItem>
+                        <ListGroupItem className="list-group-item-action" tag={Link} to="/counter">Counter</ListGroupItem>
+                        <Link className="list-group-item list-group-item-action" to="/countdown">Countdown</Link>
+                    </div>
+                </div>
+            </Row>
         );
     }
 }
