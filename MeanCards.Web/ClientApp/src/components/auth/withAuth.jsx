@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AuthService } from 'Services';
 
-const withAuth = (AuthComponent) =>  {
+const withAuth = (AuthComponent) => {
     const authService = new AuthService();
 
     return class AuthWrapper extends Component {
@@ -9,13 +9,19 @@ const withAuth = (AuthComponent) =>  {
             user: null
         };
 
-        goToLogin() {
-            this.props.history.replace('/login');
+        goToLogin = (useRedirect) => {
+            if (useRedirect) {
+                var redirect = this.props.location.pathname;
+                this.props.history.replace(`/login?redirect=${redirect}`);
+            }
+            else {
+                this.props.history.replace('/');
+            }
         };
 
-        componentWillMount() {
+        componentWillMount = () => {
             if (!authService.isLoggedIn()) {
-                this.goToLogin();
+                this.goToLogin(true);
             }
             else {
                 try {
@@ -32,7 +38,7 @@ const withAuth = (AuthComponent) =>  {
         };
 
         render() {
-            if(this.state.user) {
+            if (this.state.user) {
                 return (
                     <AuthComponent history={this.props.history} user={this.state.user} {...this.props} />
                 );

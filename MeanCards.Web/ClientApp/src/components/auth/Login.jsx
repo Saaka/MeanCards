@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AuthService } from 'Services';
 import { LoaderButton } from 'CommonComponents';
+import queryString from 'query-string';
 
 export class Login extends Component {
     authService = new AuthService();
@@ -12,14 +13,17 @@ export class Login extends Component {
 
     handleLogin = (event) => {
         event.preventDefault();
-        console.log(this.state);
         this.enableLoader(true);
 
         this.authService
             .login(this.state.email, this.state.password)
             .then(userData => {
-                console.log('logged in:', userData);
-                this.goToMainPage();
+
+                var searchValue = queryString.parse(this.props.location.search);
+                if (searchValue && searchValue.redirect)
+                    this.redirectToPath(searchValue.redirect);
+                else
+                    this.redirectToMainPage();
             })
             .catch(err => {
                 this.enableLoader(false);
@@ -33,18 +37,21 @@ export class Login extends Component {
             }
         )
     };
-    goToMainPage() {
+    redirectToMainPage = () => {
         this.props.history.replace('/');
     };
-    enableLoader(isLoading) {
+    redirectToPath = (path) => {
+        this.props.history.push(path);
+    };
+    enableLoader = (isLoading) => {
         this.setState({
             isLoading: isLoading
         });
     };
-    
-    componentWillMount() {
+
+    componentWillMount = () => {
         if (this.authService.isLoggedIn())
-            this.goToMainPage();
+            this.redirectToMainPage();
     };
 
     render() {

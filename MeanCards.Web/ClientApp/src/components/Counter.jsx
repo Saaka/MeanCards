@@ -8,7 +8,7 @@ class Counter extends Component {
     step: 1
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     var http = new AuthHttpService();
 
     http.get('values/2')
@@ -17,7 +17,7 @@ class Counter extends Component {
           step: resp.data
         });
       });
-  }
+  };
 
   incrementCounter = () => {
     this.setState(prevState => ({
