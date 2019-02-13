@@ -1,18 +1,20 @@
 import './App.scss';
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import {withAuth} from 'AuthComponents';
+import { withAuth } from 'AuthComponents';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Countdown } from './components/Countdown';
 import { Counter } from './components/Counter';
 import { Login, Logout } from 'AuthComponents';
 import { MainMenu } from './components/MainMenu';
+import { CreateGame } from './components/game/CreateGame';
 
 export default class App extends Component {
     static displayName = App.name;
 
     CounterWithAuth = withAuth(Counter);
+    CreateGameWithAuth = withAuth(CreateGame);
 
     render() {
         return (
@@ -23,6 +25,7 @@ export default class App extends Component {
                 <Route path='/countdown' component={Countdown} />
                 <Route path='/login' component={Login} />
                 <Route path='/logout' component={Logout} />
+                <Route path='/createGame' component={this.CreateGameWithAuth} />
             </Layout>
         );
     }

@@ -57,8 +57,8 @@ export class Login extends Component {
     render() {
         return (
             <div className="container">
-                <div className="row">
-                    <div className="col-md-6 offset-md-3">
+                <div className="row justify-content-md-center">
+                    <div className="col-md-9 col-lg-6">
                         <h1>Login</h1>
                         <br />
                         <form onSubmit={this.handleLogin}>
