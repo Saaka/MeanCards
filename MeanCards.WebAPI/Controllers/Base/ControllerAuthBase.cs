@@ -1,5 +1,7 @@
-﻿using MeanCards.Model.DTO.Users;
+﻿using MeanCards.Model.Core;
+using MeanCards.Model.DTO.Users;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Controllers.Base
@@ -16,6 +18,19 @@ namespace MeanCards.WebAPI.Controllers.Base
         protected async virtual Task<UserModel> GetUserData()
         {
             return await UserContextDataProvider.GetUser(HttpContext);
+        }
+
+        protected ActionResult CreateResult<T>(BaseResult @base, Func<T> result)
+            where T: class, new ()
+        {
+            if (@base.IsSuccessful)
+            {
+                return Ok(result());
+            }
+            else
+            {
+                return BadRequest(@base.Error);
+            }
         }
     }
 }

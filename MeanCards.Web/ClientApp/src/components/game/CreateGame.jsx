@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { LoaderButton, Select } from 'CommonComponents';
+import { CreateGameRepository } from './CreateGameRepository';
+import { Alert } from 'reactstrap'
 
 export class CreateGame extends Component {
-    static displayName = CreateGame.name;
+    repository = new CreateGameRepository();
     validations = {
         minPoints: 5,
         maxPoints: 20,
@@ -16,7 +18,9 @@ export class CreateGame extends Component {
         pointsLimit: 10,
         adultContent: false,
         languageId: 1,
-        languages: [{ id: 1, name: "Polski" }]
+        languages: [{ id: 1, name: "Polski" }],
+        showError: false,
+        error: ""
     };
 
     componentDidMount = () => {
@@ -33,9 +37,23 @@ export class CreateGame extends Component {
         }, () => {
             if (!formIsValid) return;
 
-            console.log("saving");
+            this.repository
+                .createGame(this.state)
+                .then(resp => {
+                    console.log(resp.data);
+                })
+                .catch(err => {
+                    this.toggleError(true, err);
+                });
         });
     };
+
+    toggleError = (showError, error) => {
+        this.setState({
+            showError: showError,
+            error: error
+        });
+    }
 
     handleChange = (e) => {
         const { name, value } = e.target;
@@ -122,6 +140,7 @@ export class CreateGame extends Component {
                             </label>
                             </div>
                         </div>
+                        <Alert color="danger" isOpen={this.state.showError} toggle={this.toggleError}>{this.state.error}</Alert>
                         <LoaderButton type="submit"
                             className="btn btn-primary"
                             text="Create"

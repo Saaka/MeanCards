@@ -22,12 +22,18 @@ class AuthHttpService extends HttpService {
 
     get = (address) => {
         return this.axios
-            .get(address);
+            .get(address)
+            .catch(err => {
+                throw err.response.data;
+            });
     };
 
     post = (address, data) => {
         return this.axios
-            .post(address, data);
+            .post(address, data)
+            .catch(err => {
+                throw err.response.data;
+            });
     };
 };
 
