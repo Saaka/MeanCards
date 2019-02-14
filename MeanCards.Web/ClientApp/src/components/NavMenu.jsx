@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { AuthService } from 'Services';
+import { Icon } from 'CommonComponents';
 import './NavMenu.scss';
 
 export class NavMenu extends Component {
@@ -23,6 +24,19 @@ export class NavMenu extends Component {
     });
   };
 
+  getUserInfo = () => {
+    const getUserName = () => {
+      var user = this.authService.getUser();
+      if (user)
+        return user.email;
+      else
+        return "Guest";
+    };
+    return (
+      <span className="navbar-text"><Icon icon="user"></Icon> {getUserName()}</span>
+    );
+  };
+
   render() {
     return (
       <header>
@@ -31,6 +45,7 @@ export class NavMenu extends Component {
             <NavbarBrand tag={Link} to="/">MeanCards</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+              {this.getUserInfo()}
               <ul className="navbar-nav flex-grow">
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/menu">Menu</NavLink>
@@ -41,13 +56,13 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/countdown">Countdown</NavLink>
                 </NavItem>
-                { this.authService.isLoggedIn() ?
+                {this.authService.isLoggedIn() ?
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
                   </NavItem> :
                   < NavItem >
                     <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
-                  </NavItem> 
+                  </NavItem>
                 }
               </ul>
             </Collapse>
