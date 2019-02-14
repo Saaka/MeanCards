@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Row } from 'reactstrap';
+import { ListGroupItem, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 export class MainMenu extends Component {

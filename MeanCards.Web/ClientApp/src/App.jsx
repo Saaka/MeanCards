@@ -1,15 +1,10 @@
 import './App.scss';
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import { withAuth } from 'AuthComponents';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { Countdown } from './components/Countdown';
-import { Counter } from './components/Counter';
-import { Login, Logout } from 'AuthComponents';
-import { MainMenu } from './components/MainMenu';
-import { CreateGame } from './components/game/CreateGame';
-import { Game } from './components/game/Game';
+import { Login, Logout, withAuth } from './components/auth/AuthExports';
+import { CreateGame, Game } from './components/game/GameExports';
+import { MainMenu, Home, Countdown, Counter } from './components/tempComponents/TempExports';
 
 export default class App extends Component {
     static displayName = App.name;
