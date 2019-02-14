@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LoaderButton } from 'CommonComponents';
+import { LoaderButton, Select } from 'CommonComponents';
 
 export class CreateGame extends Component {
     static displayName = CreateGame.name;
@@ -7,7 +7,13 @@ export class CreateGame extends Component {
     state = {
         isLoading: false,
         name: "",
-        pointsLimit: 10
+        pointsLimit: 10,
+        languageId: 0,
+        languages: []
+    };
+
+    componentDidMount = () => {
+
     };
 
     handleSubmit = (event) => {
@@ -37,7 +43,8 @@ export class CreateGame extends Component {
                                 id="gameName"
                                 name="name"
                                 value={this.state.name}
-                                onChange={this.handleChange}>
+                                onChange={this.handleChange}
+                                required>
                             </input>
                         </div>
                         <div className="form-group">
@@ -49,6 +56,14 @@ export class CreateGame extends Component {
                                 value={this.state.pointsLimit}
                                 onChange={this.handleChange}>
                             </input>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="language">Language</label>
+                            <Select id="language"
+                                name="languageId"
+                                values={this.state.languages}
+                                onChange={this.handleChange}
+                            ></Select>
                         </div>
                         <LoaderButton type="submit" className="btn btn-primary" text="Create" isLoading={this.state.isLoading} />
                     </form>
