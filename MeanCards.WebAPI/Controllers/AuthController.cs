@@ -1,4 +1,5 @@
 ﻿using MeanCards.ViewModel.Auth;
+using MeanCards.WebAPI.Controllers.Base;
 using MeanCards.WebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,14 @@ namespace MeanCards.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : ControllerAuthBase
     {
         protected readonly IAuthenticateService authenticateService;
 
-        public AuthController(IAuthenticateService authenticateService)
+        public AuthController(
+            IAuthenticateService authenticateService,
+            IUserContextDataProvider userContextDataProvider) 
+            : base(userContextDataProvider)
         {
             this.authenticateService = authenticateService;
         }
@@ -51,6 +55,21 @@ namespace MeanCards.WebAPI.Controllers
                 return Ok(result);
             else
                 return BadRequest(result.Error);
+        }
+
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<UserViewModel>> GetUser()
+        {
+            var user = await GetUserData();
+
+            return Ok(new UserViewModel
+            {
+                Code = user.Code,
+                Email = user.Email,
+                ImageUrl = user.ImageUrl,
+                Name = user.DisplayName
+            });
         }
     }
 }
