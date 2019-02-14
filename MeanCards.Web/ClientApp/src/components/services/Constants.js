@@ -10,4 +10,10 @@ Constants.ApiRoutes = class ApiRoutes {
     }
 }
 
+Constants.Routes = class Routes {
+    static get GAME() {
+        return "/game";
+    }
+}
+
 export { Constants }

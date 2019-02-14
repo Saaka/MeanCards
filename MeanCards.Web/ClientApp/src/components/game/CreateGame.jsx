@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { LoaderButton, Select } from 'CommonComponents';
 import { CreateGameRepository } from './CreateGameRepository';
+import { Constants } from 'Services';
 import { Alert } from 'reactstrap'
 
 export class CreateGame extends Component {
@@ -23,10 +24,6 @@ export class CreateGame extends Component {
         error: ""
     };
 
-    componentDidMount = () => {
-        // Load languages
-    };
-
     handleSubmit = (event) => {
         event.preventDefault();
         var formIsValid = event.target.checkValidity();
@@ -40,7 +37,7 @@ export class CreateGame extends Component {
             this.repository
                 .createGame(this.state)
                 .then(resp => {
-                    console.log(resp.data);
+                    this.reditectToGame(resp.data.gameCode);
                 })
                 .catch(err => {
                     this.toggleError(true, err);
@@ -48,6 +45,9 @@ export class CreateGame extends Component {
         });
     };
 
+    reditectToGame = (gameCode) => {
+        this.props.history.push(`${Constants.Routes.GAME}/${gameCode}`);
+    }
     toggleError = (showError, error) => {
         this.setState({
             showError: showError,

@@ -9,12 +9,14 @@ import { Counter } from './components/Counter';
 import { Login, Logout } from 'AuthComponents';
 import { MainMenu } from './components/MainMenu';
 import { CreateGame } from './components/game/CreateGame';
+import { Game } from './components/game/Game';
 
 export default class App extends Component {
     static displayName = App.name;
 
     CounterWithAuth = withAuth(Counter);
     CreateGameWithAuth = withAuth(CreateGame);
+    GameWithAuth = withAuth(Game);
 
     render() {
         return (
@@ -26,6 +28,7 @@ export default class App extends Component {
                 <Route path='/login' component={Login} />
                 <Route path='/logout' component={Logout} />
                 <Route path='/createGame' component={this.CreateGameWithAuth} />
+                <Route path='/game/:code' component={this.GameWithAuth} />
             </Layout>
         );
     }
