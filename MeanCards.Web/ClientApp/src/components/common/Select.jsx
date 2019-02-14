@@ -2,12 +2,7 @@ import React from 'react';
 
 const Select = props => {
     return (
-        <select className="custom-select"
-            id={props.id}
-            name={props.name}
-            onChange={props.onChange}
-            disabled={props.disabled}
-            required={props.required}>
+        <select {...props}>
             {props.values.map(v =>
                 <option key={v.id}
                     value={v.id}>

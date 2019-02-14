@@ -3,31 +3,63 @@ import { LoaderButton, Select } from 'CommonComponents';
 
 export class CreateGame extends Component {
     static displayName = CreateGame.name;
-
+    validations = {
+        minPoints: 5,
+        maxPoints: 20,
+        gameNameLen: 50
+    };
     state = {
         isLoading: false,
-        name: "",
+        isSubmitted: false,
+        isValid: true,
+        name: "Game",
         pointsLimit: 10,
-        languageId: 0,
-        languages: []
+        adultContent: false,
+        languageId: 1,
+        languages: [{ id: 1, name: "Polski" }]
     };
 
     componentDidMount = () => {
-
+        // Load languages
     };
 
     handleSubmit = (event) => {
         event.preventDefault();
+        var formIsValid = event.target.checkValidity();
 
-        console.log(this.state);
+        this.setState({
+            isSubmitted: true,
+            isValid: formIsValid
+        }, () => {
+            if (!formIsValid) return;
+
+            console.log("saving");
+        });
     };
 
     handleChange = (e) => {
+        const { name, value } = e.target;
         this.setState(
             {
-                [e.target.name]: e.target.value
+                isValid: true,
+                [name]: value
             }
         )
+    };
+
+    handleToggleChange = (e) => {
+        const { name } = e.target;
+        this.setState(prevState => ({
+            isValid: true,
+            [name]: !prevState[name]
+        }));
+    };
+
+    formClass = () => {
+        if (this.state.isSubmitted)
+            return "was-validated";
+
+        return "";
     };
 
     render() {
@@ -35,17 +67,21 @@ export class CreateGame extends Component {
             <div className="row justify-content-md-center">
                 <div className="col-sm-12 col-md-6">
                     <h1>Create game</h1>
-                    <form onSubmit={this.handleSubmit}>
+                    <form name="createGame" onSubmit={this.handleSubmit} noValidate className={this.formClass()}>
                         <div className="form-group">
                             <label htmlFor="gameName">Name</label>
                             <input type="text"
                                 className="form-control"
                                 id="gameName"
                                 name="name"
+                                maxLength={this.validations.gameNameLen}
                                 value={this.state.name}
                                 onChange={this.handleChange}
                                 required>
                             </input>
+                            <div className="invalid-feedback">
+                                Game name is required (maxinum name length is {this.validations.gameNameLen})
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="gamePointsLimit">Points limit</label>
@@ -53,19 +89,44 @@ export class CreateGame extends Component {
                                 className="form-control"
                                 id="gamePointsLimit"
                                 name="pointsLimit"
+                                min={this.validations.minPoints}
+                                max={this.validations.maxPoints}
                                 value={this.state.pointsLimit}
                                 onChange={this.handleChange}>
                             </input>
+                            <div className="invalid-feedback">
+                                Points limit should be between {this.validations.minPoints} and {this.validations.maxPoints}
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="language">Language</label>
-                            <Select id="language"
+                            <Select className="custom-select"
+                                id="language"
                                 name="languageId"
                                 values={this.state.languages}
                                 onChange={this.handleChange}
-                            ></Select>
+                                disabled
+                                required />
                         </div>
-                        <LoaderButton type="submit" className="btn btn-primary" text="Create" isLoading={this.state.isLoading} />
+                        <div className="form-group">
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                    type="checkbox"
+                                    id="adultContent"
+                                    name="adultContent"
+                                    checked={this.state.adultContent}
+                                    onChange={this.handleToggleChange} />
+                                <label className="form-check-label"
+                                    htmlFor="adultContent">
+                                    Include adult content
+                            </label>
+                            </div>
+                        </div>
+                        <LoaderButton type="submit"
+                            className="btn btn-primary"
+                            text="Create"
+                            isLoading={this.state.isLoading}
+                            disabled={!this.state.isValid} />
                     </form>
                 </div>
             </div>
