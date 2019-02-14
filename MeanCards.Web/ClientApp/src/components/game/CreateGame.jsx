@@ -30,7 +30,8 @@ export class CreateGame extends Component {
 
         this.setState({
             isSubmitted: true,
-            isValid: formIsValid
+            isValid: formIsValid,
+            isLoading: true
         }, () => {
             if (!formIsValid) return;
 
@@ -41,19 +42,27 @@ export class CreateGame extends Component {
                 })
                 .catch(err => {
                     this.toggleError(true, err);
+                    this.enableLoader(false);
                 });
         });
     };
 
     reditectToGame = (gameCode) => {
         this.props.history.push(`${Constants.Routes.GAME}/${gameCode}`);
-    }
+    };
+
     toggleError = (showError, error) => {
         this.setState({
             showError: showError,
             error: error
         });
-    }
+    };
+
+    enableLoader = (isLoading) => {
+        this.setState({
+            isLoading: isLoading
+        });
+    };
 
     handleChange = (e) => {
         const { name, value } = e.target;
@@ -140,7 +149,7 @@ export class CreateGame extends Component {
                             </label>
                             </div>
                         </div>
-                        <Alert color="danger" isOpen={this.state.showError} toggle={this.toggleError}>{this.state.error}</Alert>
+                        <Alert color="danger" isOpen={this.state.showError} toggle={() => this.toggleError(false)}>{this.state.error}</Alert>
                         <LoaderButton type="submit"
                             className="btn btn-primary"
                             text="Create"
