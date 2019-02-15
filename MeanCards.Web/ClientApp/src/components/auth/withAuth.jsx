@@ -20,7 +20,7 @@ const withAuth = (AuthComponent) => {
             }
         };
 
-        render() {
+        render = () => {
             if (this.props.user.isLoggedIn) {
                 return (
                     <AuthComponent history={this.props.history} user={this.props.user} {...this.props} />

@@ -74,10 +74,12 @@ export default class App extends Component {
                 <Layout user={this.state.user}>
                     <Route exact path='/' component={Home} />
                     <Route path='/menu' component={MainMenu} />
-                    <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
                     <Route path='/countdown' component={Countdown} />
+
                     <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} user={this.state.user} />} />
                     <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
+                    
+                    <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
                     <Route path='/createGame' render={(props) => this.renderAuthComponent(props, CreateGame)} />
                     <Route path='/game/:code' render={(props) => this.renderAuthComponent(props, Game)} />
                 </Layout>

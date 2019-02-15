@@ -1,4 +1,4 @@
-import { HttpService, AuthService } from 'Services';
+import { HttpService, UserTokenService } from 'Services';
 import Axios from 'axios';
 
 class AuthHttpService extends HttpService {
@@ -12,8 +12,8 @@ class AuthHttpService extends HttpService {
     };
 
     getHeaders = () => {
-        var authService = new AuthService();
-        var token = authService.getToken();
+        var tokenService = new UserTokenService();
+        var token = tokenService.getToken();
 
         return  {
             'Authorization': `Bearer ${token}` 

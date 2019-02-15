@@ -17,7 +17,7 @@ export class Login extends Component {
 
         this.authService
             .loginWithCredentials(this.state.email, this.state.password)
-            .then(userData => {                
+            .then(userData => {
                 this.props.onLogin(userData);
                 var searchValue = queryString.parse(this.props.location.search);
                 if (searchValue && searchValue.redirect)
