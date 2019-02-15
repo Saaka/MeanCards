@@ -18,7 +18,8 @@ export class Login extends Component {
         this.authService
             .login(this.state.email, this.state.password)
             .then(userData => {
-
+                
+                this.props.onLogin(userData);
                 var searchValue = queryString.parse(this.props.location.search);
                 if (searchValue && searchValue.redirect)
                     this.redirectToPath(searchValue.redirect);

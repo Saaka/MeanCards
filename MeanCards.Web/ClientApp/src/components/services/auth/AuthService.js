@@ -1,26 +1,34 @@
 import decode from 'jwt-decode';
-import { AuthHttpService, HttpService, Constants } from 'Services';
+import {
+    AuthHttpService,
+    HttpService,
+    Constants
+} from 'Services';
 
 export class AuthService {
     tokenName = 'user_token';
-    userEntryName = 'user_mc_data'
     httpService = new HttpService();
     authHttpService = new AuthHttpService();
 
     login = (email, password) => {
-        return this.httpService.post(Constants.ApiRoutes.LOGIN, {
+        return this.httpService
+            .post(Constants.ApiRoutes.LOGIN, {
                 password: password,
                 email: email
             })
-            .then(resp => {
-                this.setToken(resp.data.token);
-                this.setUser({
-                    code: resp.data.code,
-                    email: resp.data.email,
-                    name: resp.data.name,
-                    imageUrl: resp.data.imageUrl
-                });
-            });
+            .then(this.onLogin);
+    };
+
+    onLogin = (resp) => {
+        var user = {
+            code: resp.data.code,
+            email: resp.data.email,
+            name: resp.data.name,
+            imageUrl: resp.data.imageUrl,
+            token: resp.data.token
+        };
+        this.setToken(resp.data.token);
+        return user;
     };
 
     isLoggedIn() {
@@ -42,10 +50,9 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem(this.tokenName);
-        localStorage.removeItem(this.userEntryName);
     };
 
-    setToken(token) {
+    setToken = (token) => {
         localStorage.setItem(this.tokenName, token);
     };
 
@@ -55,15 +62,5 @@ export class AuthService {
 
     getTokenData() {
         return decode(this.getToken());
-    };
-
-    setUser(model) {
-        var userString = JSON.stringify(model);
-        localStorage.setItem(this.userEntryName, userString);
-    };
-
-    getUser() {
-        var user = localStorage.getItem(this.userEntryName);
-        return JSON.parse(user);
     };
 }

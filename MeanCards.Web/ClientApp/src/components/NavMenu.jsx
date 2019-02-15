@@ -7,16 +7,10 @@ import './NavMenu.scss';
 
 export class NavMenu extends Component {
   authService = new AuthService();
-  static displayName = NavMenu.name;
-
-  constructor(props) {
-    super(props);
-
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-    };
-  }
+  
+  state = {
+    collapsed: true
+  };
 
   toggleNavbar() {
     this.setState({
@@ -26,15 +20,19 @@ export class NavMenu extends Component {
 
   getUserInfo = () => {
     const getUserName = () => {
-      var user = this.authService.getUser();
-      if (user)
-        return user.email;
+      
+      if (this.isUserLoggedIn())
+        return this.props.user.name;
       else
         return "Guest";
     };
     return (
       <span className="navbar-text"><Icon icon="user"></Icon> {getUserName()}</span>
     );
+  };
+
+  isUserLoggedIn = () => {
+    return this.props.user.isLoggedIn;
   };
 
   render() {
@@ -56,7 +54,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/countdown">Countdown</NavLink>
                 </NavItem>
-                {this.authService.isLoggedIn() ?
+                {this.isUserLoggedIn() ?
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
                   </NavItem> :

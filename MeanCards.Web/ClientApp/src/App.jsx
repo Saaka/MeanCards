@@ -7,7 +7,33 @@ import { CreateGame, Game } from './components/game/GameExports';
 import { MainMenu, Home, Countdown, Counter } from './components/tempComponents/TempExports';
 
 export default class App extends Component {
-    static displayName = App.name;
+
+    state = {
+        user: {
+            isLoggedIn: false
+        }
+    };
+
+    componentWillMount = () => {
+
+    };
+
+    onLogin = (user) => {
+        this.setState({
+            user: {
+                ...user,
+                isLoggedIn: true
+            }
+        }, () => console.log(user));
+    };
+
+    onLogout = () => {
+        this.setState({
+            user: {
+                isLoggedIn: false
+            }
+        });
+    };
 
     CounterWithAuth = withAuth(Counter);
     CreateGameWithAuth = withAuth(CreateGame);
@@ -15,13 +41,13 @@ export default class App extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout user={this.state.user}>
                 <Route exact path='/' component={Home} />
                 <Route path='/menu' component={MainMenu} />
                 <Route path='/counter' component={this.CounterWithAuth} />
                 <Route path='/countdown' component={Countdown} />
-                <Route path='/login' component={Login} />
-                <Route path='/logout' component={Logout} />
+                <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} />} />
+                <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
                 <Route path='/createGame' component={this.CreateGameWithAuth} />
                 <Route path='/game/:code' component={this.GameWithAuth} />
             </Layout>

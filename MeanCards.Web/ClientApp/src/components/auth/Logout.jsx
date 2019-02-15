@@ -6,6 +6,7 @@ export class Logout extends Component {
     authService = new AuthService();
 
     componentWillMount() {
+        this.props.onLogout();
         this.authService.logout();
         this.props.history.replace('/login');
     };
