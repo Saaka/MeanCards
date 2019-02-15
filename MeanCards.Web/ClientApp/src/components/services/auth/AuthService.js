@@ -10,6 +10,10 @@ export class AuthService {
     authHttpService = new AuthHttpService();
     tokenService = new UserTokenService();
 
+    isLoggedIn = () => this.tokenService.isTokenValid();
+
+    logout = () => this.tokenService.removeToken();
+    
     loginWithCredentials = (email, password) => {
         return this.httpService
             .post(Constants.ApiRoutes.LOGIN, {
@@ -20,7 +24,7 @@ export class AuthService {
     };
 
     onLogin = (resp) => {
-        
+
         this.tokenService
             .setToken(resp.data.token);
         return {
@@ -44,13 +48,4 @@ export class AuthService {
                 };
             });
     };
-
-    isLoggedIn() {
-        const token = this.tokenService
-            .getToken();
-        return !!token && !this.tokenService
-            .isTokenExpired(token);
-    }
-
-    logout = () => this.tokenService.removeToken();
 }

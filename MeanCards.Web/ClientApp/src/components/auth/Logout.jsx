@@ -8,7 +8,7 @@ export class Logout extends Component {
     componentWillMount = () => {
         this.props.onLogout();
         this.authService.logout();
-        this.props.history.replace('/login');
+        this.props.history.replace('/');
     };
 
     render() {

@@ -1,5 +1,4 @@
 ﻿import React, { Component } from "react";
-import { RouteComponentProps } from "react-router";
 import "isomorphic-fetch";
 
 export class FetchData extends Component {
