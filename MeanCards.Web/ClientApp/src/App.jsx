@@ -30,9 +30,17 @@ export default class App extends Component {
             .getUser()
             .then(this.setUser)
             .finally(this.hideLoader);
-    }
+    };
 
     onLogin = (user) => this.setUser(user);
+
+    onLogout = () => {
+        this.setState({
+            user: {
+                isLoggedIn: false
+            }
+        });
+    };
 
     setUser = (user) => {
         this.setState({
@@ -43,24 +51,24 @@ export default class App extends Component {
         });
     };
 
-    onLogout = () => {
-        this.setState({
-            user: {
-                isLoggedIn: false
-            }
-        });
-    };
-
     hideLoader = () => this.setState({ isLoading: false });
 
     renderAuthComponent = (props, comp) => {
-        var AuthComponent = withAuth(comp); 
+        var AuthComponent = withAuth(comp);
         return (
             <AuthComponent {...props} user={this.state.user} />
         );
     }
 
-    render() {
+    renderLoader = () => {
+        return (
+            <div>
+                <Loader isLoading={this.state.isLoading} />
+            </div>
+        );
+    };
+
+    renderApp = () => {
         return (
             <div>
                 <Layout user={this.state.user}>
@@ -68,13 +76,18 @@ export default class App extends Component {
                     <Route path='/menu' component={MainMenu} />
                     <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
                     <Route path='/countdown' component={Countdown} />
-                    <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} />} />
+                    <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} user={this.state.user} />} />
                     <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
                     <Route path='/createGame' render={(props) => this.renderAuthComponent(props, CreateGame)} />
                     <Route path='/game/:code' render={(props) => this.renderAuthComponent(props, Game)} />
                 </Layout>
-                <Loader isLoading={this.state.isLoading} />
             </div>
         );
+    };
+
+    render() {
+        return this.state.isLoading ?
+            this.renderLoader() :
+            this.renderApp()
     }
 }

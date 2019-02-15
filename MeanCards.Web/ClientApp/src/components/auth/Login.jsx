@@ -49,8 +49,8 @@ export class Login extends Component {
         });
     };
 
-    componentWillMount = () => {
-        if (this.authService.isLoggedIn())
+    componentDidMount = () => {
+        if (this.props.user.isLoggedIn)
             this.redirectToMainPage();
     };
 
