@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { AuthService } from 'Services';
 
 const withAuth = (AuthComponent) => {
-    const authService = new AuthService();
 
     return class AuthWrapper extends Component {
-        state = {
-            user: null
-        };
 
         goToLogin = (useRedirect) => {
             if (useRedirect) {
@@ -20,27 +15,15 @@ const withAuth = (AuthComponent) => {
         };
 
         componentWillMount = () => {
-            if (!authService.isLoggedIn()) {
+            if (!this.props.user.isLoggedIn) {
                 this.goToLogin(true);
-            }
-            else {
-                try {
-                    const profile = authService.getTokenData();
-                    this.setState({
-                        user: profile
-                    });
-                }
-                catch (err) {
-                    authService.logout();
-                    this.goToLogin();
-                }
             }
         };
 
         render() {
-            if (this.state.user) {
+            if (this.props.user.isLoggedIn) {
                 return (
-                    <AuthComponent history={this.props.history} user={this.state.user} {...this.props} />
+                    <AuthComponent history={this.props.history} user={this.props.user} {...this.props} />
                 );
             }
             else {

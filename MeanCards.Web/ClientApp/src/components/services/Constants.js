@@ -4,7 +4,7 @@ Constants.ApiRoutes = class ApiRoutes {
     static get LOGIN() {
         return "auth/login";
     }
-    static get USER() {
+    static get GETUSER() {
         return "auth/user";
     }
     static get CREATE_GAME() {

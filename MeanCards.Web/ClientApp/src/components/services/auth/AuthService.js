@@ -10,7 +10,7 @@ export class AuthService {
     httpService = new HttpService();
     authHttpService = new AuthHttpService();
 
-    login = (email, password) => {
+    loginWithCredentials = (email, password) => {
         return this.httpService
             .post(Constants.ApiRoutes.LOGIN, {
                 password: password,
@@ -20,15 +20,27 @@ export class AuthService {
     };
 
     onLogin = (resp) => {
-        var user = {
+        
+        this.setToken(resp.data.token);
+        return {
             code: resp.data.code,
             email: resp.data.email,
             name: resp.data.name,
             imageUrl: resp.data.imageUrl,
             token: resp.data.token
         };
-        this.setToken(resp.data.token);
-        return user;
+    };
+
+    getUser = () => {
+        var token = this.getToken();
+        return this.authHttpService
+            .get(Constants.ApiRoutes.GETUSER)
+            .then(resp => {
+                return {
+                    ...resp.data,
+                    token: token
+                };
+            });
     };
 
     isLoggedIn() {

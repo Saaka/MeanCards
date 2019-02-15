@@ -5,26 +5,42 @@ import { Layout } from './components/Layout';
 import { Login, Logout, withAuth } from './components/auth/AuthExports';
 import { CreateGame, Game } from './components/game/GameExports';
 import { MainMenu, Home, Countdown, Counter } from './components/tempComponents/TempExports';
+import { Loader } from 'CommonComponents';
+import { AuthService } from 'Services';
 
 export default class App extends Component {
+    authService = new AuthService();
 
     state = {
+        isLoading: true,
         user: {
             isLoggedIn: false
         }
     };
 
-    componentWillMount = () => {
-
+    componentDidMount = () => {
+        if (this.authService.isLoggedIn())
+            this.loadUserData();
+        else
+            this.hideLoader();
     };
 
-    onLogin = (user) => {
+    loadUserData = () => {
+        this.authService
+            .getUser()
+            .then(this.setUser)
+            .finally(this.hideLoader);
+    }
+
+    onLogin = (user) => this.setUser(user);
+
+    setUser = (user) => {
         this.setState({
             user: {
                 ...user,
                 isLoggedIn: true
             }
-        }, () => console.log(user));
+        });
     };
 
     onLogout = () => {
@@ -35,22 +51,30 @@ export default class App extends Component {
         });
     };
 
-    CounterWithAuth = withAuth(Counter);
-    CreateGameWithAuth = withAuth(CreateGame);
-    GameWithAuth = withAuth(Game);
+    hideLoader = () => this.setState({ isLoading: false });
+
+    renderAuthComponent = (props, comp) => {
+        var AuthComponent = withAuth(comp); 
+        return (
+            <AuthComponent {...props} user={this.state.user} />
+        );
+    }
 
     render() {
         return (
-            <Layout user={this.state.user}>
-                <Route exact path='/' component={Home} />
-                <Route path='/menu' component={MainMenu} />
-                <Route path='/counter' component={this.CounterWithAuth} />
-                <Route path='/countdown' component={Countdown} />
-                <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} />} />
-                <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
-                <Route path='/createGame' component={this.CreateGameWithAuth} />
-                <Route path='/game/:code' component={this.GameWithAuth} />
-            </Layout>
+            <div>
+                <Layout user={this.state.user}>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/menu' component={MainMenu} />
+                    <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
+                    <Route path='/countdown' component={Countdown} />
+                    <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} />} />
+                    <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
+                    <Route path='/createGame' render={(props) => this.renderAuthComponent(props, CreateGame)} />
+                    <Route path='/game/:code' render={(props) => this.renderAuthComponent(props, Game)} />
+                </Layout>
+                <Loader isLoading={this.state.isLoading} />
+            </div>
         );
     }
 }

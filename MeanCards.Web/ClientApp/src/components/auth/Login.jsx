@@ -13,12 +13,11 @@ export class Login extends Component {
 
     handleLogin = (event) => {
         event.preventDefault();
-        this.enableLoader(true);
+        this.displayLoader(true);
 
         this.authService
-            .login(this.state.email, this.state.password)
-            .then(userData => {
-                
+            .loginWithCredentials(this.state.email, this.state.password)
+            .then(userData => {                
                 this.props.onLogin(userData);
                 var searchValue = queryString.parse(this.props.location.search);
                 if (searchValue && searchValue.redirect)
@@ -27,7 +26,7 @@ export class Login extends Component {
                     this.redirectToMainPage();
             })
             .catch(err => {
-                this.enableLoader(false);
+                this.displayLoader(false);
                 alert(err);
             });
     };
@@ -44,9 +43,9 @@ export class Login extends Component {
     redirectToPath = (path) => {
         this.props.history.push(path);
     };
-    enableLoader = (isLoading) => {
+    displayLoader = (show) => {
         this.setState({
-            isLoading: isLoading
+            isLoading: show
         });
     };
 
