@@ -26,7 +26,10 @@ class HttpService {
         return this.axios
             .get(address)
             .catch(err => {
-                throw err.response.data;
+                if (err.response)
+                    throw err.response.data;
+                else
+                    throw err.message;
             });
     };
 
@@ -34,7 +37,10 @@ class HttpService {
         return this.axios
             .post(address, data)
             .catch(err => {
-                throw err.response.data;
+                if (err.response)
+                    throw err.response.data;
+                else
+                    throw err.message;
             });
     };
 };

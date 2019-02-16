@@ -29,18 +29,21 @@ export default class App extends Component {
         this.authService
             .getUser()
             .then(this.setUser)
+            .catch(this.removeUser)
             .finally(this.hideLoader);
+    };
+
+    removeUser = () => {
+        return this.setState({
+            user: {
+                isLoggedIn: false
+            }
+        }, () => this.authService.logout());
     };
 
     onLogin = (user) => this.setUser(user);
 
-    onLogout = () => {
-        this.setState({
-            user: {
-                isLoggedIn: false
-            }
-        });
-    };
+    onLogout = () => this.removeUser();
 
     setUser = (user) => {
         this.setState({
@@ -78,7 +81,7 @@ export default class App extends Component {
 
                     <Route path='/login' render={(props) => <Login {...props} onLogin={this.onLogin} user={this.state.user} />} />
                     <Route path='/logout' render={(props) => <Logout {...props} onLogout={this.onLogout} />} />
-                    
+
                     <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
                     <Route path='/createGame' render={(props) => this.renderAuthComponent(props, CreateGame)} />
                     <Route path='/game/:code' render={(props) => this.renderAuthComponent(props, Game)} />

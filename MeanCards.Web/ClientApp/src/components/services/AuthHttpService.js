@@ -1,4 +1,7 @@
-import { HttpService, UserTokenService } from 'Services';
+import {
+    HttpService,
+    UserTokenService
+} from 'Services';
 import Axios from 'axios';
 
 class AuthHttpService extends HttpService {
@@ -15,8 +18,8 @@ class AuthHttpService extends HttpService {
         var tokenService = new UserTokenService();
         var token = tokenService.getToken();
 
-        return  {
-            'Authorization': `Bearer ${token}` 
+        return {
+            'Authorization': `Bearer ${token}`
         };
     };
 
@@ -24,7 +27,10 @@ class AuthHttpService extends HttpService {
         return this.axios
             .get(address)
             .catch(err => {
-                throw err.response.data;
+                if (err.response)
+                    throw err.response.data;
+                else
+                    throw err.message;
             });
     };
 
@@ -32,9 +38,14 @@ class AuthHttpService extends HttpService {
         return this.axios
             .post(address, data)
             .catch(err => {
-                throw err.response.data;
+                if (err.response)
+                    throw err.response.data;
+                else
+                    throw err.message;
             });
     };
 };
 
-export { AuthHttpService }
+export {
+    AuthHttpService
+}
