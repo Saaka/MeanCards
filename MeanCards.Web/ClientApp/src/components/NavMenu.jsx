@@ -5,12 +5,12 @@ import { Icon } from 'CommonComponents';
 import './NavMenu.scss';
 
 export class NavMenu extends Component {
-  
+
   state = {
     collapsed: true
   };
 
-  toggleNavbar() {
+  toggleNavbar = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
@@ -18,7 +18,7 @@ export class NavMenu extends Component {
 
   getUserInfo = () => {
     const getUserName = () => {
-      
+
       if (this.isUserLoggedIn())
         return this.props.user.name;
       else
