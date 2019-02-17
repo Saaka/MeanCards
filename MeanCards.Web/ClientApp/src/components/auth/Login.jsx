@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { AuthService } from 'Services';
 import { LoaderButton } from 'CommonComponents';
 import queryString from 'query-string';
+import { Alert } from 'reactstrap'
+import { Trans } from 'react-i18next';
 
 export class Login extends Component {
     authService = new AuthService();
     state = {
-        email: '',
-        password: '',
-        isLoading: false
+        email: "",
+        password: "",
+        isLoading: false,
+        showError: false,
+        error: ""
     };
 
     handleLogin = (event) => {
@@ -27,7 +31,7 @@ export class Login extends Component {
             })
             .catch(err => {
                 this.displayLoader(false);
-                alert(err);
+                this.toggleError(true, err);
             });
     };
     handleChange = (e) => {
@@ -52,6 +56,13 @@ export class Login extends Component {
     componentDidMount = () => {
         if (this.props.user.isLoggedIn)
             this.redirectToMainPage();
+    };
+
+    toggleError = (show, error) => {
+        this.setState({
+            showError: show,
+            error: error
+        });
     };
 
     render() {
@@ -80,6 +91,7 @@ export class Login extends Component {
                                     name="password"
                                     onChange={this.handleChange} />
                             </div>
+                            <Alert color="danger" isOpen={this.state.showError} toggle={() => this.toggleError(false)}><Trans>{this.state.error}</Trans></Alert>
                             <LoaderButton type="submit" className="btn btn-primary" text="Login" isLoading={this.state.isLoading} />
                         </form>
                     </div>
