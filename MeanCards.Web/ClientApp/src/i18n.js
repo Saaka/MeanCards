@@ -8,7 +8,7 @@ i18n
     .init({
         resources: {
             en: {
-                translations: {
+                translation: {
                     "UserNotFound": "Could not find user with specified email and password"
                 }
             },
@@ -16,18 +16,11 @@ i18n
         fallbackLng: "en",
         debug: true,
 
-        ns: ["translations"],
-        defaultNS: "translations",
-
         keySeparator: false,
 
         interpolation: {
             escapeValue: false,
             formatSeparator: ","
-        },
-
-        react: {
-            wait: true
         }
     });
 
