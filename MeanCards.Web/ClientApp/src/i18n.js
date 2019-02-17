@@ -9,6 +9,7 @@ i18n
         resources: {
             en: {
                 translation: {
+                    "helloTest": "Hello, {{name}}!",
                     "UserNotFound": "Could not find user with specified email and password"
                 }
             },
