@@ -1,32 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader } from 'CommonComponents';
 
-export class Game extends Component {
-    state = {
-        isLoading: true,
-        gameCode: "",
-        game:{
-            name: "Game name"
-        }
-    };
-    
-    componentDidMount = () => {
+const Game = (props) => {
+    const [game, setGame] = useState({
+        number: 1,
+        code: props.match.params.code
+    });
+    const [loading, setLoading] = useState(true);
 
-        this.setState({
-            gameCode: this.props.match.params.code,
-            isLoading: false
-        });
-    };
+    useEffect(() => setLoading(false), []);
 
-    render() {
-        return (
-            <div>
-                <h1>Game {this.state.gameCode}</h1>
-                <h2>{this.state.game.name}</h2>
-                <button className="btn btn-primary"
-                        onClick={this.updateGame}>Update</button>
-                <Loader isLoading={this.state.isLoading} />
-            </div>
-        );
+    function updateGame() {
+        setGame(prev => ({
+            ...game,
+            number: prev.number + 1 
+        }));
     }
+
+    return (
+        <div>
+            <h1>Game {game.code}</h1>
+            <h2>{game.number}</h2>
+            <button className="btn btn-primary"
+                onClick={updateGame}>Update</button>
+            <Loader isLoading={loading} />
+        </div>
+    );
 }
+
+export { Game };
