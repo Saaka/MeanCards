@@ -29,6 +29,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
             Assert.NotNull(result.User);
             Assert.Equal(request.Email, result.User.Email);
             Assert.Equal(request.DisplayName, result.User.DisplayName);
+            Assert.Equal(request.DisplayName, result.User.UserName);
             Assert.NotEmpty(result.User.Code);
             Assert.NotEmpty(result.User.ImageUrl);
             Assert.NotEqual(0, result.User.UserId);

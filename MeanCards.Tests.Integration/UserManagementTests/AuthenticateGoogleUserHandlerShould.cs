@@ -94,6 +94,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
             Assert.Equal(newResult.User.UserId, existingResult.User.UserId);
             Assert.Equal(newResult.User.Code, existingResult.User.Code);
             Assert.Equal("Test", existingResult.User.DisplayName);
+            Assert.Equal("test@test.com", existingResult.User.UserName);
             Assert.Equal("test@test.com", existingResult.User.Email);
             Assert.Equal("https://picsum.photos/96/96/?image=111", existingResult.User.ImageUrl);
         }

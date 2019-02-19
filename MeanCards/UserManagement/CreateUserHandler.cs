@@ -59,6 +59,7 @@ namespace MeanCards.UserManagement
                     UserId = result.Model.UserId,
                     Email = result.Model.Email,
                     DisplayName = result.Model.DisplayName,
+                    UserName = result.Model.UserName,
                     Code = result.Model.Code,
                     ImageUrl = result.Model.ImageUrl
                 }

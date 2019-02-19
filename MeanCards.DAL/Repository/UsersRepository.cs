@@ -34,6 +34,7 @@ namespace MeanCards.DAL.Repository
             {
                 Email = model.Email,
                 UserName = model.DisplayName,
+                DisplayName = model.DisplayName,
                 Code = model.Code,
                 ImageUrl = model.ImageUrl,
             };
@@ -49,7 +50,8 @@ namespace MeanCards.DAL.Repository
             var user = new User
             {
                 Email = model.Email,
-                UserName = model.DisplayName,
+                UserName = model.Email,
+                DisplayName = model.DisplayName,
                 Code = model.Code,
                 ImageUrl = model.ImageUrl,
                 GoogleId = model.GoogleId
@@ -164,7 +166,8 @@ namespace MeanCards.DAL.Repository
                     UserId = user.Id,
                     Code = user.Code,
                     Email = user.Email,
-                    DisplayName = user.UserName,
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
                     ImageUrl = user.ImageUrl
                 }
             };

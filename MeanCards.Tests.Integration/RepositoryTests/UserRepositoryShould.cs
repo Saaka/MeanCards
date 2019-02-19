@@ -28,6 +28,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.NotNull(user.Model);
             Assert.NotEqual(0, user.Model.UserId);
             Assert.Equal("Name", user.Model.DisplayName);
+            Assert.Equal("Name", user.Model.UserName);
             Assert.Equal("12345", user.Model.Code);
             Assert.Equal("test@test.com", user.Model.Email);
             Assert.Equal("imageurl", user.Model.ImageUrl);
