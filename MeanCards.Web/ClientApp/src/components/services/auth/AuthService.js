@@ -23,6 +23,14 @@ export class AuthService {
             .then(this.onLogin);
     };
 
+    loginWithGoogle = (token) => {
+        return this.httpService
+            .post(Constants.ApiRoutes.GOOGLE, {
+                googleToken: token
+            })
+            .then(this.onLogin);
+    };
+
     onLogin = (resp) => {
 
         this.tokenService

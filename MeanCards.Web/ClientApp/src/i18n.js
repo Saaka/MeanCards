@@ -3,20 +3,26 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from 'react-i18next';
 
 i18n
-    .use(LanguageDetector)
+    // .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources: {
             en: {
                 translation: {
                     "helloTest": "Hello, {{name}}!",
-                    "UserNotFound": "Could not find user with specified email and password"
+                    "UserNotFound": "Could not find user with specified email and password",
+                    "googleLogin": "Sign in with Google!"
                 }
             },
+            pl: {
+                translation: {
+
+                }
+            }
         },
         fallbackLng: "en",
-        debug: true,
-
+        debug: false,
+        
         keySeparator: false,
 
         interpolation: {

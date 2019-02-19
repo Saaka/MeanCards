@@ -21,7 +21,8 @@
     "query-string": "^6.2.0",
     "i18next": "~15.0.4",
     "react-i18next": "~10.1.2",
-    "i18next-browser-languagedetector": "~3.0.0"
+    "i18next-browser-languagedetector": "~3.0.0",
+    "react-google-login": "~5.0.2"
   },
   "devDependencies": {
     "ajv": "~6.7.0",
