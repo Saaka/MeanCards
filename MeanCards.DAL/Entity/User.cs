@@ -11,7 +11,9 @@ namespace MeanCards.DAL.Entity
             Games = new List<Game>();
             WonGames = new List<Game>();
         }
-        
+
+        [StringLength(128)]
+        public string DisplayName { get; set; }
         [StringLength(64)]
         public string Code { get; set; }
         [StringLength(64)]
