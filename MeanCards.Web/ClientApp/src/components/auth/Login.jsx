@@ -5,6 +5,7 @@ import { Alert } from 'reactstrap'
 import { Trans } from 'react-i18next';
 import { LoginWithCredentials } from './LoginWithCredentials';
 import { LoginWithGoogle } from './LoginWithGoogle';
+import './Login.scss';
 
 export class Login extends Component {
     authService = new AuthService();
@@ -63,7 +64,7 @@ export class Login extends Component {
                 </div>
                 <br />
                 <div className="row justify-content-center">
-                    <button className="btn btn-secondary" onClick={() => this.setState({ loginWithCredentials: true })}>Login with credentials</button>
+                    <button className="btn btn-primary login-button" onClick={() => this.setState({ loginWithCredentials: true })}>Login</button>
                 </div>
             </div>
         );
@@ -74,7 +75,7 @@ export class Login extends Component {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-9 col-lg-6">
-                        <h1>Login</h1>
+                        <h1 className="text-center">Login</h1>
                         <br />
                         {this.renderLoginOptions()}
                         <br />
