@@ -10,6 +10,11 @@ a.navbar-brand {
 //   color: color-yiq(theme-color("primary"));
 // }
 
+.navbar-mc {
+  padding: 0;
+  min-height: 55px;
+}
+
 html {
   font-size: 14px;
 }
