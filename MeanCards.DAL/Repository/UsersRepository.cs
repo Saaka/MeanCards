@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using MeanCards.Model.DAL.Modification.Users;
 using MeanCards.Model.DAL;
 using MeanCards.Common.Constants;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MeanCards.DAL.Repository
 {
@@ -37,7 +39,7 @@ namespace MeanCards.DAL.Repository
             };
             var result = await userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return new RepositoryResult<UserModel>(result.Errors.ToString());
+                return new RepositoryResult<UserModel>(GetError(result.Errors));
 
             return CreateUserResult(user);
         }
@@ -54,9 +56,17 @@ namespace MeanCards.DAL.Repository
             };
             var result = await userManager.CreateAsync(user);
             if (!result.Succeeded)
-                return new RepositoryResult<UserModel>(result.Errors.ToString());
+                return new RepositoryResult<UserModel>(GetError(result.Errors));
 
             return CreateUserResult(user);
+        }
+
+        private string GetError(IEnumerable<IdentityError> errors)
+        {
+            if (errors.Count() == 1)
+                return errors.First().Code;
+
+            return errors.Aggregate(string.Empty, (list, error) => $"{list};{error.Code}");
         }
 
         public async Task<RepositoryResult<UserModel>> UpdateGoogleUser(UpdateGoogleUserModel model)
@@ -70,7 +80,7 @@ namespace MeanCards.DAL.Repository
             if (result.Succeeded)
                 return CreateUserResult(user);
             else
-                return new RepositoryResult<UserModel>(result.Errors.ToString());
+                return new RepositoryResult<UserModel>(GetError(result.Errors));
         }
 
         public async Task<RepositoryResult<UserModel>> MergeUserWithGoogle(MergeUserWithGoogleModel model)
@@ -84,7 +94,7 @@ namespace MeanCards.DAL.Repository
             if (result.Succeeded)
                 return CreateUserResult(user);
             else
-                return new RepositoryResult<UserModel>(result.Errors.ToString());
+                return new RepositoryResult<UserModel>(GetError(result.Errors));
         }
 
         public async Task<RepositoryResult<UserModel>> GetUserByCredentials(GetUserByCredentialsModel credentials)

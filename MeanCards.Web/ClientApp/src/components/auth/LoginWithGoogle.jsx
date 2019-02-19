@@ -9,7 +9,8 @@ const LoginWithGoogle = (props) => {
     function onLogin(response) {
         authService
             .loginWithGoogle(response.tokenId)
-            .then(props.onLoggedIn);
+            .then(props.onLoggedIn)
+            .catch(props.onError);
     }
 
     function onLoginFail(response) {
