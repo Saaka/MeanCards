@@ -2,6 +2,7 @@
 using MeanCards.DAL.Connections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MeanCards.DAL.Repository.Base
 {
@@ -14,27 +15,27 @@ namespace MeanCards.DAL.Repository.Base
             this.dbConnectionFactory = dbConnectionFactory;
         }
 
-        protected virtual T QueryFirstOrDefault<T>(string sql, object parameters = null)
+        protected virtual async Task<T> QueryFirstOrDefault<T>(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
-                return connection.QueryFirstOrDefault<T>(sql, parameters);
+                return await connection.QueryFirstOrDefaultAsync<T>(sql, parameters);
             }
         }
 
-        protected virtual List<T> Query<T>(string sql, object parameters = null)
+        protected virtual async Task<IEnumerable<T>> Query<T>(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
-                return connection.Query<T>(sql, parameters).ToList();
+                return await connection.QueryAsync<T>(sql, parameters);
             }
         }
 
-        protected virtual int Execute(string sql, object parameters = null)
+        protected virtual async Task<int> Execute(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
-                return connection.Execute(sql, parameters);
+                return await connection.ExecuteAsync(sql, parameters);
             }
         }
     }

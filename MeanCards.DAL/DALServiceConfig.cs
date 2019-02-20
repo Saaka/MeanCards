@@ -49,7 +49,7 @@ namespace MeanCards.DAL
                 .AddScoped<IPlayersRepository, PlayersRepository>()
                 .AddScoped<IPlayerCardsRepository, PlayerCardsRepository>()
                 .AddScoped<IGameCheckpointRepository, GameCheckpointRepository>();
-
+            
             //Initializers
             services
                 .AddTransient<ILanguageInitializer, LanguageInitializer>()

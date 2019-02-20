@@ -1,6 +1,7 @@
 ﻿using MeanCards.GameManagement;
 using MeanCards.ViewModel.Game;
 using MeanCards.WebAPI.Controllers.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MeanCards.WebAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GameController : ControllerAuthBase
@@ -40,6 +42,14 @@ namespace MeanCards.WebAPI.Controllers
             {
                 GameCode = result.Code
             });
+        }
+
+        [HttpGet("list")]
+        public async Task<ActionResult<GetGameListResult>> GetGameList(GetGameList request)
+        {
+            var user = await GetUserData();
+
+            return Ok(null);
         }
     }
 }
