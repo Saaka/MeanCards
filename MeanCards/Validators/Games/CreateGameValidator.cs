@@ -8,11 +8,14 @@ namespace MeanCards.Validators.Games
     public class CreateGameValidator : IRequestValidator<CreateGame>
     {
         private readonly IBaseGameRequestsValidator baseGameRequestsValidator;
+        private readonly IGamesRepository gamesRepository;
 
         public CreateGameValidator(
-            IBaseGameRequestsValidator baseGameRequestsValidator)
+            IBaseGameRequestsValidator baseGameRequestsValidator,
+            IGamesRepository gamesRepository)
         {
             this.baseGameRequestsValidator = baseGameRequestsValidator;
+            this.gamesRepository = gamesRepository;
         }
 
         public async Task<ValidatorResult> Validate(CreateGame request)
@@ -25,6 +28,9 @@ namespace MeanCards.Validators.Games
                 return new ValidatorResult(ValidatorErrors.Games.GameNameRequired);
             if (request.LanguageId == 0)
                 return new ValidatorResult(ValidatorErrors.Games.GameLanguageRequired);
+
+            if (await gamesRepository.GameNameIsTaken(request.Name, request.UserId))
+                return new ValidatorResult(ValidatorErrors.Games.GameNameInUse);
 
             return new ValidatorResult();
         }

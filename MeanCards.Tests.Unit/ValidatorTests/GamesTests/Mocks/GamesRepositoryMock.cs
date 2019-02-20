@@ -11,7 +11,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
             bool gameExists = true,
             bool isGameOwner = true,
             bool gameIsActive = true,
-            Common.Enums.GameStatusEnum gameStatus = Common.Enums.GameStatusEnum.InProgress)
+            Common.Enums.GameStatusEnum gameStatus = Common.Enums.GameStatusEnum.InProgress,
+            bool gameNameInUse = false)
         {
             var mock = new Mock<IGamesRepository>();
             mock.Setup(m => m.GetGameById(It.IsAny<int>())).Returns(() =>
@@ -29,6 +30,10 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests.Mocks
             mock.Setup(m => m.GetGameStatus(It.IsAny<int>())).Returns(() =>
             {
                 return Task.FromResult(gameStatus);
+            });
+            mock.Setup(m => m.GameNameIsTaken(It.IsAny<string>(), It.IsAny<int>())).Returns(() =>
+            {
+                return Task.FromResult(gameNameInUse);
             });
 
             return mock;

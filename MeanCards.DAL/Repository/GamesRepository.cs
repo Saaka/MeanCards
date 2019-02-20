@@ -125,5 +125,16 @@ namespace MeanCards.DAL.Repository
 
             return await context.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> GameNameIsTaken(string name, int userId)
+        {
+            var query = from g in context.Games
+                        where g.Name == name
+                            && g.OwnerId == userId
+                            && g.IsActive
+                        select g.GameId;
+
+            return await query.AnyAsync();
+        }
     }
 }

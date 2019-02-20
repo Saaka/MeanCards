@@ -37,6 +37,7 @@
             public const string PlayerAlreadySubmittedAnswer = nameof(PlayerAlreadySubmittedAnswer);
             public const string PlayerAnswerDoesNotExists = nameof(PlayerAnswerDoesNotExists);
             public const string SelectedAnswerPlayerIsNotActive = nameof(SelectedAnswerPlayerIsNotActive);
+            public const string GameNameInUse = nameof(GameNameInUse);
         }
         public static class Players
         {

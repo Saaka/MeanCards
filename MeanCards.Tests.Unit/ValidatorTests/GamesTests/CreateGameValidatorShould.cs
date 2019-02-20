@@ -15,7 +15,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnSuccessForValidData()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var validator = new CreateGameValidator(baseMock.Object);
+            var gameRepo = GamesRepositoryMock.Create().Object;
+            var validator = new CreateGameValidator(baseMock.Object, gameRepo);
 
             var request = new CreateGame
             {
@@ -36,7 +37,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForMissingLanguage()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var validator = new CreateGameValidator(baseMock.Object);
+            var gameRepo = GamesRepositoryMock.Create().Object;
+            var validator = new CreateGameValidator(baseMock.Object, gameRepo);
 
             var request = new CreateGame
             {
@@ -55,7 +57,8 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
         public async Task ReturnFailureForMissingName()
         {
             var baseMock = BaseGameRequestsValidatorMock.CreateMock();
-            var validator = new CreateGameValidator(baseMock.Object);
+            var gameRepo = GamesRepositoryMock.Create().Object;
+            var validator = new CreateGameValidator(baseMock.Object, gameRepo);
 
             var request = new CreateGame
             {
@@ -68,6 +71,28 @@ namespace MeanCards.Tests.Unit.ValidatorTests.GamesTests
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(ValidatorErrors.Games.GameNameRequired, result.Error);
+        }
+
+        [Fact]
+        public async Task ReturnFailureForGameNameInUse()
+        {
+            var baseMock = BaseGameRequestsValidatorMock.CreateMock();
+            var gameRepo = GamesRepositoryMock.Create(
+                gameNameInUse: true).Object;
+            var validator = new CreateGameValidator(baseMock.Object, gameRepo);
+
+            var request = new CreateGame
+            {
+                Name = "SomeName",
+                LanguageId = 1,
+                UserId = 1,
+                ShowAdultContent = true
+            };
+
+            var result = await validator.Validate(request);
+
+            Assert.False(result.IsSuccessful);
+            Assert.Equal(ValidatorErrors.Games.GameNameInUse, result.Error);
         }
     }
 }
