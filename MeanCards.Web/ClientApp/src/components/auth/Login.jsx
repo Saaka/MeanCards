@@ -5,11 +5,13 @@ import { Alert } from 'reactstrap'
 import { Trans } from 'react-i18next';
 import { LoginWithCredentials } from './LoginWithCredentials';
 import { LoginWithGoogle } from './LoginWithGoogle';
+import { Loader } from 'CommonComponents';
 import './Login.scss';
 
 export class Login extends Component {
     authService = new AuthService();
     state = {
+        isLoading: false,
         showError: false,
         error: "",
         loginWithCredentials: false
@@ -38,12 +40,19 @@ export class Login extends Component {
 
     onError = (error) => {
         this.toggleError(true, error);
+        this.toggleLoader(false);
     };
 
     toggleError = (show, error) => {
         this.setState({
             showError: show,
             error: error
+        });
+    };
+
+    toggleLoader = (showLoader) => {
+        this.setState({
+            isLoading: showLoader
         });
     };
 
@@ -60,7 +69,7 @@ export class Login extends Component {
         return (
             <div>
                 <div className="row justify-content-center">
-                    <LoginWithGoogle onLoggedIn={this.onLoggedIn} onError={this.onError}></LoginWithGoogle>
+                    <LoginWithGoogle onLoggedIn={this.onLoggedIn} onError={this.onError} showLoader={() => this.toggleLoader(true)}></LoginWithGoogle>
                 </div>
                 <br />
                 <div className="row justify-content-center">
@@ -82,6 +91,7 @@ export class Login extends Component {
                         <Alert color="danger" isOpen={this.state.showError} toggle={() => this.toggleError(false)}><Trans>{this.state.error}</Trans></Alert>
                     </div>
                 </div>
+                <Loader isLoading={this.state.isLoading}></Loader>
             </div>
         );
     };

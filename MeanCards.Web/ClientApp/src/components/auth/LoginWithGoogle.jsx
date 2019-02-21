@@ -8,6 +8,7 @@ const LoginWithGoogle = (props) => {
     const authService = new AuthService();
 
     function onLogin(response) {
+        props.showLoader();
         authService
             .loginWithGoogle(response.tokenId)
             .then(props.onLoggedIn)
