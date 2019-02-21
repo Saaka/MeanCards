@@ -13,6 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MeanCards.DAL.Transaction;
 using MeanCards.DAL.Interfaces.Transactions;
+using MeanCards.DAL.Queries;
+using MeanCards.DAL.Interfaces.Queries;
+using MeanCards.DAL.Connections;
 
 namespace MeanCards.DAL
 {
@@ -49,7 +52,12 @@ namespace MeanCards.DAL
                 .AddScoped<IPlayersRepository, PlayersRepository>()
                 .AddScoped<IPlayerCardsRepository, PlayerCardsRepository>()
                 .AddScoped<IGameCheckpointRepository, GameCheckpointRepository>();
-            
+
+            //Query
+            services
+                .AddScoped<IDbConnectionFactory, SqlConnectionFactory>()
+                .AddScoped<IQueryExecutor, SqlQueryExecutor>();
+
             //Initializers
             services
                 .AddTransient<ILanguageInitializer, LanguageInitializer>()

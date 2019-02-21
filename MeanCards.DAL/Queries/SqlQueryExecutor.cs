@@ -1,21 +1,22 @@
 ﻿using Dapper;
 using MeanCards.DAL.Connections;
+using MeanCards.DAL.Interfaces.Queries;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MeanCards.DAL.Repository.Base
+namespace MeanCards.DAL.Queries
 {
-    public class BaseSqlRepository
+    public class SqlQueryExecutor : IQueryExecutor
     {
         protected readonly IDbConnectionFactory dbConnectionFactory;
 
-        public BaseSqlRepository(IDbConnectionFactory dbConnectionFactory)
+        public SqlQueryExecutor(IDbConnectionFactory dbConnectionFactory)
         {
             this.dbConnectionFactory = dbConnectionFactory;
         }
 
-        protected virtual async Task<T> QueryFirstOrDefault<T>(string sql, object parameters = null)
+        public virtual async Task<T> QueryFirstOrDefault<T>(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
@@ -23,7 +24,7 @@ namespace MeanCards.DAL.Repository.Base
             }
         }
 
-        protected virtual async Task<IEnumerable<T>> Query<T>(string sql, object parameters = null)
+        public virtual async Task<IEnumerable<T>> Query<T>(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
@@ -31,7 +32,7 @@ namespace MeanCards.DAL.Repository.Base
             }
         }
 
-        protected virtual async Task<int> Execute(string sql, object parameters = null)
+        public virtual async Task<int> Execute(string sql, object parameters = null)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {

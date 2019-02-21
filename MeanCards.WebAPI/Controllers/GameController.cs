@@ -1,4 +1,5 @@
 ﻿using MeanCards.GameManagement;
+using MeanCards.Queries.GameQueries;
 using MeanCards.ViewModel.Game;
 using MeanCards.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -16,13 +17,16 @@ namespace MeanCards.WebAPI.Controllers
     public class GameController : ControllerAuthBase
     {
         private readonly ICreateGameHandler createGameHandler;
+        private readonly IGetGameListQueryHandler gameListQueryHandler;
 
         public GameController(
             IUserContextDataProvider userContextDataProvider,
-            ICreateGameHandler createGameHandler)
+            ICreateGameHandler createGameHandler,
+            IGetGameListQueryHandler gameListQueryHandler)
             : base(userContextDataProvider)
         {
             this.createGameHandler = createGameHandler;
+            this.gameListQueryHandler = gameListQueryHandler;
         }
 
         [HttpPost("create")]
@@ -45,11 +49,13 @@ namespace MeanCards.WebAPI.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<GetGameListResult>> GetGameList(GetGameList request)
+        public async Task<ActionResult<GetGameListResult>> GetGameList()
         {
             var user = await GetUserData();
+            var result = await gameListQueryHandler
+                .Handle(new GetGameList());
 
-            return Ok(null);
+            return Ok(result);
         }
     }
 }
