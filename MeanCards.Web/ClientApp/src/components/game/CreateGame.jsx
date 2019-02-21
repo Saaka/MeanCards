@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { LoaderButton, Select } from 'CommonComponents';
-import { CreateGameRepository } from './CreateGameRepository';
+import { GameRepository } from './GameRepository';
 import { Constants } from 'Services';
 import { Alert } from 'reactstrap'
 
 export class CreateGame extends Component {
-    repository = new CreateGameRepository();
+    repository = new GameRepository();
     validations = {
         minPoints: 5,
         maxPoints: 20,

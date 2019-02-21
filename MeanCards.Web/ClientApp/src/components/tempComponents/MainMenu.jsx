@@ -13,6 +13,7 @@ export class MainMenu extends Component {
                         <ListGroupItem className="list-group-item-action" tag={Link} to="/counter">Counter</ListGroupItem>
                         <Link className="list-group-item list-group-item-action" to="/countdown">Countdown</Link>
                         <Link className="list-group-item list-group-item-action" to="/createGame">Create game</Link>
+                        <Link className="list-group-item list-group-item-action" to="/gameList">Game list</Link>
                     </div>
                 </div>
             </Row>

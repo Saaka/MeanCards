@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Login, Logout, withAuth } from './components/auth/AuthExports';
-import { CreateGame, Game } from './components/game/GameExports';
+import { CreateGame, Game, GameList } from './components/game/GameExports';
 import { MainMenu, Home, Countdown, Counter } from './components/tempComponents/TempExports';
 import { Loader } from 'CommonComponents';
 import { AuthService } from 'Services';
@@ -85,6 +85,7 @@ export default class App extends Component {
                     <Route path='/counter' render={(props) => this.renderAuthComponent(props, Counter)} />
                     <Route path='/createGame' render={(props) => this.renderAuthComponent(props, CreateGame)} />
                     <Route path='/game/:code' render={(props) => this.renderAuthComponent(props, Game)} />
+                    <Route path='/gameList' render={props => this.renderAuthComponent(props, GameList)} />
                 </Layout>
             </div>
         );

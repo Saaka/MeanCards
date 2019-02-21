@@ -1,10 +1,15 @@
 import { AuthHttpService, Constants } from 'Services';
 
-export class CreateGameRepository {
+export class GameRepository {
     httpService = new AuthHttpService();
 
     createGame = (model) => {
         return this.httpService
             .post(Constants.ApiRoutes.CREATE_GAME, model);
+    };
+
+    getGameList = () => {
+        return this.httpService
+            .get(Constants.ApiRoutes.GAME_LIST);
     };
 }
