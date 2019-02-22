@@ -5,6 +5,7 @@ namespace MeanCards.Model.DTO.Games
     public class GameRoundModel
     {
         public int GameRoundId { get; set; }
+        public string Code { get; set; }
         public int Number { get; set; }
         public int GameId { get; set; }
         public bool IsActive { get; set; }

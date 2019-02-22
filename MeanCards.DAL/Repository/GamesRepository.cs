@@ -52,7 +52,7 @@ namespace MeanCards.DAL.Repository
             return MapToModel(result);
         }
 
-        public async Task<GameModel> GetGameByCode(string code)
+        public async Task<GameSimpleModel> GetGameByCode(string code)
         {
             var query = from game in context.Games
                         where game.Code == code
@@ -60,7 +60,19 @@ namespace MeanCards.DAL.Repository
 
             var result = await query.FirstOrDefaultAsync();
 
-            return MapToModel(result);
+            return MapToSimpleModel(result);
+        }
+
+        private GameSimpleModel MapToSimpleModel(Game game)
+        {
+            if (game == null)
+                return null;
+
+            return new GameSimpleModel
+            {
+                Code = game.Code,
+                GameId = game.GameId
+            };
         }
 
         private GameModel MapToModel(Game game)

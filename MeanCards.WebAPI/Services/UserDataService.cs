@@ -33,7 +33,7 @@ namespace MeanCards.WebAPI.Services
             var userData = await memoryCache.GetOrCreateAsync(cacheKey, async (ce) =>
             {
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
-                ce.AbsoluteExpiration = DateTime.Now.AddHours(8);
+                ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
                 var result = await getUserByCodeHandler.Handle(new GetUserByCode { UserCode = userCode });
                 if (!result.IsSuccessful)

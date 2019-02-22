@@ -17,6 +17,7 @@ namespace MeanCards.WebAPI.Config
                 .RegisterConfiguration()
                 .RegisterDbContext(configuration)
                 .RegisterDAL()
+                .RegisterAPIServices()
                 .RegisterIdentityStore();
 
             return services;

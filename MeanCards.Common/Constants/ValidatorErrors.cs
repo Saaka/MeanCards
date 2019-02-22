@@ -21,6 +21,7 @@
             public const string GameIdRequired = nameof(GameIdRequired);
             public const string UserIdRequired = nameof(UserIdRequired);
             public const string GameNotFoundOrInactive = nameof(GameNotFoundOrInactive);
+            public const string GameRoundNotFoundOrInactive = nameof(GameRoundNotFoundOrInactive);
             public const string UserAlreadyJoined = nameof(UserAlreadyJoined);
             public const string GameRoundIdRequired = nameof(GameRoundIdRequired);
             public const string PlayerIdRequired = nameof(PlayerIdRequired);

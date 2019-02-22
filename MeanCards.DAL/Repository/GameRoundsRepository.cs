@@ -25,6 +25,7 @@ namespace MeanCards.DAL.Repository
             var newRound = new GameRound
             {
                 GameId = model.GameId,
+                Code = model.RoundCode,
                 Number = model.RoundNumber,
                 QuestionCardId = model.QuestionCardId,
                 OwnerPlayerId = model.OwnerPlayerId,
@@ -48,12 +49,25 @@ namespace MeanCards.DAL.Repository
             {
                 GameId = round.GameId,
                 GameRoundId = round.GameRoundId,
+                Code = round.Code,
                 IsActive = round.IsActive,
                 Number = round.Number,
                 OwnerPlayerId = round.OwnerPlayerId,
                 QuestionCardId = round.QuestionCardId,
                 WinnerPlayerId = round.WinnerPlayerId,
                 Status = (GameRoundStatusEnum)round.Status
+            };
+        }
+
+        private GameRoundSimpleModel MapToSimpleModel(GameRound round)
+        {
+            if (round == null)
+                return null;
+
+            return new GameRoundSimpleModel
+            {
+                GameRoundId = round.GameRoundId,
+                GameRoundCode = round.Code
             };
         }
 
@@ -78,6 +92,17 @@ namespace MeanCards.DAL.Repository
             var round = await query.FirstOrDefaultAsync();
 
             return MapToModel(round);
+        }
+
+        public async Task<GameRoundSimpleModel> GetGameRoundByCode(string code)
+        {
+            var query = from r in context.GameRounds
+                        where r.Code == code
+                        select r;
+
+            var round = await query.FirstOrDefaultAsync();
+
+            return MapToSimpleModel(round);
         }
 
         public async Task<bool> UpdateGameRoundStatus(int gameRoundId, GameRoundStatusEnum status)

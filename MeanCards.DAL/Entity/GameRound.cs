@@ -14,6 +14,7 @@ namespace MeanCards.DAL.Entity
         [Key]
         public int GameRoundId { get; set; }
         public int GameId { get; set; }
+        public string Code { get; set; }
         public byte Status { get; set; }
         public int Number { get; set; }
         public int QuestionCardId { get; set; }
