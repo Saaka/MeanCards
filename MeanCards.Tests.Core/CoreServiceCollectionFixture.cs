@@ -32,7 +32,8 @@ namespace MeanCards.Tests.Core
                 .RegisterDAL()
                 .RegisterIdentityStore()
                 .RegisterDomainServices()
-                .RegisterCommon();
+                .RegisterCommon()
+                .RegisterLegacyHandlerInterfaces();
         }
 
         protected override void OnServiceCollectionInitialized()

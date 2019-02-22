@@ -1,6 +1,9 @@
 ﻿using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.DAL.Storage;
+using MeanCards.GameManagement;
+using MeanCards.Queries.GameQueries;
 using MeanCards.Tests.Integration.BaseTests.Transactions;
+using MeanCards.UserManagement;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +29,29 @@ namespace MeanCards.Tests.Integration.Config
             //Mock transaction, TransactionScope is currently unavailable for SqliteConnection
             services
                 .AddTransient<IRepositoryTransactionsFactory, SqliteMockTransactionScopeFactory>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterLegacyHandlerInterfaces(this IServiceCollection services)
+        {
+            services
+                //Handlers
+                .AddScoped<ICreateUserHandler, CreateUserHandler>()
+                .AddScoped<IAuthenticateGoogleUserHandler, AuthenticateGoogleUserHandler>()
+                .AddScoped<ICreateGameHandler, CreateGameHandler>()
+                .AddScoped<IJoinGameHandler, JoinGameHandler>()
+                .AddScoped<IStartGameRoundHandler, StartGameRoundHandler>()
+                .AddScoped<ISubmitAnswerHandler, SubmitAnswerHandler>()
+                .AddScoped<IEndSubmissionsHandler, EndSubmissionsHandler>()
+                .AddScoped<ISkipRoundHandler, SkipRoundHandler>()
+                .AddScoped<ICancelGameHandler, CancelGameHandler>()
+                .AddScoped<ISelectAnswerHandler, SelectAnswerHandler>()
+
+                //query handlers
+                .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
+                .AddScoped<IGetUserByCodeHandler, GetUserByCodeHandler>()
+                .AddScoped<IGetGameListQueryHandler, GetGameListQueryHandler>();
 
             return services;
         }

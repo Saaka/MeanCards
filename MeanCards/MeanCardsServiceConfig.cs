@@ -20,26 +20,6 @@ namespace MeanCards
         public static IServiceCollection RegisterDomainServices(this IServiceCollection services)
         {
             services
-
-                //Handlers
-                .AddScoped<ICreateUserHandler, CreateUserHandler>()
-                .AddScoped<IAuthenticateGoogleUserHandler, AuthenticateGoogleUserHandler>()
-
-                .AddScoped<ICreateGameHandler, CreateGameHandler>()
-                .AddScoped<IJoinGameHandler, JoinGameHandler>()
-                .AddScoped<IStartGameRoundHandler, StartGameRoundHandler>()
-                .AddScoped<ISubmitAnswerHandler, SubmitAnswerHandler>()
-                .AddScoped<IEndSubmissionsHandler, EndSubmissionsHandler>()
-                .AddScoped<ISkipRoundHandler, SkipRoundHandler>()
-                .AddScoped<ICancelGameHandler, CancelGameHandler>()
-                .AddScoped<ISelectAnswerHandler, SelectAnswerHandler>()
-
-                //query handlers
-                .AddScoped<IGetUserByCredentialsHandler, GetUserByCredentialsHandler>()
-                .AddScoped<IGetUserByCodeHandler, GetUserByCodeHandler>()
-
-                .AddScoped<IGetGameListQueryHandler, GetGameListQueryHandler>()
-
                 //Core services
                 .AddScoped<IGameCheckpointUpdater, GameCheckpointUpdater>()
                 .AddScoped<INextGameRoundOwnerProvider, NextGameRoundOwnerProvider>()

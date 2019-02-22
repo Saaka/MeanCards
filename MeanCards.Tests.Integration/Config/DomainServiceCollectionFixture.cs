@@ -20,7 +20,8 @@ namespace MeanCards.Tests.Integration.Config
                 .RegisterDAL()
                 .RegisterIdentityStore()
                 .RegisterDomainServices()
-                .RegisterCommon();
+                .RegisterCommon()
+                .RegisterLegacyHandlerInterfaces();
         }
 
         protected virtual SqliteConnection CreateConnection()

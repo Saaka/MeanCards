@@ -37,7 +37,7 @@ namespace MeanCards.WebAPI.Services
                 Email = request.Email,
                 DisplayName = request.DisplayName,
                 Password = request.Password
-            }, new System.Threading.CancellationToken());
+            });
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 
@@ -59,7 +59,7 @@ namespace MeanCards.WebAPI.Services
             {
                 Email = request.Email,
                 Password = request.Password
-            }, new System.Threading.CancellationToken());
+            });
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 
@@ -87,7 +87,7 @@ namespace MeanCards.WebAPI.Services
                 DisplayName = googleResult.TokenInfo.DisplayName,
                 Email = googleResult.TokenInfo.Email,
                 ImageUrl = googleResult.TokenInfo.ImageUrl
-            }, new System.Threading.CancellationToken());
+            });
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 
