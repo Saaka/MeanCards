@@ -17,6 +17,12 @@ const GameList = (props) => {
             .then(resp => onGameListLoaded(resp.data));
     }, []);
 
+    useEffect(() => {
+        if(props.location.state && props.location.state.error) {
+            toggleError(true, props.location.state.error);
+        }
+    }, [])
+
     function onGameListLoaded(data) {
         setGameList(data.list);
         setLoading(false);

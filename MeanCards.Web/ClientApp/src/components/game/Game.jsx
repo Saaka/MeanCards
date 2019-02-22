@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import { GameRepository } from './GameRepository';
 import { Loader } from 'CommonComponents';
+import { Constants } from 'Services';
 
 const Game = (props) => {
+    const repository = new GameRepository();
     const [game, setGame] = useState({
-        number: 1,
         code: props.match.params.code
     });
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => setLoading(false), []);
+    useEffect(() => loadGame(), []);
 
-    function updateGame() {
-        setGame(prev => ({
-            ...game,
-            number: prev.number + 1 
-        }));
+    function loadGame() {
+        repository
+            .getGame(props.match.params.code)
+            .then(resp => updateGame(resp.data))
+            .catch(err => {
+                props.history.push(Constants.Routes.GAMELIST, { error: err });
+            });
+    }
+
+    function updateGame(gameData) {
+        setGame(gameData);
+        setLoading(false);
     }
 
     return (
         <div>
-            <h1>Game {game.code}</h1>
-            <h2>{game.number}</h2>
-            <button className="btn btn-primary"
-                onClick={updateGame}>Update</button>
+            <h1>{game.name}</h1>
+
             <Loader isLoading={loading} />
         </div>
     );

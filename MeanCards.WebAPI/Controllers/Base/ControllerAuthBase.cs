@@ -45,5 +45,18 @@ namespace MeanCards.WebAPI.Controllers.Base
                 return BadRequest(@base.Error);
             }
         }
+
+        protected ActionResult GetResult<T>(T @base) 
+            where T: BaseResult
+        {
+            if (@base.IsSuccessful)
+            {
+                return Ok(@base);
+            }
+            else
+            {
+                return BadRequest(@base.Error);
+            }
+        }
     }
 }

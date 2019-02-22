@@ -29,7 +29,7 @@ namespace MeanCards.WebAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<CreateGameResult>> Post([FromBody] CreateGame model)
+        public async Task<ActionResult<CreateGameResponse>> Create([FromBody] CreateGame model)
         {
             var user = await GetUserData();
             var result = await mediator
@@ -42,14 +42,14 @@ namespace MeanCards.WebAPI.Controllers
                     UserId = user.UserId
                 });
 
-            return CreateResult(result, () => new CreateGameResult
+            return CreateResult(result, () => new CreateGameResponse
             {
                 GameCode = result.Code
             });
         }
 
         [HttpGet("join/{gameCode}")]
-        public async Task<ActionResult<JoinGameResult>> JoinGame(string gameCode)
+        public async Task<ActionResult<JoinGameResponse>> JoinGame(string gameCode)
         {
             var user = await GetUserData();
             var game = await GetGame(gameCode);
@@ -61,7 +61,7 @@ namespace MeanCards.WebAPI.Controllers
                     UserId = user.UserId
                 });
 
-            return CreateResult<JoinGameResult>(result);
+            return CreateResult<JoinGameResponse>(result);
         }
 
         [HttpGet("list")]
@@ -79,6 +79,22 @@ namespace MeanCards.WebAPI.Controllers
             {
                 List = result.List
             });
+        }
+
+        [HttpGet("{gameCode}")]
+        public async Task<ActionResult<GetGameListResponse>> Get(string gameCode)
+        {
+            var user = await GetUserData();
+            var game = await GetGame(gameCode);
+
+            var result = await mediator
+                .Send(new Model.Core.Queries.GetGame
+                {
+                    GameId = game.GameId,
+                    UserId = user.UserId
+                });
+
+            return GetResult(result);
         }
 
         private async Task<GameSimpleModel> GetGame(string code)

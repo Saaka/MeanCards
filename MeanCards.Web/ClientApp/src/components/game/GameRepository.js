@@ -8,6 +8,11 @@ export class GameRepository {
             .post(Constants.ApiRoutes.CREATE_GAME, model);
     };
 
+    getGame = (gameCode) => {
+        return this.httpService
+            .get(`${Constants.ApiRoutes.GET_GAME}/${gameCode}`);
+    };
+
     getGameList = () => {
         return this.httpService
             .get(Constants.ApiRoutes.GAME_LIST);

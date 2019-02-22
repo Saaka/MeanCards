@@ -45,7 +45,7 @@ namespace MeanCards.Queries.GameQueries
                 FROM	meancards.Games G
 		                JOIN meancards.AspNetUsers U ON G.OwnerId = U.Id
 		                JOIN meancards.Languages L ON G.LanguageId = L.LanguageId
-	                    LEFT JOIN meancards.Players P ON P.UserId = @UserId AND P.IsActive = 1
+	                    LEFT JOIN meancards.Players P ON P.UserId = @UserId AND P.IsActive = 1 AND P.GameId = G.GameId
                 WHERE	G.IsActive = 1";
     }
 }

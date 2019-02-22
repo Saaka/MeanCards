@@ -1,6 +1,6 @@
 ﻿namespace MeanCards.ViewModel.Game
 {
-    public class CreateGameResult
+    public class CreateGameResponse
     {
         public string GameCode { get; set; }
     }
