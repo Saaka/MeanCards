@@ -22,7 +22,7 @@ namespace MeanCards.Queries.GameQueries
 
         public async Task<GetGameListResult> Handle(GetGameList request)
         {
-            var gameList = await queryExecutor.Query<GameListItem>(queryString);
+            var gameList = await queryExecutor.Query<GameListItem>(queryString, new { UserId = request.UserId });
 
             return new GetGameListResult
             {
@@ -38,10 +38,12 @@ namespace MeanCards.Queries.GameQueries
 		                U.Email as [OwnerEmail],
 		                G.ShowAdultContent as [AdultContent],
 		                L.Code as [LanguageCode],
-		                G.CreateDate as [CreateDate]
+		                G.CreateDate as [CreateDate],
+	                    CASE WHEN P.PlayerId IS NULL THEN 0 ELSE 1 END as [AlreadyJoined]
                 FROM	meancards.Games G
 		                JOIN meancards.AspNetUsers U ON G.OwnerId = U.Id
 		                JOIN meancards.Languages L ON G.LanguageId = L.LanguageId
+	                    LEFT JOIN meancards.Players P ON P.UserId = @UserId AND P.IsActive = 1
                 WHERE	G.IsActive = 1";
     }
 }

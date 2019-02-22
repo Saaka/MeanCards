@@ -53,11 +53,11 @@ namespace MeanCards.WebAPI.Controllers
             });
         }
 
-        [HttpGet("join")]
-        public async Task<ActionResult<JoinGameResult>> JoinGame(JoinGame request)
+        [HttpGet("join/{gameCode}")]
+        public async Task<ActionResult<JoinGameResult>> JoinGame(string gameCode)
         {
             var user = await GetUserData();
-            var game = await GetGame(request.GameCode);
+            var game = await GetGame(gameCode);
 
             var result = await joinGameHandler
                 .Handle(new Model.Core.Games.JoinGame
@@ -66,10 +66,7 @@ namespace MeanCards.WebAPI.Controllers
                     UserId = user.UserId
                 });
 
-            return CreateResult(result, () => new JoinGameResult
-            {
-                
-            });
+            return CreateResult<JoinGameResult>(result);
         }
 
         [HttpGet("list")]
@@ -77,7 +74,10 @@ namespace MeanCards.WebAPI.Controllers
         {
             var user = await GetUserData();
             var result = await gameListQueryHandler
-                .Handle(new GetGameList());
+                .Handle(new GetGameList
+                {
+                    UserId = user.UserId
+                });
 
             return Ok(result);
         }

@@ -12,4 +12,9 @@ export class GameRepository {
         return this.httpService
             .get(Constants.ApiRoutes.GAME_LIST);
     };
+
+    joinGame = (gameCode) => {
+        return this.httpService
+            .get(`${Constants.ApiRoutes.JOIN_GAME}/${gameCode}`);
+    };
 }

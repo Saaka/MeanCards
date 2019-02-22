@@ -12,5 +12,6 @@ namespace MeanCards.ViewModel.Game.Models
         public bool AdultContent { get; set; }
         public string LanguageCode { get; set; }
         public DateTime CreateDate { get; set; }
+        public bool AlreadyJoined { get; set; }
     }
 }

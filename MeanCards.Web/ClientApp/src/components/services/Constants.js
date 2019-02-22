@@ -16,6 +16,9 @@ Constants.ApiRoutes = class ApiRoutes {
     static get GAME_LIST() {
         return "game/list";
     }
+    static get JOIN_GAME() {
+        return "game/join";
+    }
 }
 
 Constants.Routes = class Routes {

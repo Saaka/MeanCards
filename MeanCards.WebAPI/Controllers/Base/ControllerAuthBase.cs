@@ -32,5 +32,18 @@ namespace MeanCards.WebAPI.Controllers.Base
                 return BadRequest(@base.Error);
             }
         }
+
+        protected ActionResult CreateResult<T>(BaseResult @base)
+            where T : class, new()
+        {
+            if (@base.IsSuccessful)
+            {
+                return Ok(new T());
+            }
+            else
+            {
+                return BadRequest(@base.Error);
+            }
+        }
     }
 }
