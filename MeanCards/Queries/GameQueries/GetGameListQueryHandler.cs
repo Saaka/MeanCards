@@ -22,7 +22,7 @@ namespace MeanCards.Queries.GameQueries
 
         public async Task<GetGameListResult> Handle(GetGameList request)
         {
-            var gameList = await queryExecutor.Query<GameListItem>(queryString, new { UserId = request.UserId });
+            var gameList = await queryExecutor.Query<GameListItem>(queryString, new { request.UserId });
 
             return new GetGameListResult
             {
