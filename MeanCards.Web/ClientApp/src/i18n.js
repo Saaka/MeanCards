@@ -10,8 +10,9 @@ i18n
             en: {
                 translation: {
                     "helloTest": "Hello, {{name}}!",
+                    "googleLogin": "Sign in with Google!",
                     "UserNotFound": "Could not find user with specified email and password",
-                    "googleLogin": "Sign in with Google!"
+                    "PlayerNotFound": "Player does not have privileges for selected game"
                 }
             },
             pl: {

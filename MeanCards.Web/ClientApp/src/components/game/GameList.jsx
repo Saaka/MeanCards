@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Trans } from 'react-i18next';
 import { GameRepository } from './GameRepository';
 import { Loader } from 'CommonComponents';
 import { Alert } from 'reactstrap';
@@ -67,7 +68,7 @@ const GameList = (props) => {
                         )}
                     </tbody>
                 </table>
-                <Alert color="danger" isOpen={showError} toggle={() => toggleError(false)}>{error}</Alert>
+                <Alert color="danger" isOpen={showError} toggle={() => toggleError(false)}><Trans>{error}</Trans></Alert>
                 <Loader isLoading={isLoading} />
             </div>
         </div>
