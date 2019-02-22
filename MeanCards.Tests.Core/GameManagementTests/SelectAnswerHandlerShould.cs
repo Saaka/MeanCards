@@ -30,7 +30,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
 
             var handler = Fixture.GetService<ISelectAnswerHandler>();
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.True(result.IsSuccessful);
             Assert.Null(result.Error);
@@ -69,7 +69,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                     PlayerAnswerId = playerAnswer.PlayerAnswerId
                 };
 
-                var result = await handler.Handle(request);
+                var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
                 Assert.True(result.IsSuccessful);
                 Assert.Null(result.Error);

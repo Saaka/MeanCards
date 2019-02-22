@@ -9,16 +9,14 @@ using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Model.DTO.Players;
 using MeanCards.Validators;
-using System;
-using System.Linq;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface ICreateGameHandler
-    {
-        Task<CreateGameResult> Handle(CreateGame request);
-    }
+    public interface ICreateGameHandler : IRequestHandler<CreateGame, CreateGameResult>
+    { }
 
     public class CreateGameHandler : ICreateGameHandler
     {
@@ -51,7 +49,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<CreateGameResult> Handle(CreateGame request)
+        public async Task<CreateGameResult> Handle(CreateGame request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
@@ -62,7 +60,7 @@ namespace MeanCards.GameManagement
                 var gameCode = codeGenerator.Generate();
 
                 var game = await CreateGame(request, gameCode);
-                
+
                 var player = await CreatePlayer(game.GameId, request.UserId);
 
                 var createRoundResult = await gameRoundCreator

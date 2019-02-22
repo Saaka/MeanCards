@@ -21,7 +21,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 UserId = game.OwnerId
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.True(result.IsSuccessful);
             Assert.Null(result.Error);

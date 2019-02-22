@@ -5,15 +5,14 @@ using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Validators;
-using System;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface ISubmitAnswerHandler
-    {
-        Task<SubmitAnswerResult> Handle(SubmitAnswer request);
-    }
+    public interface ISubmitAnswerHandler : IRequestHandler<SubmitAnswer, SubmitAnswerResult>
+    { }
 
     public class SubmitAnswerHandler : ISubmitAnswerHandler
     {
@@ -40,7 +39,7 @@ namespace MeanCards.GameManagement
             this.playerCardsRepository = playerCardsRepository;
         }
 
-        public async Task<SubmitAnswerResult> Handle(SubmitAnswer request)
+        public async Task<SubmitAnswerResult> Handle(SubmitAnswer request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
@@ -70,7 +69,7 @@ namespace MeanCards.GameManagement
                 AnswerCardId = await GetAnswerCardId(request.PlayerCardId),
                 SecondaryAnswerCardId = await GetSecondaryAnswerCardId(request.SecondPlayerCardId)
             };
-            var answerId =  await playerAnswerRepository.CreatePlayerAnswer(submitModel);
+            var answerId = await playerAnswerRepository.CreatePlayerAnswer(submitModel);
 
             await MarkCardAsUsed(request.PlayerCardId);
             await MarkCardAsUsed(request.SecondPlayerCardId);
@@ -83,7 +82,7 @@ namespace MeanCards.GameManagement
             if (!playerCardId.HasValue)
                 return;
 
-            await playerCardsRepository.MarkCardAsUsed(playerCardId.Value);   
+            await playerCardsRepository.MarkCardAsUsed(playerCardId.Value);
         }
 
         private async Task<int> GetAnswerCardId(int playerCardId)

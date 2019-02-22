@@ -22,6 +22,7 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             var repository = Fixture.GetService<IGameRoundsRepository>();
             var createRound = new CreateGameRoundModel
             {
+                RoundCode = "123",
                 GameId = gameId,
                 OwnerPlayerId = playerId,
                 QuestionCardId = questionCardId,
@@ -34,10 +35,11 @@ namespace MeanCards.Tests.Integration.RepositoryTests
             Assert.NotNull(gameRound);
             Assert.Equal(playerId, gameRound.OwnerPlayerId);
             Assert.Equal(gameId, gameRound.GameId);
+            Assert.Equal("123", gameRound.Code);
             Assert.Equal(questionCardId, gameRound.QuestionCardId);
             Assert.Equal(1, gameRound.Number);
             Assert.Equal(GameRoundStatusEnum.Pending, gameRound.Status);
-            TestHelper.AssertNumberOfFields<CreateGameRoundModel>(4);
+            TestHelper.AssertNumberOfFields<CreateGameRoundModel>(5);
         }
 
         private async Task<int> CreateQuestionCard(int languageId)

@@ -2,14 +2,14 @@
 using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Users;
 using MeanCards.Model.DTO.Users;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.UserManagement
 {
-    public interface IGetUserByCredentialsHandler
-    {
-        Task<GetUserByCredentialsResult> Handle(GetUserByCredentials data);
-    }
+    public interface IGetUserByCredentialsHandler : IRequestHandler<GetUserByCredentials, GetUserByCredentialsResult>
+    { }
 
     public class GetUserByCredentialsHandler : IGetUserByCredentialsHandler
     {
@@ -20,7 +20,7 @@ namespace MeanCards.UserManagement
             this.repository = repository;
         }
 
-        public async Task<GetUserByCredentialsResult> Handle(GetUserByCredentials data)
+        public async Task<GetUserByCredentialsResult> Handle(GetUserByCredentials data, CancellationToken cancellationToken)
         {
             var result = await repository.GetUserByCredentials(new Model.DAL.Access.Users.GetUserByCredentialsModel
             {
@@ -32,7 +32,7 @@ namespace MeanCards.UserManagement
                 return new GetUserByCredentialsResult(result.Error);
 
             return new GetUserByCredentialsResult
-            { 
+            {
                 User = new UserModel
                 {
                     Code = result.Model.Code,

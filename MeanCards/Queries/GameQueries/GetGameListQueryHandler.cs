@@ -1,14 +1,16 @@
 ﻿using MeanCards.DAL.Interfaces.Queries;
+using MeanCards.Model.Core.Queries;
 using MeanCards.ViewModel.Game;
 using MeanCards.ViewModel.Game.Models;
+using MediatR;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.Queries.GameQueries
 {
-    public interface IGetGameListQueryHandler
+    public interface IGetGameListQueryHandler : IRequestHandler<GetGameList, GetGameListResult>
     {
-        Task<GetGameListResult> Handle(GetGameList request);
     }
 
     public class GetGameListQueryHandler : IGetGameListQueryHandler
@@ -20,7 +22,7 @@ namespace MeanCards.Queries.GameQueries
             this.queryExecutor = queryExecutor;
         }
 
-        public async Task<GetGameListResult> Handle(GetGameList request)
+        public async Task<GetGameListResult> Handle(GetGameList request, CancellationToken cancellationToken)
         {
             var gameList = await queryExecutor.Query<GameListItem>(queryString, new { request.UserId });
 

@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MeanCards.Common\MeanCards.Common.csproj" />
+    <ProjectReference Include="..\MeanCards.ViewModel\MeanCards.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

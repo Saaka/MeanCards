@@ -1,6 +1,8 @@
-﻿namespace MeanCards.Model.Core.Users
+﻿using MediatR;
+
+namespace MeanCards.Model.Core.Users
 {
-    public class GetUserByCredentials
+    public class GetUserByCredentials : IRequest<GetUserByCredentialsResult>
     {
         public string Email { get; set; }
         public string Password { get; set; }

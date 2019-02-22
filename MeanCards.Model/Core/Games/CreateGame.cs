@@ -1,6 +1,8 @@
-﻿namespace MeanCards.Model.Core.Games
+﻿using MediatR;
+
+namespace MeanCards.Model.Core.Games
 {
-    public class CreateGame : IBaseRequest, IUserRequest
+    public class CreateGame : IRequest<CreateGameResult>, IUserRequest
     {
         public string Name { get; set; }
         public int LanguageId { get; set; }

@@ -2,6 +2,7 @@
 using MeanCards.UserManagement;
 using MeanCards.ViewModel.Auth;
 using MeanCards.WebAPI.Services.Google;
+using MediatR;
 using System;
 using System.Threading.Tasks;
 
@@ -17,32 +18,26 @@ namespace MeanCards.WebAPI.Services
     public  class AuthenticateService : IAuthenticateService
     {
         private readonly IJwtTokenFactory tokenFactory;
-        private readonly ICreateUserHandler createUserHandler;
-        private readonly IGetUserByCredentialsHandler getUserByCredentialsHandler;
-        private readonly IAuthenticateGoogleUserHandler authenticateGoogleUserHandler;
         private readonly IGoogleTokenVerificationService googleTokenVerificationService;
+        private readonly IMediator mediator;
 
         public AuthenticateService(IJwtTokenFactory tokenFactory,
-            ICreateUserHandler createUserHandler,
-            IGetUserByCredentialsHandler getUserByCredentialsHandler,
-            IAuthenticateGoogleUserHandler authenticateGoogleUserHandler,
-            IGoogleTokenVerificationService googleTokenVerificationService)
+            IGoogleTokenVerificationService googleTokenVerificationService,
+            IMediator mediator)
         {
             this.tokenFactory = tokenFactory;
-            this.createUserHandler = createUserHandler;
-            this.getUserByCredentialsHandler = getUserByCredentialsHandler;
-            this.authenticateGoogleUserHandler = authenticateGoogleUserHandler;
             this.googleTokenVerificationService = googleTokenVerificationService;
+            this.mediator = mediator;
         }
 
         public async Task<AuthenticateUserResult> RegisterUser(RegisterUserRequest request)
         {
-            var result = await createUserHandler.Handle(new CreateUser
+            var result = await mediator.Send(new CreateUser
             {
                 Email = request.Email,
                 DisplayName = request.DisplayName,
                 Password = request.Password
-            });
+            }, new System.Threading.CancellationToken());
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 
@@ -60,11 +55,11 @@ namespace MeanCards.WebAPI.Services
 
         public async Task<AuthenticateUserResult> AuthenticateUser(AuthenticateUserRequest request)
         {
-            var result = await getUserByCredentialsHandler.Handle(new GetUserByCredentials
+            var result = await mediator.Send(new GetUserByCredentials
             {
                 Email = request.Email,
                 Password = request.Password
-            });
+            }, new System.Threading.CancellationToken());
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 
@@ -86,13 +81,13 @@ namespace MeanCards.WebAPI.Services
             if (!googleResult.IsSuccessful)
                 return new AuthenticateUserResult(googleResult.Error);
 
-            var result = await authenticateGoogleUserHandler.Handle(new AuthenticateGoogleUser
+            var result = await mediator.Send(new AuthenticateGoogleUser
             {
                 GoogleId = googleResult.TokenInfo.GoogleUserId,
                 DisplayName = googleResult.TokenInfo.DisplayName,
                 Email = googleResult.TokenInfo.Email,
                 ImageUrl = googleResult.TokenInfo.ImageUrl
-            });
+            }, new System.Threading.CancellationToken());
             if (!result.IsSuccessful)
                 return new AuthenticateUserResult(result.Error);
 

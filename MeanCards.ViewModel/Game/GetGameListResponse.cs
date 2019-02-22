@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MeanCards.ViewModel.Game
 {
-    public class GetGameListResult
+    public class GetGameListResponse
     {
         public List<GameListItem> List { get; set; }
     }

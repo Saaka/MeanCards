@@ -68,7 +68,7 @@ namespace MeanCards.Tests.Core
                 UserId = userId,
                 ShowAdultContent = showAdultContent,
                 PointsLimit = pointsLimit
-            });
+            }, new System.Threading.CancellationToken());
 
             await AddPlayersToGame(result.GameId, additionalPlayersCount);
 
@@ -95,7 +95,7 @@ namespace MeanCards.Tests.Core
                 GameRoundId = gameRoundId,
                 GameId = gameId,
                 UserId = userId
-            });
+            }, new System.Threading.CancellationToken());
         }
 
         public async Task EndSubmissions(int gameId, int gameRoundId, int userId)
@@ -106,7 +106,7 @@ namespace MeanCards.Tests.Core
                 GameRoundId = gameRoundId,
                 GameId = gameId,
                 UserId = userId
-            });
+            }, new System.Threading.CancellationToken());
         }
 
         public async Task<JoinGameResult> AddNewPlayerToGame(int gameId)
@@ -125,7 +125,7 @@ namespace MeanCards.Tests.Core
             {
                 GameId = gameId,
                 UserId = userId
-            });
+            }, new System.Threading.CancellationToken());
         }
 
         public async Task<PlayerAnswerModel> GetPlayerAnswer(int gameRoundId, int playerId)
@@ -176,7 +176,7 @@ namespace MeanCards.Tests.Core
             };
 
             var handler = GetService<ISubmitAnswerHandler>();
-            await handler.Handle(request);
+            await handler.Handle(request, new System.Threading.CancellationToken());
         }
 
         public async Task<GameModel> GetGame(int gameId)

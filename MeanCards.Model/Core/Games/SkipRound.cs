@@ -1,8 +1,9 @@
 ﻿using MeanCards.Model.Core.Games.Base;
+using MediatR;
 
 namespace MeanCards.Model.Core.Games
 {
-    public class SkipRound : IBaseRequest, IGameRequest, IGameRoundRequest, IUserRequest, IPlayerRequest
+    public class SkipRound : IRequest<SkipRoundResult>, IGameRequest, IGameRoundRequest, IUserRequest, IPlayerRequest
     {
         public int UserId { get; set; }
         public int GameId { get; set; }

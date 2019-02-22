@@ -35,7 +35,7 @@ namespace MeanCards.WebAPI.Services
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                 ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var result = await getUserByCodeHandler.Handle(new GetUserByCode { UserCode = userCode });
+                var result = await getUserByCodeHandler.Handle(new GetUserByCode { UserCode = userCode }, new System.Threading.CancellationToken());
                 if (!result.IsSuccessful)
                     throw new ArgumentException(result.Error);
 

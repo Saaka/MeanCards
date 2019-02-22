@@ -7,7 +7,6 @@ namespace MeanCards.Queries.GameQueries
 {
     public interface IGetGameQueryHandler
     {
-
     }
 
     public class GetGameQueryHandler : IGetGameQueryHandler

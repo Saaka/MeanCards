@@ -21,7 +21,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 DisplayName = "Jimmy"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.True(result.IsSuccessful);
@@ -45,7 +45,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 DisplayName = "Jimmy"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);

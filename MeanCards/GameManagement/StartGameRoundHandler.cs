@@ -4,14 +4,14 @@ using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface IStartGameRoundHandler
-    {
-        Task<StartGameRoundResult> Handle(StartGameRound request);
-    }
+    public interface IStartGameRoundHandler : IRequestHandler<StartGameRound, StartGameRoundResult>
+    { }
 
     public class StartGameRoundHandler : IStartGameRoundHandler
     {
@@ -32,7 +32,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<StartGameRoundResult> Handle(StartGameRound request)
+        public async Task<StartGameRoundResult> Handle(StartGameRound request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {

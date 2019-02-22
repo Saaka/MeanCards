@@ -25,7 +25,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 UserId = newUserId
             };
 
-            var result = await joinGameHandler.Handle(request);
+            var result = await joinGameHandler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.True(result.IsSuccessful);
             Assert.NotEqual(0, result.PlayerId);
@@ -44,7 +44,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 UserId = game.OwnerId
             };
 
-            var result = await joinGameHandler.Handle(request);
+            var result = await joinGameHandler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(0, result.PlayerId);

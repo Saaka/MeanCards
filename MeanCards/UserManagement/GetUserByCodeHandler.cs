@@ -1,12 +1,13 @@
 ﻿using MeanCards.DAL.Interfaces.Repository;
 using MeanCards.Model.Core.Users;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.UserManagement
 {
-    public interface IGetUserByCodeHandler
+    public interface IGetUserByCodeHandler : IRequestHandler<GetUserByCode, GetUserByCodeResult>
     {
-        Task<GetUserByCodeResult> Handle(GetUserByCode request);
     }
 
     public class GetUserByCodeHandler : IGetUserByCodeHandler
@@ -18,7 +19,7 @@ namespace MeanCards.UserManagement
             this.repository = repository;
         }
 
-        public async Task<GetUserByCodeResult> Handle(GetUserByCode request)
+        public async Task<GetUserByCodeResult> Handle(GetUserByCode request, CancellationToken cancellationToken)
         {
             var result = await repository.GetUserByCode(request.UserCode);
             if (!result.IsSuccessful)

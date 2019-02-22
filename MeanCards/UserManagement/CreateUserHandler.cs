@@ -5,14 +5,14 @@ using MeanCards.Model.Core.Users;
 using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DTO.Users;
 using MeanCards.Validators;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.UserManagement
 {
-    public interface ICreateUserHandler
-    {
-        Task<CreateUserResult> Handle(CreateUser request);
-    }
+    public interface ICreateUserHandler : IRequestHandler<CreateUser, CreateUserResult>
+    { }
 
     public class CreateUserHandler : ICreateUserHandler
     {
@@ -32,7 +32,7 @@ namespace MeanCards.UserManagement
             this.imageUrlProvider = imageUrlProvider;
         }
 
-        public async Task<CreateUserResult> Handle(CreateUser request)
+        public async Task<CreateUserResult> Handle(CreateUser request, CancellationToken cancellationToken)
         {
             var validationResult = await requestValidator.Validate(request);
             if (!validationResult.IsSuccessful)

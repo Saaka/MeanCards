@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MeanCards.Configuration;
 using MeanCards.DAL;
+using MediatR;
+using MeanCards.Queries.GameQueries;
 
 namespace MeanCards.WebAPI.Config
 {
@@ -26,7 +28,8 @@ namespace MeanCards.WebAPI.Config
         public static IServiceCollection RegisterLibs(this IServiceCollection services)
         {
             return services
-                .AddMemoryCache();
+                .AddMemoryCache()
+                .AddMediatR(typeof(GetGameListQueryHandler));
         }
     }
 }

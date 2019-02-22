@@ -1,6 +1,8 @@
-﻿namespace MeanCards.Model.Core.Users
+﻿using MediatR;
+
+namespace MeanCards.Model.Core.Users
 {
-    public class AuthenticateGoogleUser
+    public class AuthenticateGoogleUser : IRequest<CreateUserResult>
     {
         public string DisplayName { get; set; }
         public string Email { get; set; }

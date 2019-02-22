@@ -1,6 +1,6 @@
-﻿using MeanCards.Model.Core;
-using MeanCards.Validators;
+﻿using MeanCards.Validators;
 using MeanCards.Validators.Games;
+using MediatR;
 using Moq;
 using System.Threading.Tasks;
 

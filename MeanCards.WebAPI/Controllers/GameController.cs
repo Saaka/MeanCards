@@ -3,6 +3,7 @@ using MeanCards.Model.DTO.Games;
 using MeanCards.Queries.GameQueries;
 using MeanCards.ViewModel.Game;
 using MeanCards.WebAPI.Controllers.Base;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,30 +16,24 @@ namespace MeanCards.WebAPI.Controllers
     public class GameController : ControllerAuthBase
     {
         private readonly IGameDataProvider gameDataProvider;
-        private readonly ICreateGameHandler createGameHandler;
-        private readonly IJoinGameHandler joinGameHandler;
-        private readonly IGetGameListQueryHandler gameListQueryHandler;
+        private readonly IMediator mediator;
 
         public GameController(
             IUserContextDataProvider userContextDataProvider,
             IGameDataProvider gameDataProvider,
-            ICreateGameHandler createGameHandler,
-            IJoinGameHandler joinGameHandler,
-            IGetGameListQueryHandler gameListQueryHandler)
+            IMediator mediator)
             : base(userContextDataProvider)
         {
             this.gameDataProvider = gameDataProvider;
-            this.createGameHandler = createGameHandler;
-            this.joinGameHandler = joinGameHandler;
-            this.gameListQueryHandler = gameListQueryHandler;
+            this.mediator = mediator;
         }
 
         [HttpPost("create")]
         public async Task<ActionResult<CreateGameResult>> Post([FromBody] CreateGame model)
         {
             var user = await GetUserData();
-            var result = await createGameHandler
-                .Handle(new Model.Core.Games.CreateGame
+            var result = await mediator
+                .Send(new Model.Core.Games.CreateGame
                 {
                     LanguageId = model.LanguageId,
                     Name = model.Name,
@@ -59,8 +54,8 @@ namespace MeanCards.WebAPI.Controllers
             var user = await GetUserData();
             var game = await GetGame(gameCode);
 
-            var result = await joinGameHandler
-                .Handle(new Model.Core.Games.JoinGame
+            var result = await mediator
+                .Send(new Model.Core.Games.JoinGame
                 {
                     GameId = game.GameId,
                     UserId = user.UserId
@@ -70,16 +65,20 @@ namespace MeanCards.WebAPI.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<GetGameListResult>> GetGameList()
+        public async Task<ActionResult<GetGameListResponse>> GetGameList()
         {
             var user = await GetUserData();
-            var result = await gameListQueryHandler
-                .Handle(new GetGameList
+
+            var result = await mediator
+                .Send(new Model.Core.Queries.GetGameList
                 {
                     UserId = user.UserId
                 });
 
-            return Ok(result);
+            return CreateResult(result, () => new GetGameListResponse
+            {
+                List = result.List
+            });
         }
 
         private async Task<GameSimpleModel> GetGame(string code)

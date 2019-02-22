@@ -1,6 +1,8 @@
 ﻿using MeanCards.Common;
 using MeanCards.DAL;
+using MeanCards.GameManagement;
 using MeanCards.Tests.Base.Fixtures;
+using MediatR;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 

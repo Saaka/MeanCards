@@ -4,15 +4,14 @@ using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators;
-using System;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface ISelectAnswerHandler
-    {
-        Task<SelectAnswerResult> Handle(SelectAnswer request);
-    }
+    public interface ISelectAnswerHandler : IRequestHandler<SelectAnswer, SelectAnswerResult>
+    { }
 
     public class SelectAnswerHandler : ISelectAnswerHandler
     {
@@ -45,7 +44,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<SelectAnswerResult> Handle(SelectAnswer request)
+        public async Task<SelectAnswerResult> Handle(SelectAnswer request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {

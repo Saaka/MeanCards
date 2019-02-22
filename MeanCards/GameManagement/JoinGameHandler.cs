@@ -6,15 +6,15 @@ using MeanCards.Model.Core.Games;
 using MeanCards.Model.DAL.Creation.Players;
 using MeanCards.Model.DTO.Players;
 using MeanCards.Validators;
+using MediatR;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface IJoinGameHandler
-    {
-        Task<JoinGameResult> Handle(JoinGame request);
-    }
+    public interface IJoinGameHandler : IRequestHandler<JoinGame, JoinGameResult>
+    { }
 
     public class JoinGameHandler : IJoinGameHandler
     {
@@ -41,7 +41,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<JoinGameResult> Handle(JoinGame request)
+        public async Task<JoinGameResult> Handle(JoinGame request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {

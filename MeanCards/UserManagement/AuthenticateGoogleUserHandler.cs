@@ -5,13 +5,14 @@ using MeanCards.Model.DAL.Creation.Users;
 using MeanCards.Model.DAL.Modification.Users;
 using MeanCards.Model.DTO.Users;
 using MeanCards.Validators;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.UserManagement
 {
-    public interface IAuthenticateGoogleUserHandler
+    public interface IAuthenticateGoogleUserHandler : IRequestHandler<AuthenticateGoogleUser, CreateUserResult>
     {
-        Task<CreateUserResult> Handle(AuthenticateGoogleUser request);
     }
 
     public class AuthenticateGoogleUserHandler : IAuthenticateGoogleUserHandler
@@ -30,7 +31,7 @@ namespace MeanCards.UserManagement
             this.codeGenerator = codeGenerator;
         }
 
-        public async Task<CreateUserResult> Handle(AuthenticateGoogleUser request)
+        public async Task<CreateUserResult> Handle(AuthenticateGoogleUser request, CancellationToken cancellationToken)
         {
             var validationResult = await requestValidator.Validate(request);
             if (!validationResult.IsSuccessful)

@@ -23,7 +23,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?random"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.True(result.IsSuccessful);
@@ -42,7 +42,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 DisplayName = "Test1",
                 Email = "test@test.com",
                 Password = "pass12"
-            });
+            }, new System.Threading.CancellationToken());
 
             var request = new AuthenticateGoogleUser
             {
@@ -52,7 +52,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?random"
             };
 
-            var result = await googleHandler.Handle(request);
+            var result = await googleHandler.Handle(request, new System.Threading.CancellationToken());
             var googleUserExists = await repository.GoogleUserExists("test@test.com", request.GoogleId);
 
             Assert.NotNull(result);
@@ -75,7 +75,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?image=22"
             };
 
-            var newResult = await handler.Handle(firstRequest);
+            var newResult = await handler.Handle(firstRequest, new System.Threading.CancellationToken());
 
             var secondRequest = new AuthenticateGoogleUser
             {
@@ -85,7 +85,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?image=111"
             };
 
-            var existingResult = await handler.Handle(secondRequest);
+            var existingResult = await handler.Handle(secondRequest, new System.Threading.CancellationToken());
 
             Assert.NotNull(existingResult);
             Assert.True(existingResult.IsSuccessful);
@@ -111,7 +111,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?random"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
@@ -131,7 +131,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?random"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
@@ -151,7 +151,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 ImageUrl = "https://picsum.photos/96/96/?random"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);

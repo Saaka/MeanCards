@@ -22,7 +22,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 Password = "pass12"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.True(result.IsSuccessful);
             Assert.Null(result.Error);
@@ -43,7 +43,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 Password = "pass123"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(AccessErrors.UserNotFound, result.Error);
@@ -63,7 +63,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 Password = "pass123"
             };
 
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(AccessErrors.InvalidUserCredentials, result.Error);
@@ -81,7 +81,7 @@ namespace MeanCards.Tests.Integration.UserManagementTests
                 DisplayName = "Jimmy"
             };
 
-            await handler.Handle(request);
+            await handler.Handle(request, new System.Threading.CancellationToken());
         }
     }
 }

@@ -4,14 +4,14 @@ using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface ICancelGameHandler
-    {
-        Task<CancelGameResult> Handle(CancelGame request);
-    }
+    public interface ICancelGameHandler : IRequestHandler<CancelGame, CancelGameResult>
+    { }
 
     public class CancelGameHandler : ICancelGameHandler
     {
@@ -32,7 +32,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<CancelGameResult> Handle(CancelGame request)
+        public async Task<CancelGameResult> Handle(CancelGame request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {

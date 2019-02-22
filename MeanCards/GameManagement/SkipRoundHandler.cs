@@ -4,14 +4,14 @@ using MeanCards.DAL.Interfaces.Transactions;
 using MeanCards.GameManagement.CoreServices;
 using MeanCards.Model.Core.Games;
 using MeanCards.Validators;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MeanCards.GameManagement
 {
-    public interface ISkipRoundHandler
-    {
-        Task<SkipRoundResult> Handle(SkipRound request);
-    }
+    public interface ISkipRoundHandler : IRequestHandler<SkipRound, SkipRoundResult>
+    { }
 
     public class SkipRoundHandler : ISkipRoundHandler
     {
@@ -38,7 +38,7 @@ namespace MeanCards.GameManagement
             this.gameCheckpointUpdater = gameCheckpointUpdater;
         }
 
-        public async Task<SkipRoundResult> Handle(SkipRound request)
+        public async Task<SkipRoundResult> Handle(SkipRound request, CancellationToken cancellationToken)
         {
             using (var transaction = repositoryTransactionsFactory.CreateTransaction())
             {
@@ -50,7 +50,7 @@ namespace MeanCards.GameManagement
                     .SkipRound(request.GameRoundId);
                 if (!skipped)
                     return new SkipRoundResult(GameErrors.GameRoundCouldNotBeSkipped);
-                
+
                 var createNewRoundResult = await gameRoundCreator
                     .CreateRound(request.GameId, request.GameRoundId);
                 if (!createNewRoundResult.IsSuccessful)

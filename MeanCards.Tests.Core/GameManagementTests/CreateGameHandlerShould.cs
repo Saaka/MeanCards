@@ -25,7 +25,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 Name = "TestGame",
                 UserId = userId,
                 ShowAdultContent = false
-            });
+            }, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.True(result.IsSuccessful);
@@ -51,7 +51,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 Name = "TestGame",
                 UserId = userId,
                 ShowAdultContent = false
-            });
+            }, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);
@@ -74,7 +74,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
                 Name = "TestGame",
                 UserId = userId,
                 ShowAdultContent = false
-            });
+            }, new System.Threading.CancellationToken());
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccessful);

@@ -1,5 +1,6 @@
 ﻿using MeanCards.Model.Core;
 using MeanCards.Model.Core.Games.Base;
+using MediatR;
 using System.Threading.Tasks;
 
 namespace MeanCards.Validators.Games

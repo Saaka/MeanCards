@@ -27,7 +27,7 @@ namespace MeanCards.Tests.Core.GameManagementTests
             };
 
             var handler = Fixture.GetService<ISubmitAnswerHandler>();
-            var result = await handler.Handle(request);
+            var result = await handler.Handle(request, new System.Threading.CancellationToken());
 
             Assert.True(result.IsSuccessful);
             Assert.Null(result.Error);
