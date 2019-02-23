@@ -78,7 +78,7 @@ export class Login extends Component {
                     <LoginWithGoogle onLoggedIn={this.onLoggedIn} onError={this.onError} showLoader={() => this.toggleLoader(true)}></LoginWithGoogle>
                 </div>
                 <br />
-                <div className="row justify-content-center">
+                <div className="row justify-content-center invisible">
                     <button className="btn btn-primary login-button" onClick={() => this.setLoginWithCredentials(true)}>Login</button>
                 </div>
             </div>
