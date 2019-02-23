@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LoaderButton } from 'CommonComponents';
 import { AuthService } from 'Services';
+import './LoginWithCredentials.scss';
 
 const LoginWithCredentials = (props) => {
     const [email, setEmail] = useState("");
@@ -20,6 +21,12 @@ const LoginWithCredentials = (props) => {
                 props.onError(err);
             });
     };
+
+    function goToLogin(e) {
+        e.preventDefault();
+        props.onGoBack();
+    };
+
     return (
         <div>
             <form onSubmit={handleLogin}>
@@ -42,6 +49,7 @@ const LoginWithCredentials = (props) => {
                         onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <LoaderButton type="submit" className="btn btn-primary" text="Login" isLoading={isLoading} />
+                <button className="btn btn-secondary btn-margin" onClick={(e) => goToLogin(e)}>Back</button>
             </form>
         </div>
     );

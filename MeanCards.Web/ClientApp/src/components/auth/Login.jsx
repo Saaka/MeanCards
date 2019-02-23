@@ -56,10 +56,16 @@ export class Login extends Component {
         });
     };
 
+    setLoginWithCredentials = (show) => {
+        this.setState({
+            loginWithCredentials: show
+        });
+    };
+
     renderLoginOptions = () => {
         if (this.state.loginWithCredentials)
             return (
-                <LoginWithCredentials onLoggedIn={this.onLoggedIn} onError={this.onError}></LoginWithCredentials>
+                <LoginWithCredentials onLoggedIn={this.onLoggedIn} onError={this.onError} onGoBack={() => this.setLoginWithCredentials(false)}></LoginWithCredentials>
             );
         else
             return this.renderMainLoginPanel();
@@ -73,7 +79,7 @@ export class Login extends Component {
                 </div>
                 <br />
                 <div className="row justify-content-center">
-                    <button className="btn btn-primary login-button" onClick={() => this.setState({ loginWithCredentials: true })}>Login</button>
+                    <button className="btn btn-primary login-button" onClick={() => this.setLoginWithCredentials(true)}>Login</button>
                 </div>
             </div>
         );
