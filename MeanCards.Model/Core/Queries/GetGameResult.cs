@@ -1,4 +1,6 @@
-﻿namespace MeanCards.Model.Core.Queries
+﻿using MeanCards.ViewModel.Game.Models;
+
+namespace MeanCards.Model.Core.Queries
 {
     public class GetGameResult : BaseResult
     {
@@ -10,7 +12,6 @@
         {
         }
 
-        public string Name { get; set; }
-        public string Code { get; set; }
+        public GameData Game { get; set; }
     }
 }

@@ -15,7 +15,7 @@ const Game = (props) => {
     function loadGame() {
         repository
             .getGame(props.match.params.code)
-            .then(resp => updateGame(resp.data))
+            .then(resp => updateGame(resp.data.game))
             .catch(err => {
                 props.history.push(Constants.Routes.GAMELIST, { error: err });
             });

@@ -1,4 +1,5 @@
-﻿using MeanCards.GameManagement;
+﻿using AutoMapper;
+using MeanCards.GameManagement;
 using MeanCards.Model.DTO.Games;
 using MeanCards.Queries.GameQueries;
 using MeanCards.ViewModel.Game;
@@ -17,15 +18,18 @@ namespace MeanCards.WebAPI.Controllers
     {
         private readonly IGameDataProvider gameDataProvider;
         private readonly IMediator mediator;
+        private readonly IMapper mapper;
 
         public GameController(
             IUserContextDataProvider userContextDataProvider,
             IGameDataProvider gameDataProvider,
-            IMediator mediator)
+            IMediator mediator,
+            IMapper mapper)
             : base(userContextDataProvider)
         {
             this.gameDataProvider = gameDataProvider;
             this.mediator = mediator;
+            this.mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -82,7 +86,7 @@ namespace MeanCards.WebAPI.Controllers
         }
 
         [HttpGet("{gameCode}")]
-        public async Task<ActionResult<GetGameListResponse>> Get(string gameCode)
+        public async Task<ActionResult<GetGameResponse>> Get(string gameCode)
         {
             var user = await GetUserData();
             var game = await GetGame(gameCode);
@@ -94,7 +98,9 @@ namespace MeanCards.WebAPI.Controllers
                     UserId = user.UserId
                 });
 
-            return GetResult(result);
+            var response = mapper.Map<GetGameResponse>(result);
+
+            return CreateResult(result, () => response);
         }
 
         private async Task<GameSimpleModel> GetGame(string code)

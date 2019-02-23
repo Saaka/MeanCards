@@ -1,6 +1,7 @@
 ﻿using MeanCards.DAL.Interfaces.Queries;
 using MeanCards.Model.Core.Queries;
 using MeanCards.Validators.Games;
+using MeanCards.ViewModel.Game.Models;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,8 +30,13 @@ namespace MeanCards.Queries.GameQueries
             if (!validationResult.IsSuccessful)
                 return new GetGameResult(validationResult.Error);
 
-            return await queryExecutor
-                .QueryFirstOrDefault<GetGameResult>(QueryString, new { request.GameId });
+            var game =  await queryExecutor
+                .QueryFirstOrDefault<GameData>(QueryString, new { request.GameId });
+
+            return new GetGameResult
+            {
+                Game = game
+            };
         }
 
         private const string QueryString = @"SELECT Name, Code FROM meancards.Games WHERE GameId = @GameId";
