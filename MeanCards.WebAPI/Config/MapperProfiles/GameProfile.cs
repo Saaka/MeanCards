@@ -9,6 +9,7 @@ namespace MeanCards.WebAPI.Config.MapperProfiles
         public GameProfile()
         {
             CreateMap<GetGameResult, GetGameResponse>();
+
         }
     }
 }

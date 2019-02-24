@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Avatar } from 'CommonComponents';
+import { UserAvatar } from 'CommonComponents';
 import './NavMenu.scss';
 
 export class NavMenu extends Component {
@@ -25,7 +25,7 @@ export class NavMenu extends Component {
         return "Guest";
     };
     return (
-      <span><Avatar user={this.props.user}/> <span className="navbar-text">{getUserName()}</span></span>
+      <span><UserAvatar user={this.props.user}/> <span className="navbar-text">{getUserName()}</span></span>
     );
   };
 

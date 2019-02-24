@@ -1,4 +1,5 @@
-﻿using MeanCards.ViewModel.Game.Models;
+﻿using MeanCards.ViewModel.Game.Models.GameViewModels;
+using System.Collections.Generic;
 
 namespace MeanCards.Model.Core.Queries
 {
@@ -13,5 +14,6 @@ namespace MeanCards.Model.Core.Queries
         }
 
         public GameData Game { get; set; }
+        public List<PlayerData> Players { get; set; }
     }
 }
