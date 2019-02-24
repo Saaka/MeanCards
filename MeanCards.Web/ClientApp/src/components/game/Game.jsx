@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { GameRepository } from './GameRepository';
-import { PlayersList } from './gameComponents/GameComponentsExports';
+import { PlayersList, GameDetails } from './gameComponents/GameComponentsExports';
 import { Loader } from 'CommonComponents';
 import { Constants } from 'Services';
+import './Game.scss';
 
 const Game = (props) => {
     const repository = new GameRepository();
-    const [game, setGame] = useState({});
+    const [gameInfo, setGameInfo] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => loadGame(), []);
@@ -21,7 +22,7 @@ const Game = (props) => {
     }
 
     function updateGame(gameData) {
-        setGame(gameData);
+        setGameInfo(gameData);
         setLoading(false);
     }
 
@@ -35,11 +36,12 @@ const Game = (props) => {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-xs-12 col-md-8 col-lg-9">
-                        <h1>{game.game.name}</h1>
+                    <div className="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+                        <h1>{gameInfo.game.name}</h1>
                     </div>
-                    <div className="col-xs-12 col-md-4 col-lg-3">
-                        <PlayersList players={game.players}></PlayersList>
+                    <div className="col-xs-12 col-sm-5 col-md-4 col-lg-4 game-extra-components">
+                        <div><GameDetails details={gameInfo.game} /></div>
+                        <div><PlayersList players={gameInfo.players} /> </div>
                     </div>
                 </div>
             </div>

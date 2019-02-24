@@ -45,8 +45,9 @@ namespace MeanCards.Queries.GameQueries
         }
 
         private const string GetGameDataQuery = 
-            @"SELECT G.Name, G.Code, P.PlayerId 
+            @"SELECT G.Name, G.Code, U.DisplayName as [Owner], P.PlayerId 
                 FROM meancards.Games G
+                JOIN meancards.AspNetUsers U ON G.OwnerId = U.Id
                 JOIN meancards.Players P ON G.GameId = P.GameId AND P.UserId = @UserId AND P.IsActive = 1
                 WHERE G.GameId = @GameId";
 

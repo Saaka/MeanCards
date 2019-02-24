@@ -16,7 +16,11 @@ const PlayersList = (props) => {
 
     function renderList() {
         if (showPlayersList)
-            return players.map(p => <li className="list-group-item" key={p.playerId}><Avatar imageUrl={p.avatar} /> <span>{p.displayName}</span></li>);
+            return players
+                .map(p =>
+                    <li className="list-group-item players-list-item" key={p.playerId}>
+                        <Avatar imageUrl={p.avatar} /> <span>{p.displayName} <span className="badge badge-secondary">{p.points}</span></span>
+                    </li>);
 
         return null;
     }
@@ -31,7 +35,10 @@ const PlayersList = (props) => {
     return (
         <ul className="players-list list-group-flush border rounded">
             <li className="list-group-item players-list-header" key="0">
-                <button className="btn btn-secondary players-list-header-btn" onClick={() => togglePlayersList()}><strong>Players list</strong> <i>{renderToggleIcon()}</i></button>
+                <button className="btn btn-secondary players-list-header-btn"
+                    onClick={() => togglePlayersList()}>
+                    <strong>Players list</strong> <i>{renderToggleIcon()}</i>
+                </button>
             </li>
             {renderList()}
         </ul>

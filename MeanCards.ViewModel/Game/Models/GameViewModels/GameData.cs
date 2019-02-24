@@ -4,6 +4,7 @@
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        public string Owner { get; set; }
         public int PlayerId { get; set; }
     }
 }
