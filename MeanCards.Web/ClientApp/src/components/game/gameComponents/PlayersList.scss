@@ -1,0 +1,11 @@
+.players-list {
+    padding-inline-start: 0;
+}
+
+.players-list-header {
+    border: none;
+
+    &-btn {
+        width: 100%
+    }
+}

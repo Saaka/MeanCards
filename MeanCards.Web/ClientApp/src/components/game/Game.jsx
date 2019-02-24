@@ -33,9 +33,15 @@ const Game = (props) => {
 
     function renderGame() {
         return (
-            <div>
-                <h1>{game.game.name}</h1>
-                <PlayersList players={game.players}></PlayersList>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-xs-12 col-md-8 col-lg-9">
+                        <h1>{game.game.name}</h1>
+                    </div>
+                    <div className="col-xs-12 col-md-4 col-lg-3">
+                        <PlayersList players={game.players}></PlayersList>
+                    </div>
+                </div>
             </div>
         );
     }
